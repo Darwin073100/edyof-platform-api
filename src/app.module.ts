@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeormConfigModule } from './config/database/typeorm/typeorm-config.module';
 import { EstablishmentModule } from './contexts/educational-center-management/educational-center/establishment.module';
+import { BranchOfficeModule } from './contexts/educational-center-management/branch-office/branch-office.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { EstablishmentModule } from './contexts/educational-center-management/ed
     }),
     TypeormConfigModule,
     EstablishmentModule,
+    BranchOfficeModule
   ],
 })
 export class AppModule {}

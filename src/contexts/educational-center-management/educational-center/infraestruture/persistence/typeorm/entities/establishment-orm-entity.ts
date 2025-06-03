@@ -1,6 +1,7 @@
 // src/contexts/educational-center-management/educational-center/infrastructure/persistence/typeorm/entities/educational-center.orm-entity.ts
 
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { BranchOfficeOrmEntity } from 'src/contexts/educational-center-management/branch-office/infraestructure/persistence/typeorm/entities/branch-office.orm-entity';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, OneToMany } from 'typeorm';
 
 /**
  * EducationalCenterOrmEntity es una entidad de TypeORM que representa la tabla
@@ -16,6 +17,9 @@ export class EstablishmentOrmEntity {
 
   @Column({ type: 'varchar', length: 250, unique: true, nullable: false })
   name: string;
+
+  @OneToMany(()=> BranchOfficeOrmEntity, branchOffice=> branchOffice.establishment)
+  branchOffices: BranchOfficeOrmEntity[];
 
   @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

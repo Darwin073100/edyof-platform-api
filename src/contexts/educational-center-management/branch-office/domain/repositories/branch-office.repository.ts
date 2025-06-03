@@ -1,0 +1,20 @@
+import { BranchOffice } from "../entities/branch-office.entity";
+
+/**
+ * BranchOfficeRepository es una interfaz (Puerto de Salida) que define
+ * el contrato para la persistencia de los objetos BranchOffice.
+ *
+ * Esta interfaz es parte de la capa de Dominio, lo que significa que el Dominio
+ * define lo que necesita para interactuar con la persistencia, no cómo se implementa.
+ * Esto asegura la Inversión de Dependencias y la Independencia del Framework.
+ */
+export interface BranchOfficeRepository {
+    save(branchOffice: BranchOffice): Promise<BranchOffice>;
+    findById(id: bigint): Promise<BranchOffice | null>;
+    // Podríamos añadir otros métodos como:
+    // findByEstablishmentId(EstablishmentId: bigint): Promise<BranchOffice[]>;
+    // delete(id: bigint): Promise<void>;
+  }
+  
+  // Define el token de inyección para esta interfaz.
+  export const BRANCH_OFFICE_REPOSITORY = Symbol('BRANCH_OFFICE_REPOSITORY');
