@@ -1,4 +1,4 @@
-import { BranchOfficeOrmEntity } from 'src/contexts/educational-center-management/branch-office/infraestructure/persistence/typeorm/entities/branch-office.orm-entity';
+import { BranchOfficeOrmEntity } from 'src/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/entities/branch-office.orm-entity';
 import {
     Entity,
     PrimaryGeneratedColumn, // ID generado automáticamente por la BD
