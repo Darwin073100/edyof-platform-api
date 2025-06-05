@@ -4,6 +4,7 @@ import { TypeormConfigModule } from './config/database/typeorm/typeorm-config.mo
 import { EstablishmentModule } from './contexts/establishment-management/establishment/establishment.module';
 import { BranchOfficeModule } from './contexts/establishment-management/branch-office/branch-office.module';
 import { CategoryModule } from './contexts/product-management/category/category.module';
+import { BrandModule } from './contexts/product-management/brand/brand.module';
 
 @Module({
   imports: [
@@ -14,7 +15,8 @@ import { CategoryModule } from './contexts/product-management/category/category.
     TypeormConfigModule,
     EstablishmentModule,
     BranchOfficeModule,
-    CategoryModule
+    CategoryModule,
+    BrandModule,
   ],
 })
 export class AppModule {}

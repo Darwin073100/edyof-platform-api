@@ -5,6 +5,7 @@ import { EstablishmentOrmEntity } from 'src/contexts/establishment-management/es
 import { BranchOfficeOrmEntity } from 'src/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/entities/branch-office.orm-entity';
 import { AddressOrmEntity } from 'src/shared/infraestructure/typeorm/address.orm-entity';
 import { CategoryOrmEntity } from 'src/contexts/product-management/category/infraestructure/persistence/typeorm/entities/category.orm-entity';
+import { BrandOrmEntity } from 'src/contexts/product-management/brand/infraestruture/persistence/typeorm/entities/brand-orm-entity';
 
 @Module({
     imports: [
@@ -23,7 +24,8 @@ import { CategoryOrmEntity } from 'src/contexts/product-management/category/infr
             EstablishmentOrmEntity,
             BranchOfficeOrmEntity,
             AddressOrmEntity,
-            CategoryOrmEntity
+            CategoryOrmEntity,
+            BrandOrmEntity
           ],
           synchronize: false,
           ...(isProduction && {

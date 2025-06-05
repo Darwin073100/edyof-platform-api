@@ -21,7 +21,7 @@ export class BranchOfficeOrmEntity {
   })
   branchOfficeId: bigint;
 
-  @Column({ type: 'varchar', length: 150, nullable: false })
+  @Column({ type: 'varchar', length: 250, nullable: false })
   name: string;
 
   // Clave foránea para la dirección. No es estrictamente necesario mapearla como columna

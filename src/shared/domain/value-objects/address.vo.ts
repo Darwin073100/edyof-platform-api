@@ -1,5 +1,5 @@
 import { ValueObject } from "src/shared/domain/value-objects/value-object";
-import { InvalidAddressException } from "../../../contexts/establishment-management/branch-office/domain/exceptions/invalid-address.exception";
+import { InvalidAddressException } from "../exceptions/invalid-address.exception";
 
 interface AddressProps {
     street: string; // Calle

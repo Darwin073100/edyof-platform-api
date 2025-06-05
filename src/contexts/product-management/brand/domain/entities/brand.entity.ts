@@ -1,23 +1,23 @@
 import { DomainEvent } from "src/shared/domain/events/domain-events";
-import { Name } from "../values-objects/name.vo";
-import { EstablishmentCreatedEvent } from "../events/establishment-created.event";
+import { BrandNameVO } from "../values-objects/brand-name.vo";
+import { BrandCreatedEvent } from "../events/brand-created.event";
 
-export class EstablishmentEntity {
-    private readonly _establishmentId: bigint;
-    private _name: Name;
+export class BrandEntity {
+    private readonly _brandId: bigint;
+    private _name: BrandNameVO;
     private readonly _createdAt: Date;
     private _updatedAt: Date | null;
     private _deletedAt: Date | null;
     private _domainEvents: DomainEvent<this>[] = []; // Colección de eventos de dominio
 
     private constructor(
-    establishmentId: bigint,
-    name: Name,
+    brandId: bigint,
+    name: BrandNameVO,
     createdAt: Date,
     updatedAt: Date | null,
     deletedAt: Date | null,
     ) {
-        this._establishmentId = establishmentId;
+        this._brandId = brandId;
         this._name = name;
         this._createdAt = createdAt;
         this._updatedAt = updatedAt;
@@ -29,28 +29,28 @@ export class EstablishmentEntity {
    * Este es un método de fábrica para asegurar la creación controlada del agregado.
    * Un evento de dominio EstablishmentCreatedEvent se registra internamente.
    *
-   * @param establishmentId El ID único del centro educativo.
+   * @param brandId El ID único del centro educativo.
    * @param name El nombre del centro educativo.
    * @returns Una nueva instancia de Establishment.
    */
-  static create(establishmentId: bigint, name: Name): EstablishmentEntity {
-    const establishment = new EstablishmentEntity(
-      establishmentId,
+  static create(brandId: bigint, name: BrandNameVO): BrandEntity {
+    const brand = new BrandEntity(
+      brandId,
       name,
       new Date(), // createdAt
       null, // updatedAt
       null, // deletedAt
     );
     // Registra el evento de dominio.
-    establishment.recordEvent(new EstablishmentCreatedEvent(establishment));
-    return establishment;
+    brand.recordEvent(new BrandCreatedEvent(brand));
+    return brand;
   }
 
   /**
    * Reconstituye una instancia de Establishment desde la persistencia.
    * No emite eventos ya que representa un estado ya existente.
    *
-   * @param establishmentId El ID único del centro educativo.
+   * @param brandId El ID único del centro educativo.
    * @param name El nombre del centro educativo.
    * @param createdAt La fecha de creación.
    * @param updatedAt La fecha de la última actualización.
@@ -58,21 +58,21 @@ export class EstablishmentEntity {
    * @returns Una instancia de Establishment reconstituida.
    */
   static reconstitute(
-    establishmentId: bigint,
-    name: Name,
+    brandId: bigint,
+    name: BrandNameVO,
     createdAt: Date,
     updatedAt: Date | null,
     deletedAt: Date | null,
-  ): EstablishmentEntity {
-    return new EstablishmentEntity(establishmentId, name, createdAt, updatedAt, deletedAt);
+  ): BrandEntity {
+    return new BrandEntity(brandId, name, createdAt, updatedAt, deletedAt);
   }
 
   // Getters
-  get establishmentId(): bigint {
-    return this._establishmentId;
+  get brandId(): bigint {
+    return this._brandId;
   }
 
-  get name(): Name {
+  get name(): BrandNameVO {
     return this._name;
   }
 
@@ -100,7 +100,7 @@ export class EstablishmentEntity {
   }
 
   // Métodos de comportamiento del dominio
-  public updateName(newName: Name): void {
+  public updateName(newName: BrandNameVO): void {
     if (this._name.equals(newName)) {
       return; // No hay cambio, no se hace nada
     }

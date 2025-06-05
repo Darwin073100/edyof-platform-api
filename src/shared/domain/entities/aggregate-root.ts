@@ -7,12 +7,12 @@ import { DomainEvent } from '../events/domain-events'; // La clase base DomainEv
  *
  * @template T Los tipos de las propiedades de la entidad.
  */
-export abstract class AggregateRoot<T extends { id: bigint }> extends Entity<T> {
+export abstract class AggregateRoot<K> {
   // Lista privada para almacenar los eventos de dominio que ocurren en este agregado.
-  private domainEvents: DomainEvent[] = [];
+  private domainEvents: DomainEvent<K>[] = [];
 
-  protected constructor(props: T) {
-    super(props);
+  protected constructor(props: K) {
+    
   }
 
   /**
@@ -20,7 +20,7 @@ export abstract class AggregateRoot<T extends { id: bigint }> extends Entity<T> 
    * Estos eventos se pueden despachar después de que la transacción se haya completado con éxito.
    * @param event El evento de dominio a añadir.
    */
-  protected addEvent(event: DomainEvent): void {
+  protected addEvent(event: DomainEvent<K>): void {
     this.domainEvents.push(event);
   }
 
@@ -30,7 +30,7 @@ export abstract class AggregateRoot<T extends { id: bigint }> extends Entity<T> 
    * para que los eventos puedan ser despachados.
    * @returns Un array de eventos de dominio.
    */
-  public getAndClearEvents(): DomainEvent[] {
+  public getAndClearEvents(): DomainEvent<K>[] {
     const events = this.domainEvents;
     this.domainEvents = []; // Limpia la lista de eventos después de obtenerlos
     return events;

@@ -5,6 +5,8 @@ import { BranchOfficeResponseDto } from "../../application/dtos/branch-office-re
 import { RegisterBranchOfficeDto } from "../../application/dtos/register-branch-office.dto";
 import { BranchOfficeMapper } from "../../application/mappers/branch-office.mapper";
 import { InvalidNameException } from "src/contexts/establishment-management/establishment/domain/exceptions/invalid-name.exception";
+import { InvalidBranchOfficeException } from "../../domain/exceptions/invalid-branch-office.exception";
+import { InvalidAddressException } from "../../../../../shared/domain/exceptions/invalid-address.exception";
 
 /**
  * BranchOfficeController es el controlador de NestJS que maneja las solicitudes HTTP
@@ -51,7 +53,7 @@ export class BranchOfficeController{
           return BranchOfficeMapper.toResponseDto(branchOffice);
         } catch (error) {
           // *** TRADUCCIÓN DE EXCEPCIONES DE DOMINIO A EXCEPCIONES HTTP DE NESTJS ***
-          if (error instanceof InvalidNameException) {
+          if ((error instanceof InvalidBranchOfficeException) || (error instanceof InvalidAddressException) ) {
             throw new BadRequestException(error.message); // Mapea InvalidNameException a 400 Bad Request
           }
     

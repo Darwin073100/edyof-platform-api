@@ -10,7 +10,7 @@ export class CategoryEntity {
   private readonly _createdAt: Date;
   private _updatedAt: Date | null;
   private _deletedAt: Date | null;
-  private _domainEvents: DomainEvent[] = [];
+  private _domainEvents: DomainEvent<CategoryEntity>[] = [];
 
   private constructor(
     categoryId: bigint,
@@ -142,7 +142,7 @@ export class CategoryEntity {
    * Este método será llamado por la capa de aplicación o infraestructura
    * después de que el agregado sea persistido o sus operaciones completadas.
    */
-  public getAndClearEvents(): DomainEvent[] {
+  public getAndClearEvents(): DomainEvent<CategoryEntity>[] {
     const events = [...this._domainEvents];
     this._domainEvents = []; // Limpiar los eventos después de haberlos obtenido
     return events;
@@ -152,7 +152,7 @@ export class CategoryEntity {
    * Registra un evento de dominio para ser despachado posteriormente.
    * @param event El evento de dominio a registrar.
    */
-  private recordEvent(event: DomainEvent): void {
+  private recordEvent(event: DomainEvent<CategoryEntity>): void {
     this._domainEvents.push(event);
   }
 }

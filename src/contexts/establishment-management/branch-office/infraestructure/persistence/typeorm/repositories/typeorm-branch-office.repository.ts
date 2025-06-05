@@ -6,6 +6,7 @@ import { BranchOfficeRepository } from "src/contexts/establishment-management/br
 import { Injectable } from "@nestjs/common";
 import { Name } from "src/contexts/establishment-management/establishment/domain/values-objects/name.vo";
 import { Address } from "src/shared/domain/value-objects/address.vo";
+import { BranchOfficeMapper } from "../mappers/branch-office.mapper";
 
 @Injectable()
 export class TypeOrmBranchOfficeRepository implements BranchOfficeRepository {
@@ -38,52 +39,17 @@ export class TypeOrmBranchOfficeRepository implements BranchOfficeRepository {
       addressOrmEntity = new AddressOrmEntity();
     }
 
-    // Actualizar las propiedades de la AddressOrmEntity con los valores del Address VO
-    addressOrmEntity.street = branchOffice.address.street;
-    addressOrmEntity.externalNumber = branchOffice.address.externalNumber;
-    addressOrmEntity.internalNumber = branchOffice.address.internalNumber;
-    addressOrmEntity.district = branchOffice.address.district;
-    addressOrmEntity.city = branchOffice.address.city;
-    addressOrmEntity.state = branchOffice.address.state;
-    addressOrmEntity.postalCode = branchOffice.address.postalCode;
-    addressOrmEntity.country = branchOffice.address.country;
-    addressOrmEntity.reference = branchOffice.address.reference;
-
-    // 2. Mapear la entidad de dominio BranchOffice a BranchOfficeOrmEntity
-    // Utilizamos create() para crear una nueva instancia si es una nueva entidad,
-    // o merge() para actualizar una existente.
-    const branchOrmEntity = this.ormBranchOfficeRepository.create({
-      branchOfficeId: branchOffice.branchOfficeId,
-      name: branchOffice.name.value,
-      establishmentId: branchOffice.establishmentId,
-      createdAt: branchOffice.createdAt,
-      updatedAt: branchOffice.updatedAt,
-      deletedAt: branchOffice.deletedAt,
-      address: addressOrmEntity, // ¡Asignamos la entidad ORM de la dirección!
-      // No necesitamos manejar addressId directamente; TypeORM lo hará con la relación.
-    });
-
+  
+    // Conversion de una entidad de dominio a una entidad de Typeorm
+    const branchOrmEntity = BranchOfficeMapper.toOrmEntity(branchOffice);
+    
+    
+    // Guardar la entidad
     const resp = await this.ormBranchOfficeRepository.save(branchOrmEntity); // El cascade se encargará de guardar/actualizar la dirección
-    const addressVO = Address.create({
-      city: resp.address.city,
-      country: resp.address.country,
-      district: resp.address.district,
-      externalNumber: resp.address.externalNumber,
-      internalNumber: resp.address.internalNumber,
-      postalCode: resp.address.postalCode,
-      state: resp.address.state,
-      street: resp.address.street,
-      reference: resp.address.reference
-    });
-    const entity = BranchOffice.reconstitute(
-      resp.branchOfficeId,
-      Name.create(resp.name),
-      addressVO, 
-      resp.establishmentId,
-      resp.createdAt,
-      resp.updatedAt,
-      resp.deletedAt
-    );
+    
+    // Convertir una entidad de Typeorm a una entidad de dominio
+    const entity = BranchOfficeMapper.toDomainEntity(resp);
+
     return entity;
   }
 
@@ -97,29 +63,7 @@ export class TypeOrmBranchOfficeRepository implements BranchOfficeRepository {
       return null;
     }
 
-    // Reconstituir el Value Object de dominio Address desde AddressOrmEntity
-    const addressVo = Address.reconstitute({
-      street: branchOrmEntity.address.street,
-      externalNumber: branchOrmEntity.address.externalNumber,
-      internalNumber: branchOrmEntity.address.internalNumber,
-      district: branchOrmEntity.address.district,
-      city: branchOrmEntity.address.city,
-      state: branchOrmEntity.address.state,
-      postalCode: branchOrmEntity.address.postalCode,
-      country: branchOrmEntity.address.country,
-      reference: branchOrmEntity.address.reference,
-    });
-
-    const nameVo = Name.create(branchOrmEntity.name);
-
-    return BranchOffice.reconstitute(
-      branchOrmEntity.branchOfficeId,
-      nameVo,
-      addressVo,
-      branchOrmEntity.establishmentId,
-      branchOrmEntity.createdAt,
-      branchOrmEntity.updatedAt,
-      branchOrmEntity.deletedAt,
-    );
+    const branchOfficeEntity = BranchOfficeMapper.toDomainEntity(branchOrmEntity);
+    return branchOfficeEntity;
   }
 }

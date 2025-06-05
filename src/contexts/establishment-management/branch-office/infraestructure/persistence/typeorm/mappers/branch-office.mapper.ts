@@ -1,8 +1,9 @@
 import { BranchOffice } from "src/contexts/establishment-management/branch-office/domain/entities/branch-office.entity";
 import { BranchOfficeOrmEntity } from "../entities/branch-office.orm-entity";
 import { AddressOrmEntity } from "src/shared/infraestructure/typeorm/address.orm-entity";
-import { Name } from "src/contexts/establishment-management/establishment/domain/values-objects/name.vo";
+
 import { Address } from "src/shared/domain/value-objects/address.vo";
+import { BranchOfficeNameVO } from "src/contexts/establishment-management/branch-office/domain/value-objects/branch-office-name.vo";
 
 /**
  * BranchOfficeMapper es una clase que se encarga de transformar
@@ -68,7 +69,7 @@ export class BranchOfficeMapper {
     });
 
     // Crear el Value Object de nombre
-    const nameVo = Name.create(ormEntity.name);
+    const nameVo = BranchOfficeNameVO.create(ormEntity.name);
 
     // Reconstituir la entidad de dominio
     return BranchOffice.reconstitute(
