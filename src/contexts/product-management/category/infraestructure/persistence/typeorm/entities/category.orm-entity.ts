@@ -18,5 +18,5 @@ export class CategoryOrmEntity{
     updatedAt: Date | null;
     
     @DeleteDateColumn({ type: 'timestamp with time zone', name: 'deleted_at', nullable: true })
-    deletedAt: Date | null;s
+    deletedAt: Date | null;
 }

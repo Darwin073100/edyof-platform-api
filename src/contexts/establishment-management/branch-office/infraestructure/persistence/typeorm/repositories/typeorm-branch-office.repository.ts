@@ -3,19 +3,19 @@ import { AddressOrmEntity } from "src/shared/infraestructure/typeorm/address.orm
 import { DataSource, Repository } from "typeorm";
 import { BranchOfficeOrmEntity } from "../entities/branch-office.orm-entity";
 import { BranchOfficeRepository } from "src/contexts/establishment-management/branch-office/domain/repositories/branch-office.repository";
-import { Injectable } from "@nestjs/common";
-import { Name } from "src/contexts/establishment-management/establishment/domain/values-objects/name.vo";
-import { Address } from "src/shared/domain/value-objects/address.vo";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { BranchOfficeMapper } from "../mappers/branch-office.mapper";
+import { EstablishmentOrmEntity } from "src/contexts/establishment-management/establishment/infraestruture/persistence/typeorm/entities/establishment-orm-entity";
 
 @Injectable()
 export class TypeOrmBranchOfficeRepository implements BranchOfficeRepository {
-  private 
-  ormBranchOfficeRepository: Repository<BranchOfficeOrmEntity>;
+  private ormBranchOfficeRepository: Repository<BranchOfficeOrmEntity>;
+  private ormEstablishmentRepository: Repository<EstablishmentOrmEntity>;
   // Ya no necesitamos ormAddressRepository aquí, TypeORM lo maneja con cascade
 
   constructor(private readonly dataSource: DataSource) {
     this.ormBranchOfficeRepository = this.dataSource.getRepository(BranchOfficeOrmEntity);
+    this.ormEstablishmentRepository = this.dataSource.getRepository(EstablishmentOrmEntity);
   }
 
   async save(branchOffice: BranchOffice): Promise<BranchOffice> {
@@ -23,6 +23,13 @@ export class TypeOrmBranchOfficeRepository implements BranchOfficeRepository {
     // Si la BranchOffice ya existe (tiene un ID), su AddressOrmEntity asociada
     // debería haber sido cargada por 'eager: true'.
     // Si es una nueva BranchOffice, se crea una nueva AddressOrmEntity.
+    const isEstablishment = await this.ormEstablishmentRepository.findBy({establishmentId: branchOffice.establishmentId});
+    console.log(isEstablishment);
+    
+    if(!isEstablishment){
+      throw new NotFoundException('Debe ser un id de un extablecimeinto existente.');
+    }
+
     let addressOrmEntity: AddressOrmEntity | null = null;
     if (branchOffice.branchOfficeId) {
       // Intentamos cargar la entidad ORM existente para BranchOffice

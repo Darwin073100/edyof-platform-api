@@ -5,6 +5,7 @@ import { BranchOfficeOrmEntity } from 'src/contexts/establishment-management/bra
 import { AddressOrmEntity } from 'src/shared/infraestructure/typeorm/address.orm-entity';
 import { CategoryOrmEntity } from 'src/contexts/product-management/category/infraestructure/persistence/typeorm/entities/category.orm-entity';
 import { BrandOrmEntity } from 'src/contexts/product-management/brand/infraestruture/persistence/typeorm/entities/brand-orm-entity';
+import { SeasonOrmEntity } from 'src/contexts/product-management/season/infraestructure/persistence/typeorm/entities/season.orm-entity';
 
 config();
 
@@ -17,7 +18,8 @@ const AppDataSource = new DataSource({
     AddressOrmEntity,
     BranchOfficeOrmEntity,
     CategoryOrmEntity,
-    BrandOrmEntity
+    BrandOrmEntity,
+    SeasonOrmEntity,
   ],
   migrations: [`${__dirname}/migrations/*.{ts,js}`],
   synchronize: false,

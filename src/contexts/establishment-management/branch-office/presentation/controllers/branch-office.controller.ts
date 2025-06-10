@@ -1,4 +1,4 @@
-import { BadRequestException, Body, ConflictException, Controller, HttpCode, HttpStatus, Post } from "@nestjs/common";
+import { BadRequestException, Body, ConflictException, Controller, HttpCode, HttpStatus, NotFoundException, Post } from "@nestjs/common";
 import { RegisterBranchOfficeUseCase } from "../../application/use-cases/register-branch-office.use-case";
 import { RegisterBranchOfficeRequestDto } from "../dtos/register-branch-office-request.dto";
 import { BranchOfficeResponseDto } from "../../application/dtos/branch-office-response.dto";
@@ -7,6 +7,7 @@ import { BranchOfficeMapper } from "../../application/mappers/branch-office.mapp
 import { InvalidNameException } from "src/contexts/establishment-management/establishment/domain/exceptions/invalid-name.exception";
 import { InvalidBranchOfficeException } from "../../domain/exceptions/invalid-branch-office.exception";
 import { InvalidAddressException } from "../../../../../shared/domain/exceptions/invalid-address.exception";
+import { EstablishmentNotFoundException } from "src/contexts/establishment-management/establishment/domain/exceptions/establishment-not-found.exception";
 
 /**
  * BranchOfficeController es el controlador de NestJS que maneja las solicitudes HTTP
@@ -44,7 +45,7 @@ export class BranchOfficeController{
             },
             registerRequestDto.establishmentId,
         );
-          console.log(registerRequestDto);
+          // console.log(registerRequestDto);
     
           // 2. Ejecutar el Caso de Uso (que contiene la orquestación de la lógica de negocio).
           const branchOffice = await this.registerBranchOfficeUseCase.execute(registerAppDto);
@@ -52,14 +53,16 @@ export class BranchOfficeController{
           // 3. Mapear la entidad de dominio resultante a un DTO de respuesta para la API.
           return BranchOfficeMapper.toResponseDto(branchOffice);
         } catch (error) {
+          
           // *** TRADUCCIÓN DE EXCEPCIONES DE DOMINIO A EXCEPCIONES HTTP DE NESTJS ***
           if ((error instanceof InvalidBranchOfficeException) || (error instanceof InvalidAddressException) ) {
             throw new BadRequestException(error.message); // Mapea InvalidNameException a 400 Bad Request
           }
+
+          if(error instanceof EstablishmentNotFoundException){
+            throw new NotFoundException(error.message);
+          }
     
-          // Codigo de error que lanza typeorm cuando ya existe un centro educativo con el mismo nombre
-          if(error?.code === '23505')
-            throw new ConflictException('Ya existe un centro educativo con ese nombre.'); // Mapea errores de conflicto de la base de datos (ej. duplicados) a 409 Conflict
           // Otros tipos de errores de dominio si existieran
           // if (error instanceof AnotherDomainException) { /* ... */ }
           // Si es un error desconocido o no esperado, relanzarlo o lanzar un InternalServerErrorException

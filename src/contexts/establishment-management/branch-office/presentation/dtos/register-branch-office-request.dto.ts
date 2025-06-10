@@ -22,10 +22,10 @@ export class RegisterBranchOfficeRequestDto {
     @MinLength(3, { message: 'La calle debe tener como mínimo 3 caracteres.' })
     @MaxLength(255, { message: 'La calle no puede tener mas de 255 caracteres.' })
     street: string; // Calle
-    @IsString({ message: 'cv:El numero exterior debe ser una cadena numerica' })
-    @IsNotEmpty({ message: 'cv:El número exterior no puede ir vacio.' })
-    @MinLength(1, { message: 'cv:El numero exterior debe tener como mínimo 1 dígito/caracter.' })
-    @MaxLength(20, { message: 'cv:El número exterior no puede tener mas de 20 caracteres.' })
+    @IsString({ message: 'El numero exterior debe ser una cadena numerica' })
+    @IsNotEmpty({ message: 'El número exterior no puede ir vacio.' })
+    @MinLength(1, { message: 'El numero exterior debe tener como mínimo 1 dígito/caracter.' })
+    @MaxLength(20, { message: 'El número exterior no puede tener mas de 20 caracteres.' })
     externalNumber: string; // Número exterior
     @IsOptional()
     @IsString({ message: 'El numero interior debe ser una cadena numerica' })

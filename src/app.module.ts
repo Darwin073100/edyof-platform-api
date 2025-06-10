@@ -5,6 +5,7 @@ import { EstablishmentModule } from './contexts/establishment-management/establi
 import { BranchOfficeModule } from './contexts/establishment-management/branch-office/branch-office.module';
 import { CategoryModule } from './contexts/product-management/category/category.module';
 import { BrandModule } from './contexts/product-management/brand/brand.module';
+import { SeasonModule } from './contexts/product-management/season/season.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { BrandModule } from './contexts/product-management/brand/brand.module';
     BranchOfficeModule,
     CategoryModule,
     BrandModule,
+    SeasonModule,
   ],
 })
 export class AppModule {}

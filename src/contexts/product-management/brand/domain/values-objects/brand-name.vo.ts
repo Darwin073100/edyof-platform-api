@@ -29,13 +29,13 @@ export class BrandNameVO extends ValueObject<BrandNameProps> {
    */
   public static create(name: string): BrandNameVO {
     if (!name || name.trim().length === 0) {
-      throw new InvalidBrandException('El nombre de la marca no puede estar vacío.'); // Un error de dominio apropiado
+      throw new InvalidBrandException('Domain:El nombre de la marca no puede estar vacío.'); // Un error de dominio apropiado
     }
     if (name.length > 100) { // Un ejemplo de límite, puedes ajustar
-      throw new InvalidBrandException('El nombre de la marca no debe ser mayor a 100 caracteres.');
+      throw new InvalidBrandException('Domain: El nombre de la marca no debe ser mayor a 100 caracteres.');
     }
     if (name.length < 3) { // Un ejemplo de límite, puedes ajustar
-      throw new InvalidBrandException('El nombre de la marca debe tener como mínimo 3 caracteres.');
+      throw new InvalidBrandException('Domain:El nombre de la marca debe tener como mínimo 3 caracteres.');
     }
     // Podrías añadir más validaciones: caracteres especiales, formato, etc.
 

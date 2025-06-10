@@ -5,7 +5,9 @@ import { BranchOfficeOrmEntity } from "./infraestructure/persistence/typeorm/ent
 import { BranchOffice } from "./domain/entities/branch-office.entity";
 import { TypeOrmBranchOfficeRepository } from "./infraestructure/persistence/typeorm/repositories/typeorm-branch-office.repository";
 import { RegisterBranchOfficeUseCase } from "./application/use-cases/register-branch-office.use-case";
-import { BranchOfficeRepository } from "./domain/repositories/branch-office.repository";
+import { BRANCH_OFFICE_REPOSITORY, BranchOfficeRepository } from "./domain/repositories/branch-office.repository";
+import { EstablishmentModule } from "../establishment/establishment.module";
+import { ESTABLISHMENT_CHECKER_PORT, EstablishmentCheckerPort } from "../establishment/application/ports/out/establishment-checker.port";
 
 /**
  * BranchOfficeModule es el módulo de NestJS que agrupa todos los componentes
@@ -19,6 +21,7 @@ import { BranchOfficeRepository } from "./domain/repositories/branch-office.repo
       // Importa las entidades de TypeORM que este módulo utilizará.
       // Esto es crucial para que TypeORM sepa qué tablas debe gestionar.
       TypeOrmModule.forFeature([BranchOfficeOrmEntity]),
+      EstablishmentModule,
     ],
     controllers: [
       // Los controladores que manejan las solicitudes HTTP para este módulo.
@@ -32,17 +35,17 @@ import { BranchOfficeRepository } from "./domain/repositories/branch-office.repo
       // Aquí es donde enlazamos la interfaz de dominio (BranchOfficeRepository)
       // con su implementación de infraestructura (TypeOrmBranchOfficeRepository).
       {
-        provide: BranchOffice, // El "token" o la "interfaz" que se pide
+        provide: BRANCH_OFFICE_REPOSITORY, // El "token" o la "interfaz" que se pide
         useClass: TypeOrmBranchOfficeRepository, // La clase concreta que se provee
       },
       {
         provide: RegisterBranchOfficeUseCase, // Provee el caso de uso
-        useFactory: (repo: BranchOfficeRepository) => {
+        useFactory: (repo1: BranchOfficeRepository,repo2: EstablishmentCheckerPort) => {
           // NestJS inyecta el repo aquí basado en el token
-          return new RegisterBranchOfficeUseCase(repo);
+          return new RegisterBranchOfficeUseCase(repo1, repo2);
         },
-        inject: [BranchOffice], // Declara la dependencia para el factory
-      },
+        inject: [BRANCH_OFFICE_REPOSITORY, ESTABLISHMENT_CHECKER_PORT], // Declara la dependencia para el factory
+      }
       // --- Casos de Uso (Servicios de Aplicación) ---
       // NestJS es lo suficientemente inteligente para inyectar automáticamente
       // la implementación correcta del repositorio (TypeOrmBranchOfficeRepository)

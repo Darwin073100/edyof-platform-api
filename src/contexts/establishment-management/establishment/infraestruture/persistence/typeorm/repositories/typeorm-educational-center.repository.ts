@@ -6,7 +6,9 @@ import { EstablishmentOrmEntity } from '../entities/establishment-orm-entity';
 import { Name } from 'src/contexts/establishment-management/establishment/domain/values-objects/name.vo';
 import { EstablishmentRepository } from 'src/contexts/establishment-management/establishment/domain/repositories/establishment.repository';
 import { EstablishmentEntity } from 'src/contexts/establishment-management/establishment/domain/entities/establishment.entity';
-import { Repository } from 'typeorm';
+import { QueryFailedError, Repository } from 'typeorm';
+import { EstablishmentNotFoundException } from 'src/contexts/establishment-management/establishment/domain/exceptions/establishment-not-found.exception';
+import { EstablishmentAlreadyExistsException } from 'src/contexts/establishment-management/establishment/domain/exceptions/establishment-already-exists.exception';
 
 /**
  * TypeOrmEducationalCenterRepository es la implementación concreta de la interfaz
@@ -33,7 +35,8 @@ export class TypeOrmEstablishmentRepository implements EstablishmentRepository {
    * @param establishment La instancia de EducationalCenter a guardar.
    */
   async save(establishment: EstablishmentEntity): Promise<EstablishmentEntity> {
-    // 1. Convertir la entidad de dominio a la entidad ORM.
+    try {
+      // 1. Convertir la entidad de dominio a la entidad ORM.
     // Usamos el ID del dominio si existe para una actualización,
     // o creamos una nueva entidad ORM si es una nueva inserción.
     let ormEntity = await this.typeOrmRepository.findOne({
@@ -83,6 +86,18 @@ export class TypeOrmEstablishmentRepository implements EstablishmentRepository {
       savedOrmEntity.updatedAt,
       savedOrmEntity.deletedAt,
     );
+    } catch (error) {
+      if(error instanceof QueryFailedError){
+        const  pgError = error as any;
+        if(pgError.code === '23505'){
+          throw new EstablishmentAlreadyExistsException('Ya existe un establecimiento con ese nombre.');
+        }
+        if(pgError.code === '23503'){
+          throw new EstablishmentNotFoundException('Establecimeinto no encontrado.');
+        }
+      }
+      throw error;
+    }
   }
 
   /**

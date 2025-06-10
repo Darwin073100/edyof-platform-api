@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EstablishmentOrmEntity } from './infraestruture/persistence/typeorm/entities/establishment-orm-entity';
-import { EstablishmentController } from './presentation/http/controllers/educational-center.controller';
+import { EstablishmentController } from './presentation/http/controllers/establishment.controller';
 import {
   ESTABLISHMENT,
   EstablishmentRepository,
@@ -9,6 +9,8 @@ import {
 import { TypeOrmEstablishmentRepository } from './infraestruture/persistence/typeorm/repositories/typeorm-educational-center.repository';
 import { RegisterEstablishmentUseCase } from './application/use-cases/register-establishment.use-case';
 import { FindEstablishmentByIdUseCase } from './application/use-cases/find-establishment-by-id.use-case';
+import { ESTABLISHMENT_CHECKER_PORT } from './application/ports/out/establishment-checker.port';
+import { TypeOrmEstablishmentCheckerAdapter } from './infraestruture/persistence/typeorm/external-services/typeorm-establishment-checker.adapter';
 
 /**
  * EstablishmentModule es el módulo de NestJS que agrupa todos los componentes
@@ -54,6 +56,10 @@ import { FindEstablishmentByIdUseCase } from './application/use-cases/find-estab
       },
       inject: [ESTABLISHMENT], // Declara la dependencia para el factory
     },
+    {
+      provide: ESTABLISHMENT_CHECKER_PORT,
+      useClass: TypeOrmEstablishmentCheckerAdapter
+    },
 
     // --- Casos de Uso (Servicios de Aplicación) ---
     // NestJS es lo suficientemente inteligente para inyectar automáticamente
@@ -70,6 +76,7 @@ import { FindEstablishmentByIdUseCase } from './application/use-cases/find-estab
     // podrían necesitar. Por ejemplo, si otro módulo necesita usar RegisterEstablishmentUseCase.
     RegisterEstablishmentUseCase,
     FindEstablishmentByIdUseCase,
+    ESTABLISHMENT_CHECKER_PORT
   ],
 })
 export class EstablishmentModule {}

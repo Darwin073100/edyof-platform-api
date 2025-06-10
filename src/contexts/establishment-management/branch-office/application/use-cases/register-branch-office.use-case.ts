@@ -4,6 +4,8 @@ import { RegisterBranchOfficeDto } from "../dtos/register-branch-office.dto";
 import { Address } from "../../../../../shared/domain/value-objects/address.vo";
 import { BranchOfficeResponseDto } from "../dtos/branch-office-response.dto";
 import { BranchOffice } from "../../domain/entities/branch-office.entity";
+import { EstablishmentCheckerPort } from "src/contexts/establishment-management/establishment/application/ports/out/establishment-checker.port";
+import { EstablishmentNotFoundException } from "src/contexts/establishment-management/establishment/domain/exceptions/establishment-not-found.exception";
 
 /**
  * RegisterBranchOfficeUseCase es un Caso de Uso (Servicio de Aplicación)
@@ -15,9 +17,16 @@ import { BranchOffice } from "../../domain/entities/branch-office.entity";
 export class RegisterBranchOfficeUseCase {
   constructor(
     private readonly branchOfficeRepository: BranchOfficeRepository,
+    private readonly establishmentCheckerPort: EstablishmentCheckerPort
   ) {}
 
   async execute(request: RegisterBranchOfficeDto): Promise<BranchOffice> {
+    // 1. Verificar la existencia del Establishment
+    const establishmentExists = await this.establishmentCheckerPort.exists(request.establishmentId);
+    if (!establishmentExists) {
+      throw new EstablishmentNotFoundException('Ingresa un id de algun establecimiento existente.');
+    }
+
     const name = Name.create(request.name);
     const address = Address.create({
       street: request.address.street,

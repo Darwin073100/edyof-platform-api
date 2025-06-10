@@ -22,6 +22,7 @@ import { EstablishmentMapper } from '../../../application/mappers/educational-ce
 import { RegisterEstablishmentRequestDto } from '../dtos/register-educational-center-request.dto';
 import { ParamIdDto } from 'src/shared/presentation/http/dtos/param-id.dto';
 import { InvalidNameException } from '../../../domain/exceptions/invalid-name.exception';
+import { EstablishmentAlreadyExistsException } from '../../../domain/exceptions/establishment-already-exists.exception';
 
 /**
  * EducationalCenterController es el controlador de NestJS que maneja las solicitudes HTTP
@@ -75,9 +76,10 @@ export class EstablishmentController {
         throw new BadRequestException(error.message); // Mapea InvalidNameException a 400 Bad Request
       }
 
-      // Codigo de error que lanza typeorm cuando ya existe un establecimiento con el mismo nombre
-      if(error?.code === '23505')
-        throw new ConflictException('Ya existe un establecimiento con ese nombre.'); // Mapea errores de conflicto de la base de datos (ej. duplicados) a 409 Conflict
+      if(error instanceof EstablishmentAlreadyExistsException){
+        throw new ConflictException(error.message);
+      }
+
       // Otros tipos de errores de dominio si existieran
       // if (error instanceof AnotherDomainException) { /* ... */ }
       // Si es un error desconocido o no esperado, relanzarlo o lanzar un InternalServerErrorException
