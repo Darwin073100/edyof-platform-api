@@ -32,11 +32,16 @@ export class RegisterBranchOfficeRequestDto {
     @MinLength(1, { message: 'El numero interior debe tener como mínimo 1 dígito/caracter.' })
     @MaxLength(20, { message: 'El número interior no puede tener mas de 20 caracteres.' })
     internalNumber?: string | null; // Número Interior Opcional
-    @IsString({ message: 'El barrio/colonia debe ser una cadena de texto.' })
-    @IsNotEmpty({ message: 'El barrio/colonia no puede ir vacio.' })
-    @MinLength(3, { message: 'El barrio/colonia debe tener como mínimo 3 caracteres.' })
-    @MaxLength(100, { message: 'El barrio/colonia no puede tener mas de 100 caracteres.' })
-    district: string; // Barrio
+    @IsString({ message: 'El municipio debe ser una cadena de texto.' })
+    @IsNotEmpty({ message: 'El municipio no puede ir vacio.' })
+    @MinLength(3, { message: 'El municipio debe tener como mínimo 3 caracteres.' })
+    @MaxLength(100, { message: 'El municipio no puede tener mas de 100 caracteres.' })
+    municipality: string; // Municipio
+    @IsString({ message: 'El colonia debe ser una cadena de texto.' })
+    @IsNotEmpty({ message: 'El colonia no puede ir vacio.' })
+    @MinLength(3, { message: 'El colonia debe tener como mínimo 3 caracteres.' })
+    @MaxLength(100, { message: 'El colonia no puede tener mas de 100 caracteres.' })
+    neighborhood: string; // Municipio
     @IsString({ message: 'La ciudad debe ser una cadena de texto.' })
     @IsNotEmpty({ message: 'La ciudad no puede ir vacio.' })
     @MinLength(3, { message: 'La ciudad debe tener como mínimo 3 caracteres.' })

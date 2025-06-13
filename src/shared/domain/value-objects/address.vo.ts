@@ -2,15 +2,16 @@ import { ValueObject } from "src/shared/domain/value-objects/value-object";
 import { InvalidAddressException } from "../exceptions/invalid-address.exception";
 
 interface AddressProps {
-    street: string; // Calle
-    externalNumber: string; // Número exterior
-    internalNumber?: string | null; // Número Interior Opcional
-    district: string; // Barrio
-    city: string; // Ciudad
-    state: string; // Estado
-    postalCode: string; // Código Postal
-    country: string; // País
-    reference?: string|null; // Referencia
+    street: string; // Calle // Juan ruiz de alarcon
+    externalNumber: string; // Número exterior // 23
+    internalNumber?: string | null; // Número Interior Opcional //SN
+    neighborhood: string; // Colonia
+    municipality: string; // Municipio
+    city: string; // Ciudad //Ometepec
+    state: string; // Estado // Guerrero
+    postalCode: string; // Código Postal // 41700
+    country: string; // País // México
+    reference?: string|null; // Referencia // 
   }
   
   /**
@@ -35,8 +36,11 @@ interface AddressProps {
       return this.props.internalNumber;
     }
 
-    get district(): string {
-      return this.props.district;
+    get neighborhood(): string {
+      return this.props.neighborhood;
+    }
+    get municipality(): string {
+      return this.props.municipality;
     }
   
     get city(): string {
@@ -84,11 +88,17 @@ interface AddressProps {
         throw new InvalidAddressException('El número interior no puede tener mas de 20 caracteres.');
       }
   
-      if (!props.district || props.district.trim() === '') {
+      if (!props.neighborhood || props.neighborhood.trim() === '') {
         throw new InvalidAddressException('El barrio/colonia no puede ir vacio.');
       }
-      if (props.district.length > 100) {
+      if (props.neighborhood.length > 100) {
         throw new InvalidAddressException('El barrio/colonia no puede tener mas de 100 caracteres.');
+      }
+      if (!props.municipality || props.municipality.trim() === '') {
+        throw new InvalidAddressException('El municipio no puede ir vacio.');
+      }
+      if (props.municipality.length > 100) {
+        throw new InvalidAddressException('El municipio no puede tener mas de 100 caracteres.');
       }
   
       if (!props.city || props.city.trim() === '') {

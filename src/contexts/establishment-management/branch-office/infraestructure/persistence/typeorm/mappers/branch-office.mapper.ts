@@ -36,7 +36,8 @@ export class BranchOfficeMapper {
     addressOrmEntity.street = domainEntity.address.street;
     addressOrmEntity.externalNumber = domainEntity.address.externalNumber;
     addressOrmEntity.internalNumber = domainEntity.address.internalNumber;
-    addressOrmEntity.district = domainEntity.address.district;
+    addressOrmEntity.municipality = domainEntity.address.municipality;
+    addressOrmEntity.neighborhood = domainEntity.address.neighborhood;
     addressOrmEntity.city = domainEntity.address.city;
     addressOrmEntity.state = domainEntity.address.state;
     addressOrmEntity.postalCode = domainEntity.address.postalCode;
@@ -60,7 +61,8 @@ export class BranchOfficeMapper {
       street: ormEntity.address.street,
       externalNumber: ormEntity.address.externalNumber,
       internalNumber: ormEntity.address.internalNumber,
-      district: ormEntity.address.district,
+      municipality: ormEntity.address.municipality,
+      neighborhood: ormEntity.address.neighborhood,
       city: ormEntity.address.city,
       state: ormEntity.address.state,
       postalCode: ormEntity.address.postalCode,

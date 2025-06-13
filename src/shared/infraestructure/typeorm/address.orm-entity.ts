@@ -31,7 +31,10 @@ import {
     internalNumber?: string | null;
   
     @Column({ type: 'varchar', length: 100, nullable: false })
-    district: string;
+    municipality: string;
+    
+    @Column({ type: 'varchar', length: 100, nullable: false })
+    neighborhood: string;
   
     @Column({ type: 'varchar', length: 100, nullable: false })
     city: string;

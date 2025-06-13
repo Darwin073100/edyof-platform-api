@@ -12,7 +12,8 @@ export class BranchOfficeResponseDto {
     street: string;
     externalNumber: string;
     internalNumber?: string | null;
-    district: string;
+    municipality: string;
+    neighborhood: string;
     city: string;
     state: string;
     postalCode: string;
@@ -30,7 +31,8 @@ export class BranchOfficeResponseDto {
       street: string;
       externalNumber: string;
       internalNumber?: string | null;
-      district: string;
+      municipality: string;
+      neighborhood: string;
       city: string;
       state: string;
       postalCode: string;
