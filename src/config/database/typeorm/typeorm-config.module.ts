@@ -7,6 +7,7 @@ import { AddressOrmEntity } from 'src/shared/infraestructure/typeorm/address.orm
 import { CategoryOrmEntity } from 'src/contexts/product-management/category/infraestructure/persistence/typeorm/entities/category.orm-entity';
 import { BrandOrmEntity } from 'src/contexts/product-management/brand/infraestruture/persistence/typeorm/entities/brand-orm-entity';
 import { SeasonOrmEntity } from 'src/contexts/product-management/season/infraestructure/persistence/typeorm/entities/season.orm-entity';
+import { UserOrmEntity } from 'src/contexts/authentication-management/auth/infraestructure/entities/user.orm-entity';
 
 @Module({
     imports: [
@@ -27,7 +28,8 @@ import { SeasonOrmEntity } from 'src/contexts/product-management/season/infraest
             AddressOrmEntity,
             CategoryOrmEntity,
             BrandOrmEntity,
-            SeasonOrmEntity
+            SeasonOrmEntity,
+            UserOrmEntity,
           ],
           synchronize: false,
           ...(isProduction && {
