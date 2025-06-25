@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { UserRoleOrmEntity } from "./user-role.orm-entity";
 
 @Entity({name: 'user'})
 export class UserOrmEntity{
@@ -31,5 +32,8 @@ export class UserOrmEntity{
 
     @DeleteDateColumn({ type: 'timestamp with time zone', nullable: true, name: 'deleted_at' })
     deletedAt?: Date | null;
+
+    @OneToMany(()=> UserRoleOrmEntity, (userRole)=> userRole.user)
+    userRoles?: UserRoleOrmEntity[];
 
 }

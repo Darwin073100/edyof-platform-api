@@ -27,7 +27,7 @@ export class TypeOrmBranchOfficeRepository implements BranchOfficeRepository {
     console.log(isEstablishment);
     
     if(!isEstablishment){
-      throw new NotFoundException('Debe ser un id de un extablecimeinto existente.');
+      throw new NotFoundException('Debe ser un id de un establecimeinto existente.');
     }
 
     let addressOrmEntity: AddressOrmEntity | null = null;

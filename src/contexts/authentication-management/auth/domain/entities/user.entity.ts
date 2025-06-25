@@ -1,6 +1,6 @@
 // src/contexts/authentication/domain/models/user.model.ts
 // Este es un 'Agregado Raíz' (Aggregate Root) y una 'Entidad' de Dominio.
-
+import { UserRoleEntity } from './user-role.entity';
 import { DomainEvent } from 'src/shared/domain/events/domain-events';
 import { UserUsernameVO } from '../value-objects/user.username.vo';
 import { UserEmailVO } from '../value-objects/user.email.vo';
@@ -10,12 +10,14 @@ export class UserEntity {
   // Un error común es no tener un tipo explícito para los IDs,
   // especialmente cuando la base de datos usa `bigint`.
   private readonly _userId: bigint;
+  private readonly _roleId: bigint;
   private _employeeId: bigint;
   private _username: UserUsernameVO;
   private _email: UserEmailVO;
   private _passwordHash: UserPasswordHashVO; // El hash de la contraseña, no la contraseña en texto plano
   private _isActive: boolean;
   private _lastLogin?: Date | null;
+  private _userRoles?: UserRoleEntity[] | [];
   private _createdAt: Date;
   private _updatedAt?: Date | null;
   private _deletedAt?: Date | null;
@@ -23,6 +25,7 @@ export class UserEntity {
 
   private constructor(
     userId: bigint,
+    roleId: bigint,
     employeeId: bigint,
     username: UserUsernameVO,
     email: UserEmailVO,
@@ -30,10 +33,12 @@ export class UserEntity {
     isActive: boolean = true,
     lastLogin?: Date | null,
     createdAt: Date = new Date(),
+    userRoles?: UserRoleEntity[] | [],
     updatedAt?: Date | null,
     deletedAt?: Date | null,
   ) {
     this._userId = userId;
+    this._roleId = roleId;
     this._employeeId = employeeId;
     this._username = username;
     this._email = email;
@@ -41,12 +46,14 @@ export class UserEntity {
     this._isActive = isActive;
     this._createdAt = createdAt;
     this._lastLogin = lastLogin;
+    this._userRoles = userRoles;
     this._updatedAt = updatedAt;
     this._deletedAt = deletedAt;
   }
 
   static create(
     userId: bigint,
+    roleId:bigint,
     employeeId: bigint,
     username: UserUsernameVO,
     email: UserEmailVO,
@@ -54,6 +61,7 @@ export class UserEntity {
   ) {
     const user = new UserEntity(
       userId,
+      roleId,
       employeeId,
       username,
       email,
@@ -61,6 +69,7 @@ export class UserEntity {
       true,
       null,
       new Date(),
+      [],
       null,
       null,
     );
@@ -70,6 +79,7 @@ export class UserEntity {
 
   static reconstitute(
     userId: bigint,
+    roleId: bigint,
     employeeId: bigint,
     username: UserUsernameVO,
     email: UserEmailVO,
@@ -77,11 +87,13 @@ export class UserEntity {
     isActive: boolean = true,
     lastLogin?: Date | null,
     createdAt: Date = new Date(),
+    userRoles?: UserRoleEntity[] | [],
     updatedAt?: Date | null,
     deletedAt?: Date | null,
   ) {
     const user = new UserEntity(
       userId,
+      roleId,
       employeeId,
       username,
       email,
@@ -89,6 +101,7 @@ export class UserEntity {
       isActive,
       lastLogin,
       createdAt,
+      userRoles,
       updatedAt,
       deletedAt,
     );
@@ -96,8 +109,8 @@ export class UserEntity {
     return user;
   }
 
-  get userId(): bigint {
-    return this._userId;
+  get userRoles(): UserRoleEntity[] | [] | undefined {
+    return this._userRoles;
   }
 
   get employeeId(): bigint{
