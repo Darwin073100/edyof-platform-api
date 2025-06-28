@@ -22,5 +22,5 @@ export class RoleOrmEntity{
     deletedAt: Date | null;
 
     @OneToMany(()=> UserRoleOrmEntity, (userRole)=>userRole.role)
-    userRoles: UserRoleOrmEntity[]
+    userRoles?: UserRoleOrmEntity[] | [];
 }

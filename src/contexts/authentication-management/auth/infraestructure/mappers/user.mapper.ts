@@ -3,9 +3,12 @@ import { UserEmailVO } from "../../domain/value-objects/user.email.vo";
 import { UserPasswordHashVO } from "../../domain/value-objects/user.password-hash.vo";
 import { UserUsernameVO } from "../../domain/value-objects/user.username.vo";
 import { UserOrmEntity } from "../entities/user.orm-entity";
+import { UserRoleMapper } from "./user-role.mapper";
 
 export class UserMapper{
     static toOrmEntity(domainEntity: UserEntity):UserOrmEntity {
+        const userRoles = domainEntity?.userRoles?.map(item => UserRoleMapper.toOrmEntity(item));
+
         const ormEntity: UserOrmEntity = {
             userId: domainEntity.userId,
             employeeId: domainEntity.employeeId,
@@ -14,6 +17,7 @@ export class UserMapper{
             passwordHash: domainEntity.passwordHash.value,
             isActive: domainEntity.isActive,
             lastLogin: domainEntity.lastLogin,
+            userRoles: userRoles && [],
             createdAt: domainEntity.createdAt,
             updatedAt: domainEntity.updatedAt,
             deletedAt: domainEntity.deletedAt
@@ -22,6 +26,9 @@ export class UserMapper{
     }
 
     static toDomain(ormEntity: UserOrmEntity):UserEntity{
+
+        const userRoles = ormEntity?.userRoles?.map(item => UserRoleMapper.toDomain(item));
+        
         const domainEntity = UserEntity.reconstitute(
             ormEntity.userId,
             ormEntity.employeeId,
@@ -31,6 +38,7 @@ export class UserMapper{
             ormEntity.isActive,
             ormEntity.lastLogin,
             ormEntity.createdAt,
+            userRoles && [],
             ormEntity.updatedAt,
             ormEntity.deletedAt
         );

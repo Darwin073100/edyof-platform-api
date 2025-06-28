@@ -1,6 +1,6 @@
 import { RoleOrmEntity } from '../entities/role.orm-entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CategoryMapper } from '../mappers/role.mapper';
+import { RoleMapper } from '../mappers/role.mapper';
 import { RoleRepository } from 'src/contexts/authentication-management/role/domain/repositories/role.repository';
 import { QueryFailedError, Repository } from 'typeorm';
 import { RoleEntity } from 'src/contexts/authentication-management/role/domain/entities/role-entity';
@@ -21,7 +21,7 @@ export class TypeormRoleRepository implements RoleRepository {
     if (!ormEntity) {
       return null;
     }
-    return CategoryMapper.toDomainEntity(ormEntity);
+    return RoleMapper.toDomainEntity(ormEntity);
   }
   async findById(roleId: bigint): Promise<RoleEntity | null> {
     const ormEntity = await this.typeormRepository.findOne({
@@ -30,7 +30,7 @@ export class TypeormRoleRepository implements RoleRepository {
     if (!ormEntity) {
       return null;
     }
-    return CategoryMapper.toDomainEntity(ormEntity);
+    return RoleMapper.toDomainEntity(ormEntity);
   }
 
   findAll(): Promise<RoleEntity[]> {
@@ -49,12 +49,12 @@ export class TypeormRoleRepository implements RoleRepository {
         ormEntity.updatedAt = entity.updatedAt;
         ormEntity.deletedAt = entity.deletedAt;
       } else {
-        ormEntity = CategoryMapper.toTypeOrmEntity(entity);
+        ormEntity = RoleMapper.toTypeOrmEntity(entity);
       }
 
       const savedOrmEntity = await this.typeormRepository.save(ormEntity);
 
-      return CategoryMapper.toDomainEntity(savedOrmEntity);
+      return RoleMapper.toDomainEntity(savedOrmEntity);
     } catch (error) {
         if(error instanceof QueryFailedError){
             const pgError = error as any;

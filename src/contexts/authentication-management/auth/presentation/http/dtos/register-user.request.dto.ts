@@ -4,6 +4,11 @@ export class RegisterUserRequestDTO {
     @IsNumberString()
     @IsNotEmpty({message: 'El id del establecimeinto no puede estar vacío.'})
     employeeId: bigint;
+
+    @IsNumberString()
+    @IsNotEmpty({message: 'El id del rol no puede estar vacío.'})
+    roleId: bigint;
+
     @IsEmail({},{message: 'El correo electrónico debe ser una dirección de correo válida.',},)
     @IsNotEmpty({ message: 'El correo electrónico es obligatorio.' })
     @IsString({ message: 'El correo electrónico debe ser una cadena de texto.' })

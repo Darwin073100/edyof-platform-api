@@ -17,7 +17,6 @@ export class TyperomUserRepository implements UserRepository{
         try {
             const isValidUsername = await this.findByUsername(entity.username.value);
             if(isValidUsername){
-                console.log('Nombre de usuario no encontrado');
                 throw new UserAlreadyExistsException('El nombre de usuario ya existe.');
             }
 

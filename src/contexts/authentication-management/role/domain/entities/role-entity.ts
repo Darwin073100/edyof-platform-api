@@ -2,6 +2,7 @@ import { DomainEvent } from 'src/shared/domain/events/domain-events';
 import { RoleNameVO } from '../value-objects/role-name.vo';
 import { RoleDescriptionVO } from '../value-objects/role-description.vo';
 import { RoleCreatedEvent } from '../events/role-created.event';
+import { UserRoleEntity } from 'src/contexts/authentication-management/auth/domain/entities/user-role.entity';
 
 export class RoleEntity {
   private readonly _roleId: bigint;
@@ -10,6 +11,7 @@ export class RoleEntity {
   private readonly _createdAt: Date;
   private _updatedAt: Date | null;
   private _deletedAt: Date | null;
+  private _userRoles?: UserRoleEntity[]|[];
   private _domainEvents: DomainEvent<RoleEntity>[] = [];
 
   private constructor(
@@ -19,6 +21,7 @@ export class RoleEntity {
     updatedAt: Date | null,
     deletedAt: Date | null,
     description?: RoleDescriptionVO | null,
+    userRoles?: UserRoleEntity[]|[],
   ) {
     this._roleId = roleId;
     this._name = name;
@@ -26,6 +29,7 @@ export class RoleEntity {
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
     this._deletedAt = deletedAt;
+    this._userRoles = userRoles;
   }
 
   /**
@@ -50,6 +54,7 @@ export class RoleEntity {
       null,
       null,
       description,
+      [],
     );
     role.recordEvent(new RoleCreatedEvent(role));
     return role;
@@ -62,6 +67,7 @@ export class RoleEntity {
     updatedAt: Date | null,
     deletedAt: Date | null,
     description?: RoleDescriptionVO | null,
+    userRoles?: UserRoleEntity[]|[],
   ): RoleEntity {
     return new RoleEntity(
       roleId,
@@ -70,6 +76,7 @@ export class RoleEntity {
       updatedAt,
       deletedAt,
       description,
+      userRoles,
     );
   }
 
@@ -86,6 +93,10 @@ export class RoleEntity {
     return this._description;
   }
 
+  get userRoles():UserRoleEntity[]|[]|undefined{
+    return this._userRoles
+  }
+  
   get createdAt(): Date {
     return this._createdAt;
   }

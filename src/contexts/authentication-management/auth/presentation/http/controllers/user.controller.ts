@@ -1,4 +1,4 @@
-import { BadRequestException, Body, ConflictException, Controller, HttpCode, HttpStatus, Post } from "@nestjs/common";
+import { BadRequestException, Body, ConflictException, Controller, HttpCode, HttpStatus, NotFoundException, Post } from "@nestjs/common";
 import { RegisterUserUseCase } from "../../../application/use-cases/register-user.use-case";
 import { RegisterUserRequestDTO } from "../dtos/register-user.request.dto";
 import { RegisterUserDTO } from "../../../application/dtos/register-user.dto";
@@ -6,6 +6,7 @@ import { UserMapper } from "../../../application/mapper/user.mapper";
 import { UserResponseDTO } from "../../../application/dtos/user-response.dto";
 import { InvalidUserException } from "../../../domain/exceptions/invalid-user.exception";
 import { UserAlreadyExistsException } from "../../../domain/exceptions/user-already-exists.exception";
+import { NotFoundRoleException } from "src/contexts/authentication-management/role/domain/exceptions/not-found-role.exception";
 
 @Controller('users')
 export class UserController{
@@ -17,7 +18,7 @@ export class UserController{
     @HttpCode(HttpStatus.CREATED)
     async registerUser(@Body() registerUser:RegisterUserRequestDTO):Promise<UserResponseDTO>{
         try{
-            const userDto = new RegisterUserDTO(registerUser.employeeId,registerUser.username, registerUser.email,registerUser.password);
+            const userDto = new RegisterUserDTO(registerUser.employeeId, registerUser.roleId,registerUser.username, registerUser.email,registerUser.password);
             
             const user = await this.registerUserUseCase.excecute(userDto);
             
@@ -29,6 +30,10 @@ export class UserController{
 
             if(error instanceof UserAlreadyExistsException){
                 throw new ConflictException(error.message); 
+            }
+
+            if(error instanceof NotFoundRoleException){
+                throw new NotFoundException(error.message);
             }
             throw error;
         }

@@ -10,7 +10,6 @@ export class UserEntity {
   // Un error común es no tener un tipo explícito para los IDs,
   // especialmente cuando la base de datos usa `bigint`.
   private readonly _userId: bigint;
-  private readonly _roleId: bigint;
   private _employeeId: bigint;
   private _username: UserUsernameVO;
   private _email: UserEmailVO;
@@ -25,7 +24,6 @@ export class UserEntity {
 
   private constructor(
     userId: bigint,
-    roleId: bigint,
     employeeId: bigint,
     username: UserUsernameVO,
     email: UserEmailVO,
@@ -38,7 +36,6 @@ export class UserEntity {
     deletedAt?: Date | null,
   ) {
     this._userId = userId;
-    this._roleId = roleId;
     this._employeeId = employeeId;
     this._username = username;
     this._email = email;
@@ -53,7 +50,6 @@ export class UserEntity {
 
   static create(
     userId: bigint,
-    roleId:bigint,
     employeeId: bigint,
     username: UserUsernameVO,
     email: UserEmailVO,
@@ -61,7 +57,6 @@ export class UserEntity {
   ) {
     const user = new UserEntity(
       userId,
-      roleId,
       employeeId,
       username,
       email,
@@ -79,7 +74,6 @@ export class UserEntity {
 
   static reconstitute(
     userId: bigint,
-    roleId: bigint,
     employeeId: bigint,
     username: UserUsernameVO,
     email: UserEmailVO,
@@ -93,7 +87,6 @@ export class UserEntity {
   ) {
     const user = new UserEntity(
       userId,
-      roleId,
       employeeId,
       username,
       email,
@@ -107,6 +100,10 @@ export class UserEntity {
     );
 
     return user;
+  }
+
+  get userId():bigint{
+    return this._userId;
   }
 
   get userRoles(): UserRoleEntity[] | [] | undefined {

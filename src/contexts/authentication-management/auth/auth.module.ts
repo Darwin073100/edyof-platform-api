@@ -14,9 +14,14 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { TyperomUserRepository } from "./infraestructure/repositories/typeorm-user.repository";
 import { RegisterUserUseCase } from "./application/use-cases/register-user.use-case";
 import { UserController } from "./presentation/http/controllers/user.controller";
+import { USER_ROLE_REPOSITORY, UserRoleRepository } from "./domain/repositories/user-role.repository";
+import { TypeormUserRoleRepository } from "./infraestructure/repositories/typeorm-user-role.repository";
+import { RoleModule } from "../role/role.module";
+import { ROLE_CHECKER_PORT, RoleCheckerPort } from "../role/domain/ports/out/role-checker.port";
 
 @Module({
     imports: [
+        RoleModule,
         TypeOrmModule.forFeature([UserOrmEntity]),
         PassportModule,
         JwtModule.register({
@@ -30,15 +35,19 @@ import { UserController } from "./presentation/http/controllers/user.controller"
             useClass: TyperomUserRepository
         },
         {
+            provide: USER_ROLE_REPOSITORY,
+            useClass: TypeormUserRoleRepository
+        },
+        {
             provide: ENCRYPTION_REPOSITORY,
             useClass: BcryptEncryptionRepository
         },
         {
             provide: RegisterUserUseCase,
-            useFactory: (repo: UserRepository, encrypt: EncryptionRepository)=>{
-                return new RegisterUserUseCase(repo, encrypt)
+            useFactory: (roleCheckerPort: RoleCheckerPort, userRoleRepo: UserRoleRepository, encrypt: EncryptionRepository)=>{
+                return new RegisterUserUseCase(roleCheckerPort, userRoleRepo, encrypt)
             },
-            inject: [USER_REPOSITORY, ENCRYPTION_REPOSITORY]
+            inject: [ROLE_CHECKER_PORT, USER_ROLE_REPOSITORY, ENCRYPTION_REPOSITORY]
         },
         {
             provide: ValidateAuthUseCase,

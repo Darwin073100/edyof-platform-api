@@ -36,18 +36,18 @@ export class UserRoleEntity {
 
   static create(
         userRoleId: bigint,
-        userId: bigint,
         roleId:bigint,
+        userEntity: UserEntity,
   ) {
     const user = new UserRoleEntity(
-        userRoleId,
-        userId,
-        roleId,
-        new Date(),
-        null,
-        null,
-        null,
-        null,
+      userEntity.userId,
+      roleId,
+      userRoleId,
+      new Date(),
+      userEntity,
+      null,
+      null,
+      null,
     );
 
     return user;

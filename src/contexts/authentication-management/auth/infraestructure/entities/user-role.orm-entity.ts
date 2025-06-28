@@ -29,9 +29,9 @@ export class UserRoleOrmEntity{
         eager: true, // Carga el UserRole automáticamente.
         onDelete: 'CASCADE', // Elimina el UserRole si se elimina el User.
     })
-    user: UserOrmEntity;
+    user?: UserOrmEntity | null;
 
     @JoinColumn({name: 'role_id'})
     @ManyToOne(()=>RoleOrmEntity, (role)=> role.userRoles)
-    role: RoleOrmEntity;
+    role?: RoleOrmEntity | null;
 }
