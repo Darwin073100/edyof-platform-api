@@ -5,14 +5,16 @@ import {
   Controller,
   HttpCode,
   HttpStatus,
+  NotFoundException,
   Post,
 } from '@nestjs/common';
 import { RegisterRoleUseCase } from '../../application/use-cases/register-role.use-case';
 import { RegisterRoleDto } from '../../application/dtos/register-role.dto';
 import { RegisterRoleRequestDto } from '../dtos/register-role-request.dto';
-import { RoleMapper } from '../../application/mappers/role-mapper';
 import { InvalidRoleException } from '../../domain/exceptions/invalid-role.exception';
 import { RoleAlreadyExistException } from '../../domain/exceptions/role-already.exception';
+import { RolePermissionMapper } from '../../application/mappers/role-permission.mapper';
+import { NotFoundRoleException } from '../../domain/exceptions/not-found-role.exception';
 
 @Controller('roles')
 export class RoleController {
@@ -26,12 +28,13 @@ export class RoleController {
   ) {
     try {
       const registerAppDto = new RegisterRoleDto(
+        registerRequestDto.permissionId,
         registerRequestDto.name,
         registerRequestDto.description,
       );
 
-      const category = await this.registerRoleUseCase.execute(registerAppDto);
-      return RoleMapper.toResponseDto(category);
+      const rolePermission = await this.registerRoleUseCase.execute(registerAppDto);
+      return RolePermissionMapper.toResponseDto(rolePermission);
     } catch (error) {
       // *** TRADUCCIÓN DE EXCEPCIONES DE DOMINIO A EXCEPCIONES HTTP DE NESTJS ***
       if (error instanceof InvalidRoleException) {
@@ -40,6 +43,10 @@ export class RoleController {
 
       if (error instanceof RoleAlreadyExistException) {
         throw new ConflictException(error.message);
+      }
+
+      if(error instanceof NotFoundRoleException){
+        throw new NotFoundException(error.message);
       }
 
       // Codigo de error que lanza typeorm cuando ya existe un centro educativo con el mismo nombre

@@ -12,7 +12,7 @@ import { RegisterPermissionDto } from '../../application/dtos/register-permissio
 import { RegisterPermissionRequestDto } from '../dtos/register-permission-request.dto';
 import { PermissionMapper } from '../../application/mappers/permission-mapper';
 import { InvalidPermissionException } from '../../domain/exceptions/invalid-permission.exception';
-import { PermissionAlreadyExistException } from '../../domain/exceptions/permission-already.exception';
+import { PermissionAlreadyExistsException } from '../../domain/exceptions/permission-already-exists.exception';
 
 @Controller('permissions')
 export class PermissionController {
@@ -33,12 +33,13 @@ export class PermissionController {
       const permission = await this.registerPermissionUseCase.execute(registerAppDto);
       return PermissionMapper.toResponseDto(permission);
     } catch (error) {
+      
       // *** TRADUCCIÓN DE EXCEPCIONES DE DOMINIO A EXCEPCIONES HTTP DE NESTJS ***
       if (error instanceof InvalidPermissionException) {
         throw new BadRequestException(error.message); // Mapea InvalidNameException a 400 Bad Request
       }
 
-      if (error instanceof PermissionAlreadyExistException) {
+      if (error instanceof PermissionAlreadyExistsException) {
         throw new ConflictException(error.message);
       }
 

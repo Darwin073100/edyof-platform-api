@@ -1,4 +1,4 @@
-import { UserRoleOrmEntity } from "src/contexts/authentication-management/auth/infraestructure/entities/user-role.orm-entity";
+import { RolePermissionOrmEntity } from "src/contexts/authentication-management/role/infraestructure/persistence/typeorm/entities/role-permission.orm-entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({name: 'permission'})
@@ -6,7 +6,7 @@ export class PermissionOrmEntity{
     @PrimaryGeneratedColumn('increment', { type: 'bigint', name: 'permission_id' })
     permissionId: bigint; // Usamos bigint para corresponder con bigserial de PostgreSQL
 
-    @Column({ type: 'varchar', length: 50, unique: true, nullable: false })
+    @Column({ type: 'varchar', length: 100, unique: true, nullable: false })
     name: string;
 
     @Column({name: 'description', type: 'text', nullable: true})
@@ -21,6 +21,6 @@ export class PermissionOrmEntity{
     @DeleteDateColumn({ type: 'timestamp with time zone', name: 'deleted_at', nullable: true })
     deletedAt: Date | null;
 
-    @OneToMany(()=> UserRoleOrmEntity, (rolePermission)=>rolePermission.role)
-    rolePermissions?: UserRoleOrmEntity[] | [];
+    @OneToMany(()=> RolePermissionOrmEntity, (rolePermission)=>rolePermission.role)
+    rolePermissions?: RolePermissionOrmEntity[] | [];
 }

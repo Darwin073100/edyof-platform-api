@@ -1,5 +1,6 @@
 import { UserRoleOrmEntity } from "src/contexts/authentication-management/auth/infraestructure/entities/user-role.orm-entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { RolePermissionOrmEntity } from "./role-permission.orm-entity";
 
 @Entity({name: 'role'})
 export class RoleOrmEntity{
@@ -23,4 +24,7 @@ export class RoleOrmEntity{
 
     @OneToMany(()=> UserRoleOrmEntity, (userRole)=>userRole.role)
     userRoles?: UserRoleOrmEntity[] | [];
+    
+    @OneToMany(()=> RolePermissionOrmEntity, (rolePermission)=>rolePermission.role)
+    rolePermissions?: RolePermissionOrmEntity[] | [];
 }

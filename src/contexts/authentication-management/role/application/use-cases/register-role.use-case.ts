@@ -1,8 +1,12 @@
+import { PermissionCheckerPort } from "src/contexts/authentication-management/permission/domain/ports/out/permission-checker.port";
 import { RoleEntity } from "../../domain/entities/role-entity";
+import { RolePermissionEntity } from "../../domain/entities/role-permission.entity";
+import { RolePermissionRepository } from "../../domain/repositories/role-permission.repositoy";
 import { RoleRepository } from "../../domain/repositories/role.repository";
 import { RoleDescriptionVO } from "../../domain/value-objects/role-description.vo";
 import { RoleNameVO } from "../../domain/value-objects/role-name.vo";
 import { RegisterRoleDto } from "../dtos/register-role.dto";
+import { NotFoundPermissionException } from "src/contexts/authentication-management/permission/domain/exceptions/not-found-permission.exception";
 
 /**
  * RegisterCategoryUseCase es un Caso de Uso (o Servicio de Aplicación).
@@ -13,7 +17,8 @@ export class RegisterRoleUseCase {
   constructor(
     // Inyectamos la interfaz del repositorio, no una implementación concreta.
     // Esto es Inversión de Dependencias.
-    private readonly roleRepository: RoleRepository,
+    private readonly rolePermissionRepository : RolePermissionRepository,
+    private readonly permissionCheckerPort    : PermissionCheckerPort,
   ) {}
 
   /**
@@ -23,40 +28,23 @@ export class RegisterRoleUseCase {
    * @returns Una Promesa que se resuelve con la entidad Category creada.
    * @throws Error si el nombre no es válido (validación del Value Object Name).
    */
-  public async execute(command: RegisterRoleDto): Promise<RoleEntity> {
-    // 1. Validar la entrada a nivel de la aplicación (si hubiera reglas que no sean de dominio puro).
-    // En este caso, la validación del nombre se delega al Value Object Name.
+  public async execute(command: RegisterRoleDto): Promise<RolePermissionEntity> {
 
-    // 2. Crear objetos de dominio (utilizando Value Objects y entidades).
-    // Delegamos la validación del formato/contenido del nombre al Value Object Name.
-    const name = RoleNameVO.create(command.name);
-    const description = RoleDescriptionVO.create(command.description);
+    const permissionExist                     = await this.permissionCheckerPort.check(command.permissionId);
 
-    // Generamos un nuevo ID para el centro educativo.
-    // En un escenario real, esto podría ser un UUID, un ID de secuencia de base de datos
-    // o un ID generado por un servicio de infraestructura.
-    // Por simplicidad y para mantener la independencia, lo simulamos aquí.
-    const newRoleId = BigInt(Date.now()); // Simulación de ID
+    if(!permissionExist){
+      throw new NotFoundPermissionException('El permiso asignado a este rol no existe.');
+    }
 
-    // La entidad de dominio se crea con sus invariantes protegidas.
-    const newRole = RoleEntity.create(newRoleId, name,description);
-
-    // 3. Persistir el agregado de dominio a través del repositorio (Puerto de Salida).
-    const savedEntity = await this.roleRepository.save(newRole);
-
-    // 4. Despachar eventos de dominio (si hay alguno registrado por el agregado).
-    // Esta es la parte donde los eventos registrados por la entidad en su método `recordEvent`
-    // son ahora recuperados y "publicados" al sistema.
-    const domainEvents = newRole.getAndClearEvents();
-    // const domainEvents = savedEntity.getAndClearEvents();
-    // En un sistema real con NestJS CQRS, usaríamos un EventBus aquí.
-    // Por ejemplo:
-    // for (const event of domainEvents) {
-    //   this.eventBus.publish(event); // Se inyectaría EventBus en el constructor
-    // }
-    // Por ahora, solo lo imprimimos para demostrar que los eventos se registran.
-    console.log(`[${this.constructor.name}] Domain Events Recorded:`, domainEvents);
-
+    const name                                = RoleNameVO.create(command.name);
+    const description                         = RoleDescriptionVO.create(command.description);
+    const roleId                              = BigInt(Date.now());
+    const newRole                             = RoleEntity.create(roleId, name,description);
+    const rolePermissionId                    = BigInt(Date.now());
+    const newRoleWhitPermission               = RolePermissionEntity.create(rolePermissionId,command.permissionId, newRole);
+    const savedEntity                         = await this.rolePermissionRepository.save(newRoleWhitPermission);
+    const domainEvents                        = newRole.getAndClearEvents();
+    console.log(savedEntity);
 
     // 5. Retornar el resultado.
     return savedEntity;

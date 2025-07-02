@@ -9,6 +9,8 @@ import { SeasonOrmEntity } from 'src/contexts/product-management/season/infraest
 import { UserOrmEntity } from 'src/contexts/authentication-management/auth/infraestructure/entities/user.orm-entity';
 import { RoleOrmEntity } from 'src/contexts/authentication-management/role/infraestructure/persistence/typeorm/entities/role.orm-entity';
 import { UserRoleOrmEntity } from 'src/contexts/authentication-management/auth/infraestructure/entities/user-role.orm-entity';
+import { PermissionOrmEntity } from 'src/contexts/authentication-management/permission/infraestructure/persistence/typeorm/entities/permission.orm-entity';
+import { RolePermissionOrmEntity } from 'src/contexts/authentication-management/role/infraestructure/persistence/typeorm/entities/role-permission.orm-entity';
 
 config();
 
@@ -25,7 +27,9 @@ const AppDataSource = new DataSource({
     SeasonOrmEntity,
     UserOrmEntity,
     RoleOrmEntity,
-    UserRoleOrmEntity
+    UserRoleOrmEntity,
+    PermissionOrmEntity,
+    RolePermissionOrmEntity,
   ],
   migrations: [`${__dirname}/migrations/*.{ts,js}`],
   synchronize: false,

@@ -3,6 +3,7 @@ import { PermissionNameVO } from '../value-objects/permission-name.vo';
 import { PermissionDescriptionVO } from '../value-objects/permission-description.vo';
 import { PermissionCreatedEvent } from '../events/permission-created.event';
 import { UserRoleEntity } from 'src/contexts/authentication-management/auth/domain/entities/user-role.entity';
+import { RolePermissionEntity } from 'src/contexts/authentication-management/role/domain/entities/role-permission.entity';
 
 export class PermissionEntity {
   private readonly _permissionId: bigint;
@@ -11,7 +12,7 @@ export class PermissionEntity {
   private readonly _createdAt: Date;
   private _updatedAt: Date | null;
   private _deletedAt: Date | null;
-  private _rolePermissions?: UserRoleEntity[]|[];
+  private _rolePermissions?: RolePermissionEntity[]|[];
   private _domainEvents: DomainEvent<PermissionEntity>[] = [];
 
   private constructor(
@@ -21,7 +22,7 @@ export class PermissionEntity {
     updatedAt: Date | null,
     deletedAt: Date | null,
     description?: PermissionDescriptionVO | null,
-    rolePermissions?: UserRoleEntity[]|[],
+    rolePermissions?: RolePermissionEntity[]|[],
   ) {
     this._permissionId = permissionId;
     this._name = name;
@@ -67,7 +68,7 @@ export class PermissionEntity {
     updatedAt: Date | null,
     deletedAt: Date | null,
     description?: PermissionDescriptionVO | null,
-    rolePermissions?: UserRoleEntity[]|[],
+    rolePermissions?: RolePermissionEntity[]|[],
   ): PermissionEntity {
     return new PermissionEntity(
       permissionId,
@@ -93,7 +94,7 @@ export class PermissionEntity {
     return this._description;
   }
 
-  get rolePermissions():UserRoleEntity[]|[]|undefined{
+  get rolePermissions():RolePermissionEntity[]|[]|undefined{
     return this._rolePermissions
   }
   
