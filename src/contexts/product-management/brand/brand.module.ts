@@ -5,10 +5,10 @@ import {
   BRAND_REPOSITORY,
   BrandRepository,
 } from './domain/repositories/brand.repository';
-import { TypeOrmBrandRepository } from './infraestruture/persistence/typeorm/repositories/typeorm-educational-center.repository';
+import { TypeOrmBrandRepository } from './infraestruture/persistence/typeorm/repositories/typeorm-brand.repository';
 import { RegisterBrandUseCase } from './application/use-cases/register-brand.use-case';
 import { FindBrandByIdUseCase } from './application/use-cases/find-brand-by-id.use-case';
-import { BrandController } from './presentation/http/controllers/educational-center.controller';
+import { BrandController } from './presentation/http/controllers/brand.controller';
 
 /**
  * EstablishmentModule es el módulo de NestJS que agrupa todos los componentes

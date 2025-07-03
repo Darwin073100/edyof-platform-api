@@ -4,6 +4,7 @@ import { RegisterCategoryDto } from "../../application/dtos/register-category.dt
 import { RegisterCategoryRequestDto } from "../dtos/register-category-request.dto";
 import { CategoryMapper } from "../../application/mappers/category-mapper";
 import { InvalidCategoryException } from "../../domain/exceptions/invalid-category.exception";
+import { CategoryAlreadyExistsException } from "../../domain/exceptions/category-already-exists.exception";
 
 @Controller('categories')
 export class CategoryController{
@@ -31,11 +32,9 @@ export class CategoryController{
         throw new BadRequestException(error.message); // Mapea InvalidNameException a 400 Bad Request
       }
 
-      // Codigo de error que lanza typeorm cuando ya existe un centro educativo con el mismo nombre
-      if(error?.code === '23505')
-        throw new ConflictException('Ya existe una categoria con ese nombre.'); // Mapea errores de conflicto de la base de datos (ej. duplicados) a 409 Conflict
-      // Otros tipos de errores de dominio si existieran
-      // if (error instanceof AnotherDomainException) { /* ... */ }
+      if( error instanceof CategoryAlreadyExistsException){
+        throw new ConflictException(error.message);
+      }
       // Si es un error desconocido o no esperado, relanzarlo o lanzar un InternalServerErrorException
       throw error; // Deja que el filtro global de excepciones lo maneje como 500
         }

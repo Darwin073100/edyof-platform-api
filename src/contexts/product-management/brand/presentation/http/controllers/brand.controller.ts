@@ -22,6 +22,7 @@ import { BrandMapper } from '../../../application/mappers/educational-center.map
 import { RegisterBrandRequestDto } from '../dtos/register-brand-request.dto';
 import { ParamIdDto } from 'src/shared/presentation/http/dtos/param-id.dto';
 import { InvalidBrandException } from '../../../domain/exceptions/invalid-brand.exception';
+import { BrandAlreadyExistsException } from '../../../domain/exceptions/brand-already-exists.exception';
 
 /**
  * EducationalCenterController es el controlador de NestJS que maneja las solicitudes HTTP
@@ -65,21 +66,19 @@ export class BrandController {
       const registerAppDto = new RegisterBrandDto(registerRequestDto.name);
 
       // 2. Ejecutar el Caso de Uso (que contiene la orquestación de la lógica de negocio).
-      const establishment = await this.registerEstablishmentUseCase.execute(registerAppDto);
+      const brand = await this.registerEstablishmentUseCase.execute(registerAppDto);
         
       // 3. Mapear la entidad de dominio resultante a un DTO de respuesta para la API.
-      return BrandMapper.toResponseDto(establishment);
+      return BrandMapper.toResponseDto(brand);
     } catch (error) {
       // *** TRADUCCIÓN DE EXCEPCIONES DE DOMINIO A EXCEPCIONES HTTP DE NESTJS ***
       if (error instanceof InvalidBrandException) {
         throw new BadRequestException(error.message); // Mapea InvalidNameException a 400 Bad Request
       }
 
-      // Codigo de error que lanza typeorm cuando ya existe un establecimiento con el mismo nombre
-      if(error?.code === '23505')
-        throw new ConflictException('Ya existe un establecimiento con ese nombre.'); // Mapea errores de conflicto de la base de datos (ej. duplicados) a 409 Conflict
-      // Otros tipos de errores de dominio si existieran
-      // if (error instanceof AnotherDomainException) { /* ... */ }
+      if(error instanceof BrandAlreadyExistsException){
+        throw new ConflictException(error.message);
+      }
       // Si es un error desconocido o no esperado, relanzarlo o lanzar un InternalServerErrorException
       throw error; // Deja que el filtro global de excepciones lo maneje como 500
     }
