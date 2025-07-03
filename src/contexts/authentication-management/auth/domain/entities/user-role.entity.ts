@@ -108,5 +108,14 @@ export class UserRoleEntity {
   get deletedAt(): Date | null | undefined {
     return this._deletedAt;
   }
+
+  get roleName(): string | undefined {
+    return this._role?.name?.name;
+  }
+
+  get permissions(): string[] {
+    // Suponiendo que el rol tiene una propiedad permissions: PermissionEntity[]
+    return this._role?.permissions?.map(p => p.name?.name) || [];
+  }
     // Otros métodos que representen reglas de negocio o comportamiento del usuario
 }

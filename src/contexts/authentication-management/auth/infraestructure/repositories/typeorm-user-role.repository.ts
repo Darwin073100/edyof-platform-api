@@ -32,4 +32,18 @@ export class TypeormUserRoleRepository implements UserRoleRepository{
         const result = await this.userRoleRepository.save(ormEntity);
         return UserRoleMapper.toDomain(result);
     }
+
+     // NUEVO: Implementación de findUserRoles
+  async findUserRoles(userId: bigint): Promise<UserRoleEntity[]> {
+    const userEntity = await this.userRoleRepository.find({
+      where: { userId },
+      relations: ['role'], // Carga la relación de roles para el usuario
+    });
+
+    if (!userEntity || !userEntity) {
+      return [];
+    }
+    // Mapeamos las RoleEntity a Role de dominio
+    return userEntity.map(UserRoleMapper.toDomain);
+  }
 }

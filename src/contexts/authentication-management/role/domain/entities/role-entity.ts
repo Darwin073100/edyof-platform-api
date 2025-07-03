@@ -12,6 +12,7 @@ export class RoleEntity {
   private _updatedAt: Date | null;
   private _deletedAt: Date | null;
   private _userRoles?: UserRoleEntity[]|[];
+  private _permissions?: any[]; // Asegúrate de tipar correctamente según tu modelo
   private _domainEvents: DomainEvent<RoleEntity>[] = [];
 
   private constructor(
@@ -109,6 +110,10 @@ export class RoleEntity {
     return this._deletedAt;
   }
 
+  get permissions(): any[] {
+    return this._permissions || [];
+  }
+
   // Métodos de comportamiento del dominio
     public updateName(newName: RoleNameVO): void {
       if (this._name.equals(newName)) {
@@ -165,5 +170,9 @@ export class RoleEntity {
    */
   private recordEvent(event: DomainEvent<RoleEntity>): void {
     this._domainEvents.push(event);
+  }
+
+  public setPermissions(permissions: any[]): void {
+    this._permissions = permissions;
   }
 }

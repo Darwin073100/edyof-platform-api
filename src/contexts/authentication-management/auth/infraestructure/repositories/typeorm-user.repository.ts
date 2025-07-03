@@ -5,6 +5,9 @@ import { DataSource, Repository } from "typeorm";
 import { UserOrmEntity } from "../entities/user.orm-entity";
 import { UserMapper } from "../mappers/user.mapper";
 import { UserAlreadyExistsException } from "../../domain/exceptions/user-already-exists.exception";
+import { RolePermissionMapper } from "src/contexts/authentication-management/role/infraestructure/persistence/typeorm/mappers/role-permission.mapper";
+import { UserRoleMapper } from "../mappers/user-role.mapper";
+import { UserRoleEntity } from "../../domain/entities/user-role.entity";
 
 @Injectable()
 export class TyperomUserRepository implements UserRepository{

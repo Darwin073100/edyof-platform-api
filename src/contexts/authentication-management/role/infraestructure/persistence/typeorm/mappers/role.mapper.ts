@@ -23,8 +23,11 @@ export class RoleMapper {
     // TypeORM to Domain
     static toDomainEntity(typeOrmEntity: RoleOrmEntity): RoleEntity {
         const userRoles = typeOrmEntity?.userRoles?.map(item => UserRoleMapper.toOrmEntity(item));
-        
-        return RoleEntity.reconstitute(
+        // Extraer permisos desde rolePermissions
+        const permissions = (typeOrmEntity.rolePermissions || [])
+            .map(rp => rp.permission?.name)
+            .filter(Boolean);
+        const role = RoleEntity.reconstitute(
             typeOrmEntity.roleId,
             RoleNameVO.create(typeOrmEntity.name),
             typeOrmEntity.createdAt,
@@ -33,5 +36,8 @@ export class RoleMapper {
             typeOrmEntity.description ? RoleDescriptionVO.create(typeOrmEntity.description) : null,
             userRoles && [],
         );
+        // Asignar permisos al objeto de dominio
+        role.setPermissions(permissions);
+        return role;
     }
 }

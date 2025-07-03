@@ -1,3 +1,4 @@
+import { UserRoleEntity } from "../entities/user-role.entity";
 import { UserEntity } from "../entities/user.entity";
 
 export const USER_REPOSITORY = Symbol('USER_REPOSITORY');

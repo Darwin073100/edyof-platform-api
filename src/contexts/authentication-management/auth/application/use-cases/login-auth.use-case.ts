@@ -8,10 +8,13 @@ export class loginAuthUseCase{
 
     // Este método es para generar el JWT después de una validación exitosa
   async execute(user: UserEntity): Promise<{ accessToken: string }> {
-    // El payload del JWT debe contener información mínima pero suficiente
-    // para identificar al usuario y cualquier rol/permiso necesario para la autorización.
-    // Un error común es incluir información sensible o excesiva en el payload.
-    const payload = { username: user.username, email: user.email, userId: user.userId };
+    const payload = {
+      username: user.username,
+      email: user.email,
+      userId: user.userId,
+      permissions: user.userRoles?.flatMap(role => role.permissions) || [],
+      roles: user.userRoles?.map(role => role.roleName) || [],
+    };
     return {
       accessToken: this.jwtService.sign(payload),
     };
