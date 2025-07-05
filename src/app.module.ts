@@ -8,6 +8,7 @@ import { BrandModule } from './contexts/product-management/brand/brand.module';
 import { SeasonModule } from './contexts/product-management/season/season.module';
 import { AuthModule } from './contexts/authentication-management/auth/auth.module';
 import { RoleModule } from './contexts/authentication-management/role/role.module';
+import { ProductModule } from './contexts/product-management/product/product.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { RoleModule } from './contexts/authentication-management/role/role.modul
     SeasonModule,
     AuthModule,
     RoleModule,
+    ProductModule
   ],
 })
 export class AppModule {}

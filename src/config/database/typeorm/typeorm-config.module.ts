@@ -12,6 +12,7 @@ import { RoleOrmEntity } from 'src/contexts/authentication-management/role/infra
 import { UserRoleOrmEntity } from 'src/contexts/authentication-management/auth/infraestructure/entities/user-role.orm-entity';
 import { PermissionOrmEntity } from 'src/contexts/authentication-management/permission/infraestructure/persistence/typeorm/entities/permission.orm-entity';
 import { RolePermissionOrmEntity } from 'src/contexts/authentication-management/role/infraestructure/persistence/typeorm/entities/role-permission.orm-entity';
+import { ProductOrmEntity } from 'src/contexts/product-management/product/infraestructure/persistence/typeorm/entities/product.orm-entity';
 
 @Module({
     imports: [
@@ -37,7 +38,8 @@ import { RolePermissionOrmEntity } from 'src/contexts/authentication-management/
             RoleOrmEntity,
             UserRoleOrmEntity,
             PermissionOrmEntity,
-            RolePermissionOrmEntity
+            RolePermissionOrmEntity,
+            ProductOrmEntity
           ],
           synchronize: false,
           ...(isProduction && {

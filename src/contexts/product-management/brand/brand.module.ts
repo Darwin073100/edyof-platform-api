@@ -9,6 +9,8 @@ import { TypeOrmBrandRepository } from './infraestruture/persistence/typeorm/rep
 import { RegisterBrandUseCase } from './application/use-cases/register-brand.use-case';
 import { FindBrandByIdUseCase } from './application/use-cases/find-brand-by-id.use-case';
 import { BrandController } from './presentation/http/controllers/brand.controller';
+import { BRAND_CHECKER_PORT } from './domain/ports/out/brand-checker.port';
+import { TypeormBrandCheckerAdapter } from './infraestruture/persistence/typeorm/external-services/typeorm-brand-checker.adapter';
 
 /**
  * EstablishmentModule es el módulo de NestJS que agrupa todos los componentes
@@ -37,6 +39,10 @@ import { BrandController } from './presentation/http/controllers/brand.controlle
     {
       provide: BRAND_REPOSITORY, // El "token" o la "interfaz" que se pide
       useClass: TypeOrmBrandRepository, // La clase concreta que se provee
+    },
+    {
+      provide: BRAND_CHECKER_PORT, // Provee el puerto de verificación de marcas
+      useClass: TypeormBrandCheckerAdapter
     },
     {
       provide: RegisterBrandUseCase, // Provee el caso de uso
@@ -70,6 +76,8 @@ import { BrandController } from './presentation/http/controllers/brand.controlle
     // podrían necesitar. Por ejemplo, si otro módulo necesita usar RegisterEstablishmentUseCase.
     RegisterBrandUseCase,
     FindBrandByIdUseCase,
+    BRAND_REPOSITORY, // Exporta el repositorio para que otros módulos puedan usarlo
+    BRAND_CHECKER_PORT,
   ],
 })
 export class BrandModule {}

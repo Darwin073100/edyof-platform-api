@@ -1,6 +1,7 @@
 import { DomainEvent } from "src/shared/domain/events/domain-events";
 import { BrandNameVO } from "../values-objects/brand-name.vo";
 import { BrandCreatedEvent } from "../events/brand-created.event";
+import { ProductEntity } from "src/contexts/product-management/product/domain/entities/product.entity";
 
 export class BrandEntity {
     private readonly _brandId: bigint;
@@ -8,7 +9,8 @@ export class BrandEntity {
     private readonly _createdAt: Date;
     private _updatedAt: Date | null;
     private _deletedAt: Date | null;
-    private _domainEvents: DomainEvent<this>[] = []; // Colección de eventos de dominio
+    private _domainEvents: DomainEvent<this>[] = [];
+    private _products?: ProductEntity[];
 
     private constructor(
     brandId: bigint,
@@ -16,12 +18,14 @@ export class BrandEntity {
     createdAt: Date,
     updatedAt: Date | null,
     deletedAt: Date | null,
+    products?: ProductEntity[] | null
     ) {
         this._brandId = brandId;
         this._name = name;
         this._createdAt = createdAt;
         this._updatedAt = updatedAt;
         this._deletedAt = deletedAt;
+        this._products = products ?? undefined;
     }
 
     /**
@@ -40,6 +44,7 @@ export class BrandEntity {
       new Date(), // createdAt
       null, // updatedAt
       null, // deletedAt
+      undefined // productos siempre undefined/null en create
     );
     // Registra el evento de dominio.
     brand.recordEvent(new BrandCreatedEvent(brand));
@@ -63,8 +68,9 @@ export class BrandEntity {
     createdAt: Date,
     updatedAt: Date | null,
     deletedAt: Date | null,
+    products?: ProductEntity[] | null
   ): BrandEntity {
-    return new BrandEntity(brandId, name, createdAt, updatedAt, deletedAt);
+    return new BrandEntity(brandId, name, createdAt, updatedAt, deletedAt, products);
   }
 
   // Getters
@@ -86,6 +92,10 @@ export class BrandEntity {
 
   get deletedAt(): Date | null {
     return this._deletedAt;
+  }
+
+  get products(): ProductEntity[] | undefined {
+    return this._products;
   }
 
   /**

@@ -1,6 +1,7 @@
 import { DomainEvent } from "src/shared/domain/events/domain-events";
 import { Name } from "../values-objects/name.vo";
 import { EstablishmentCreatedEvent } from "../events/establishment-created.event";
+import { ProductEntity } from "src/contexts/product-management/product/domain/entities/product.entity";
 
 export class EstablishmentEntity {
     private readonly _establishmentId: bigint;
@@ -8,7 +9,8 @@ export class EstablishmentEntity {
     private readonly _createdAt: Date;
     private _updatedAt: Date | null;
     private _deletedAt: Date | null;
-    private _domainEvents: DomainEvent<this>[] = []; // Colección de eventos de dominio
+    private _domainEvents: DomainEvent<this>[] = [];
+    private _products?: ProductEntity[];
 
     private constructor(
     establishmentId: bigint,
@@ -16,12 +18,14 @@ export class EstablishmentEntity {
     createdAt: Date,
     updatedAt: Date | null,
     deletedAt: Date | null,
+    products?: ProductEntity[] | null
     ) {
         this._establishmentId = establishmentId;
         this._name = name;
         this._createdAt = createdAt;
         this._updatedAt = updatedAt;
         this._deletedAt = deletedAt;
+        this._products = products ?? undefined;
     }
 
     /**
@@ -40,6 +44,7 @@ export class EstablishmentEntity {
       new Date(), // createdAt
       null, // updatedAt
       null, // deletedAt
+      undefined // productos siempre undefined/null en create
     );
     // Registra el evento de dominio.
     establishment.recordEvent(new EstablishmentCreatedEvent(establishment));
@@ -63,8 +68,9 @@ export class EstablishmentEntity {
     createdAt: Date,
     updatedAt: Date | null,
     deletedAt: Date | null,
+    products?: ProductEntity[] | null
   ): EstablishmentEntity {
-    return new EstablishmentEntity(establishmentId, name, createdAt, updatedAt, deletedAt);
+    return new EstablishmentEntity(establishmentId, name, createdAt, updatedAt, deletedAt, products);
   }
 
   // Getters
@@ -86,6 +92,10 @@ export class EstablishmentEntity {
 
   get deletedAt(): Date | null {
     return this._deletedAt;
+  }
+
+  get products(): ProductEntity[] | undefined {
+    return this._products;
   }
 
   /**

@@ -2,6 +2,7 @@ import { DomainEvent } from 'src/shared/domain/events/domain-events';
 import { CategoryNameVO } from '../value-objects/category-name.vo';
 import { CategoryDescriptionVO } from '../value-objects/category-description.vo';
 import { CategoryCreatedEvent } from '../events/category-created.event';
+import { ProductEntity } from 'src/contexts/product-management/product/domain/entities/product.entity';
 
 export class CategoryEntity {
   private readonly _categoryId: bigint;
@@ -11,6 +12,7 @@ export class CategoryEntity {
   private _updatedAt: Date | null;
   private _deletedAt: Date | null;
   private _domainEvents: DomainEvent<CategoryEntity>[] = [];
+  private _products?: ProductEntity[];
 
   private constructor(
     categoryId: bigint,
@@ -19,6 +21,7 @@ export class CategoryEntity {
     updatedAt: Date | null,
     deletedAt: Date | null,
     description?: CategoryDescriptionVO | null,
+    products?: ProductEntity[] | null
   ) {
     this._categoryId = categoryId;
     this._name = name;
@@ -26,6 +29,7 @@ export class CategoryEntity {
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
     this._deletedAt = deletedAt;
+    this._products = products ?? undefined;
   }
 
   /**
@@ -50,6 +54,7 @@ export class CategoryEntity {
       null,
       null,
       description,
+      undefined // productos siempre undefined/null en create
     );
     category.recordEvent(new CategoryCreatedEvent(category));
     return category;
@@ -62,6 +67,7 @@ export class CategoryEntity {
     updatedAt: Date | null,
     deletedAt: Date | null,
     description?: CategoryDescriptionVO | null,
+    products?: ProductEntity[] | null
   ): CategoryEntity {
     return new CategoryEntity(
       categoryId,
@@ -70,6 +76,7 @@ export class CategoryEntity {
       updatedAt,
       deletedAt,
       description,
+      products
     );
   }
 
@@ -96,6 +103,10 @@ export class CategoryEntity {
 
   get deletedAt(): Date | null {
     return this._deletedAt;
+  }
+
+  get products(): ProductEntity[] | undefined {
+    return this._products;
   }
 
   // Métodos de comportamiento del dominio

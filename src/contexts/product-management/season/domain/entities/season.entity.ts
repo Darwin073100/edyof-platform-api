@@ -1,6 +1,7 @@
 import { SeasonNameVO } from '../value-objects/season-name.vo';
 import { SeasonDescriptionVO } from '../value-objects/season-description.vo';
 import { DomainEvent } from 'src/shared/domain/events/domain-events';
+import { ProductEntity } from 'src/contexts/product-management/product/domain/entities/product.entity';
 
 export class SeasonEntity {
   private readonly _seasonId: bigint;
@@ -12,6 +13,7 @@ export class SeasonEntity {
   private readonly _createdAt: Date;
   private _updatedAt: Date | null;
   private _domainEvents: DomainEvent<SeasonEntity>[] = [];
+  private _products?: ProductEntity[];
 
   private constructor(
     seasonId: bigint,
@@ -22,6 +24,7 @@ export class SeasonEntity {
     updatedAt: Date | null,
     deletedAt: Date | null,
     description?: SeasonDescriptionVO | null,
+    products?: ProductEntity[] | null,
   ) {
     this._seasonId = seasonId;
     this._name = name;
@@ -31,6 +34,7 @@ export class SeasonEntity {
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
     this._deletedAt = deletedAt;
+    this._products = products ?? undefined;
   }
 
   static create(
@@ -48,6 +52,7 @@ export class SeasonEntity {
       null,
       null,
       description,
+      undefined, // productos siempre undefined/null en create
     );
   }
 
@@ -60,6 +65,7 @@ export class SeasonEntity {
     updatedAt: Date | null,
     deletedAt: Date | null,
     description?: SeasonDescriptionVO | null,
+    products?: ProductEntity[] | null,
   ): SeasonEntity {
     return new SeasonEntity(
       seasonId,
@@ -70,6 +76,7 @@ export class SeasonEntity {
       updatedAt,
       deletedAt,
       description,
+      products,
     );
   }
 
@@ -81,4 +88,7 @@ export class SeasonEntity {
   get createdAt() { return this._createdAt; }
   get updatedAt() { return this._updatedAt; }
   get deletedAt() { return this._deletedAt; }
+  get products(): ProductEntity[] | undefined {
+    return this._products;
+  }
 }

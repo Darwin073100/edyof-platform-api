@@ -1,6 +1,7 @@
 // src/contexts/educational-center-management/educational-center/infrastructure/persistence/typeorm/entities/educational-center.orm-entity.ts
 
 import { BranchOfficeOrmEntity } from 'src/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/entities/branch-office.orm-entity';
+import { ProductOrmEntity } from 'src/contexts/product-management/product/infraestructure/persistence/typeorm/entities/product.orm-entity';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, OneToMany } from 'typeorm';
 
 /**
@@ -20,6 +21,9 @@ export class EstablishmentOrmEntity {
 
   @OneToMany(()=> BranchOfficeOrmEntity, branchOffice=> branchOffice.establishment)
   branchOffices: BranchOfficeOrmEntity[];
+
+  @OneToMany(() => ProductOrmEntity, (product) => product.establishment)
+  products?: ProductOrmEntity[] | null;
 
   @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

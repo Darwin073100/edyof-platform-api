@@ -1,5 +1,6 @@
 // Infraestructura de TypeORM para la entidad Season
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { ProductOrmEntity } from 'src/contexts/product-management/product/infraestructure/persistence/typeorm/entities/product.orm-entity';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, OneToMany } from 'typeorm';
 
 @Entity('season')
 export class SeasonOrmEntity {
@@ -17,6 +18,9 @@ export class SeasonOrmEntity {
 
   @Column({ type: 'date', name: 'date_finish', nullable: false })
   dateFinish: Date;
+
+  @OneToMany(() => ProductOrmEntity, (product) => product.category)
+  products?: ProductOrmEntity[]|null;
 
   @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

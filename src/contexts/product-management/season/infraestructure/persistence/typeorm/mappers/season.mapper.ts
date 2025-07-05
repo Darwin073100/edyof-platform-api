@@ -2,6 +2,7 @@ import { SeasonEntity } from "src/contexts/product-management/season/domain/enti
 import { SeasonOrmEntity } from "../entities/season.orm-entity";
 import { SeasonNameVO } from "src/contexts/product-management/season/domain/value-objects/season-name.vo";
 import { SeasonDescriptionVO } from "src/contexts/product-management/season/domain/value-objects/season-description.vo";
+import { ProductTypeOrmMapper } from 'src/contexts/product-management/product/infraestructure/persistence/typeorm/mappers/product.mapper';
 
 export class SeasonMapper {
   static toOrmEntity(domainEntity: SeasonEntity): SeasonOrmEntity {
@@ -14,6 +15,10 @@ export class SeasonMapper {
     ormEntity.createdAt = domainEntity.createdAt;
     ormEntity.updatedAt = domainEntity.updatedAt;
     ormEntity.deletedAt = domainEntity.deletedAt;
+    // Mapear productos si existen
+    if (domainEntity.products) {
+      ormEntity.products = domainEntity.products.map(product => ProductTypeOrmMapper.toOrm(product));
+    }
     return ormEntity;
   }
 
@@ -26,7 +31,8 @@ export class SeasonMapper {
       ormEntity.createdAt,
       ormEntity.updatedAt,
       ormEntity.deletedAt,
-      SeasonDescriptionVO.create(ormEntity.description)
+      SeasonDescriptionVO.create(ormEntity.description),
+      ormEntity.products ? ormEntity.products.map(productOrm => ProductTypeOrmMapper.toDomain(productOrm)) : undefined
     );
   }
 }

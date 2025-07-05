@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { ProductOrmEntity } from "src/contexts/product-management/product/infraestructure/persistence/typeorm/entities/product.orm-entity";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({name: 'category'})
 export class CategoryOrmEntity{
@@ -10,6 +11,9 @@ export class CategoryOrmEntity{
 
     @Column({name: 'description', type: 'text', nullable: true})
     description?: string|null;
+
+    @OneToMany(() => ProductOrmEntity, (product) => product.category)
+    products?: ProductOrmEntity[]|null;
 
     @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;
