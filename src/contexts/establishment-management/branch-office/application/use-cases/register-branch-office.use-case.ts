@@ -1,7 +1,7 @@
 import { Name } from "src/contexts/establishment-management/establishment/domain/values-objects/name.vo";
 import { BranchOfficeRepository } from "../../domain/repositories/branch-office.repository";
 import { RegisterBranchOfficeDto } from "../dtos/register-branch-office.dto";
-import { Address } from "../../../../../shared/domain/value-objects/address.vo";
+import { AddressEntity } from "../../../../../shared/domain/value-objects/address.vo";
 import { BranchOfficeResponseDto } from "../dtos/branch-office-response.dto";
 import { BranchOffice } from "../../domain/entities/branch-office.entity";
 import { EstablishmentCheckerPort } from "src/contexts/establishment-management/establishment/application/ports/out/establishment-checker.port";
@@ -28,7 +28,7 @@ export class RegisterBranchOfficeUseCase {
     }
 
     const name = Name.create(request.name);
-    const address = Address.create({
+    const address = AddressEntity.create({
       street: request.address.street,
       externalNumber: request.address.externalNumber,
       internalNumber: request.address.internalNumber,

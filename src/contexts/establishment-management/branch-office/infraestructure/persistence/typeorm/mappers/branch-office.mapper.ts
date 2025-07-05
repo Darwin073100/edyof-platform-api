@@ -2,7 +2,7 @@ import { BranchOffice } from "src/contexts/establishment-management/branch-offic
 import { BranchOfficeOrmEntity } from "../entities/branch-office.orm-entity";
 import { AddressOrmEntity } from "src/shared/infraestructure/typeorm/address.orm-entity";
 
-import { Address } from "src/shared/domain/value-objects/address.vo";
+import { AddressEntity } from "src/shared/domain/value-objects/address.vo";
 import { BranchOfficeNameVO } from "src/contexts/establishment-management/branch-office/domain/value-objects/branch-office-name.vo";
 
 /**
@@ -57,7 +57,7 @@ export class BranchOfficeMapper {
    */
   public static toDomainEntity(ormEntity: BranchOfficeOrmEntity): BranchOffice {
     // Crear el Value Object de dirección
-    const addressVo = Address.create({
+    const addressVo = AddressEntity.create({
       street: ormEntity.address.street,
       externalNumber: ormEntity.address.externalNumber,
       internalNumber: ormEntity.address.internalNumber,

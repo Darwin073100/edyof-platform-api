@@ -4,21 +4,25 @@
 
 import { Name } from "src/contexts/establishment-management/establishment/domain/values-objects/name.vo";
 import { AddressEntity } from "../../../../../shared/domain/value-objects/address.vo";
-import { BranchOfficeNameVO } from "../value-objects/branch-office-name.vo";
+import { SuplierNameVO } from "../value-objects/suplier-name.vo";
 import { DomainEvent } from "src/shared/domain/events/domain-events";
-import { BranchOfficeCreatedEvent } from "../events/branch-office-created.event";
+import { SuplierCreatedEvent } from "../events/suplier-created.event";
 import { CategoryCreatedEvent } from "src/contexts/product-management/category/domain/events/category-created.event";
+import { SuplierRFCVO } from "../value-objects/suplier-rfc.vo";
+import { SuplierContactPersonVO } from "../value-objects/suplier-contact-person.vo";
+import { SuplierPhoneNumberVO } from "../value-objects/suplier-phone-number.vo";
+import { SuplierEmailVO } from "../value-objects/suplier-email.vo";
+import { SuplierNotesVO } from "../value-objects/suplier-notes.vo";
   
-  /**
-   * BranchOffice es una Entidad Raíz de Agregado.
-   * Es el punto de consistencia transaccional para la sucursal y su dirección.
-   * Contiene la identidad de la sucursal y encapsula la lógica de negocio.
-   */
-  export class BranchOffice {
-    private readonly _branchId: bigint;
-    private _name: BranchOfficeNameVO;
-    private _address: AddressEntity; // La dirección es parte de la sucursal
-    private _establishmentId: bigint; // ID del Establishment al que pertenece
+  export class SuplierEntity {
+    private readonly _suplierId: bigint;
+    private _name: SuplierNameVO;
+    private _contactPerson?: SuplierContactPersonVO | null;
+    private _phoneNumber: SuplierPhoneNumberVO;
+    private _email?: SuplierEmailVO | null;
+    private _rfc?: SuplierRFCVO | null;
+    private _notes?: SuplierNotesVO | null;
+    private _address: AddressEntity; // La dirección es parte del proveedor
     private readonly _createdAt: Date;
     private _updatedAt?: Date | null;
     private _deletedAt?: Date | null;
@@ -26,36 +30,60 @@ import { CategoryCreatedEvent } from "src/contexts/product-management/category/d
     // El constructor es privado para forzar el uso de métodos de fábrica para la creación.
     // Esto asegura que la entidad solo se cree en un estado válido.
     private constructor(
-      branchOfficeId: bigint,
-      name: BranchOfficeNameVO,
+      suplierId: bigint,
+      name: SuplierNameVO,
+      phoneNumber: SuplierPhoneNumberVO,
       address: AddressEntity, // La dirección es parte de la sucursal
-      establishmentId: bigint, // ID del Establishment al que pertenece
       createdAt: Date,
+      rfc?: SuplierRFCVO | null,
+      contactPerson?: SuplierContactPersonVO | null,
+      email?: SuplierEmailVO | null,
+      notes?: SuplierNotesVO | null,
       updatedAt?: Date | null,
       deletedAt?: Date | null) {
-        this._branchId = branchOfficeId;
+        this._suplierId = suplierId;
         this._name = name;
         this._address = address;
-        this._establishmentId = establishmentId;
+        this._rfc = rfc;
+        this._phoneNumber = phoneNumber;
+        this._contactPerson = contactPerson;
+        this._email = email;
+        this._notes = notes;
         this._createdAt = createdAt;
         this._updatedAt = updatedAt;
         this._deletedAt = deletedAt;
     }
   
-    get branchOfficeId(): bigint {
-      return this._branchId;
+    get suplierId(): bigint {
+      return this._suplierId;
     }
   
-    get name(): BranchOfficeNameVO {
+    get name(): SuplierNameVO {
       return this._name;
+    }
+
+    get phoneNumber(): SuplierPhoneNumberVO{
+      return this._phoneNumber;
+    }
+
+    get email(): SuplierEmailVO | null | undefined{
+      return this._email;
+    }
+
+    get contactPerson(): SuplierContactPersonVO | null | undefined{
+      return this._contactPerson;
+    }
+
+    get notes(): SuplierNotesVO | null | undefined{
+      return this._notes;
     }
   
     get address(): AddressEntity {
       return this._address;
     }
   
-    get establishmentId(): bigint {
-      return this._establishmentId;
+    get rfc(): SuplierRFCVO | null | undefined {
+      return this._rfc;
     }
   
     get createdAt(): Date {
@@ -69,36 +97,35 @@ import { CategoryCreatedEvent } from "src/contexts/product-management/category/d
     get deletedAt(): Date | null | undefined {
       return this._deletedAt;
     }
-  
-    /**
-     * Método de fábrica para crear una nueva instancia de BranchOffice.
-     * Aplica las reglas de negocio para la creación de una sucursal.
-     * @param branchOfficeId El ID provisional de la sucursal (o generado por el dominio si es un UUID).
-     * @param name El Value Object Name de la sucursal.
-     * @param address El Value Object Address de la sucursal.
-     * @param establishmentId El ID del establecimeinto al que pertenece la sucursal.
-     * @returns Una nueva instancia de BranchOffice.
-     */
+
     public static create(
-      branchOfficeId: bigint,
+      suplierId: bigint,
       name: Name,
+      phoneNumber: SuplierPhoneNumberVO,
       address: AddressEntity,
-      establishmentId: bigint,
-    ): BranchOffice {
-      const branchOffice = new BranchOffice(
-        branchOfficeId,
+      rfc?: SuplierRFCVO | null,
+      contactPerson?: SuplierContactPersonVO | null,
+      email?: SuplierEmailVO | null,
+      notes?: SuplierNotesVO | null,
+    ): SuplierEntity {
+      const suplier = new SuplierEntity(
+        suplierId,
         name,
+        phoneNumber,
         address,
-        establishmentId,
         new Date(),
+        rfc,
+        contactPerson,
+        email,
+        notes,
         null,
         null,
       );
   
       // Opcional: Registrar un evento de dominio BranchOfficeCreatedEvent
       // branchOffice.addEvent(new BranchOfficeCreatedEvent(branchOffice.id, branchOffice.educationalCenterId));
-      branchOffice.recordEvent(new BranchOfficeCreatedEvent(branchOffice));
-      return branchOffice;
+      suplier.recordEvent(new SuplierCreatedEvent(suplier));
+      return suplier;
     }
   
     /**
@@ -114,20 +141,28 @@ import { CategoryCreatedEvent } from "src/contexts/product-management/category/d
      * @returns Una instancia de BranchOffice.
      */
     public static reconstitute(
-      branchOfficeId: bigint,
-      name: BranchOfficeNameVO,
+      suplierId: bigint,
+      name: SuplierNameVO,
+      phoneNumber: SuplierPhoneNumberVO,
       address: AddressEntity,
-      establishmentId: bigint,
       createdAt: Date,
+      rfc?: SuplierRFCVO | null,
+      contactPerson?: SuplierContactPersonVO | null,
+      email?: SuplierEmailVO | null,
+      notes?: SuplierNotesVO | null,
       updatedAt: Date | null = null,
       deletedAt: Date | null = null,
-    ): BranchOffice {
-      return new BranchOffice(
-        branchOfficeId,
+    ): SuplierEntity {
+      return new SuplierEntity(
+        suplierId,
         name,
+        phoneNumber,
         address,
-        establishmentId,
         createdAt,
+        rfc,
+        contactPerson,
+        email,
+        notes,
         updatedAt,
         deletedAt,
       );

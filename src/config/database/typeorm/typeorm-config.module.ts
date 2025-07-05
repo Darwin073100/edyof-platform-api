@@ -13,6 +13,7 @@ import { UserRoleOrmEntity } from 'src/contexts/authentication-management/auth/i
 import { PermissionOrmEntity } from 'src/contexts/authentication-management/permission/infraestructure/persistence/typeorm/entities/permission.orm-entity';
 import { RolePermissionOrmEntity } from 'src/contexts/authentication-management/role/infraestructure/persistence/typeorm/entities/role-permission.orm-entity';
 import { ProductOrmEntity } from 'src/contexts/product-management/product/infraestructure/persistence/typeorm/entities/product.orm-entity';
+import { SuplierOrmEntity } from 'src/contexts/purchase-management/suplier/infraestructure/persistence/typeorm/entities/suplier.orm-entity';
 
 @Module({
     imports: [
@@ -39,7 +40,8 @@ import { ProductOrmEntity } from 'src/contexts/product-management/product/infrae
             UserRoleOrmEntity,
             PermissionOrmEntity,
             RolePermissionOrmEntity,
-            ProductOrmEntity
+            ProductOrmEntity,
+            SuplierOrmEntity,
           ],
           synchronize: false,
           ...(isProduction && {

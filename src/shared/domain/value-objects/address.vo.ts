@@ -19,7 +19,7 @@ interface AddressProps {
    * Se define por sus atributos y es inmutable.
    * Contiene reglas de negocio para la validación de sus componentes.
    */
-  export class Address extends ValueObject<AddressProps> {
+  export class AddressEntity extends ValueObject<AddressProps> {
     private constructor(props: AddressProps) {
       super(props);
     }
@@ -70,7 +70,7 @@ interface AddressProps {
      * @returns Una instancia de Address.
      * @throws InvalidAddressException si algún componente de la dirección no es válido.
      */
-    public static create(props: AddressProps): Address {
+    public static create(props: AddressProps): AddressEntity {
       if (!props.street || props.street.trim() === '') {
         throw new InvalidAddressException('La calle no puede ir vacia.');
       }
@@ -131,7 +131,7 @@ interface AddressProps {
   
       // Aquí pueden ir más reglas de validación específicas para la dirección
   
-      return new Address(props);
+      return new AddressEntity(props);
     }
   
     /**
@@ -141,9 +141,9 @@ interface AddressProps {
      * @param props Los datos de la dirección.
      * @returns Una instancia de Address.
      */
-    public static reconstitute(props: AddressProps): Address {
+    public static reconstitute(props: AddressProps): AddressEntity {
       // Aquí podrías poner validaciones básicas si es necesario,
       // pero idealmente los datos persistidos ya son válidos.
-      return new Address(props);
+      return new AddressEntity(props);
     }
   }
