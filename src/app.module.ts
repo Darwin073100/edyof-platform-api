@@ -10,6 +10,7 @@ import { AuthModule } from './contexts/authentication-management/auth/auth.modul
 import { RoleModule } from './contexts/authentication-management/role/role.module';
 import { ProductModule } from './contexts/product-management/product/product.module';
 import { SuplierModule } from './contexts/purchase-management/suplier/suplier.module';
+import { LotModule } from './contexts/purchase-management/lot/lot.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { SuplierModule } from './contexts/purchase-management/suplier/suplier.mo
     RoleModule,
     ProductModule,
     SuplierModule,
+    LotModule
   ],
 })
 export class AppModule {}

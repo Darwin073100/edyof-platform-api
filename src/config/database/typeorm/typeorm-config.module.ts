@@ -14,6 +14,7 @@ import { PermissionOrmEntity } from 'src/contexts/authentication-management/perm
 import { RolePermissionOrmEntity } from 'src/contexts/authentication-management/role/infraestructure/persistence/typeorm/entities/role-permission.orm-entity';
 import { ProductOrmEntity } from 'src/contexts/product-management/product/infraestructure/persistence/typeorm/entities/product.orm-entity';
 import { SuplierOrmEntity } from 'src/contexts/purchase-management/suplier/infraestructure/persistence/typeorm/entities/suplier.orm-entity';
+import { LotOrmEntity } from 'src/contexts/purchase-management/lot/infraestructura/persistence/typeorm/entities/lot.orm-entity';
 
 @Module({
     imports: [
@@ -42,6 +43,7 @@ import { SuplierOrmEntity } from 'src/contexts/purchase-management/suplier/infra
             RolePermissionOrmEntity,
             ProductOrmEntity,
             SuplierOrmEntity,
+            LotOrmEntity
           ],
           synchronize: false,
           ...(isProduction && {

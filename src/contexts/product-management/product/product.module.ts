@@ -13,6 +13,8 @@ import { CATEGORY_CHECKER_PORT, CategoryCheckerPort } from '../category/domain/p
 import { BRAND_CHECKER_PORT, BrandChekerPort } from '../brand/domain/ports/out/brand-checker.port';
 import { SEASON_CHECKER_PORT, SeasonCheckerPort } from '../season/domain/ports/out/season-checker.port';
 import { ESTABLISHMENT_CHECKER_PORT, EstablishmentCheckerPort } from 'src/contexts/establishment-management/establishment/application/ports/out/establishment-checker.port';
+import { PRODUCT_CHECKER_PORT } from './domain/ports/out/product-checker.port';
+import { ProductCheckerAdapter } from './infraestructure/persistence/typeorm/external-services/product-checker.adapter';
 
 @Module({
     imports: [
@@ -27,6 +29,10 @@ import { ESTABLISHMENT_CHECKER_PORT, EstablishmentCheckerPort } from 'src/contex
         {
             provide: PRODUCT_REPOSITORY,
             useClass: TypeOrmProductRepository,
+        },
+        {
+            provide: PRODUCT_CHECKER_PORT,
+            useClass: ProductCheckerAdapter
         },
         {
             provide: RegisterProductUseCase,
@@ -48,5 +54,8 @@ import { ESTABLISHMENT_CHECKER_PORT, EstablishmentCheckerPort } from 'src/contex
             ],
         },
     ],
+    exports: [
+        PRODUCT_CHECKER_PORT
+    ]
 })
 export class ProductModule { }

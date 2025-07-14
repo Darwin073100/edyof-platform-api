@@ -8,6 +8,7 @@ import { EstablishmentEntity } from 'src/contexts/establishment-management/estab
 import { CategoryEntity } from 'src/contexts/product-management/category/domain/entities/category-entity';
 import { BrandEntity } from 'src/contexts/product-management/brand/domain/entities/brand.entity';
 import { SeasonEntity } from 'src/contexts/product-management/season/domain/entities/season.entity';
+import { LotEntity } from 'src/contexts/purchase-management/lot/domain/entities/lot.entity';
 
 export class ProductEntity {
   private readonly _productId: bigint;
@@ -31,6 +32,7 @@ export class ProductEntity {
   private _category?: CategoryEntity | null;
   private _brand?: BrandEntity | null;
   private _season?: SeasonEntity | null;
+  private _lots?: LotEntity[] | null;
 
   private constructor(
     productId: bigint,
@@ -51,7 +53,8 @@ export class ProductEntity {
     establishment?: EstablishmentEntity | null,
     category?: CategoryEntity | null,
     brand?: BrandEntity | null,
-    season?: SeasonEntity | null
+    season?: SeasonEntity | null,
+    lots?: LotEntity[] | null
   ) {
     this._productId = productId;
     this._establishmentId = establishmentId;
@@ -72,6 +75,7 @@ export class ProductEntity {
     this._category = category ?? null;
     this._brand = brand ?? null;
     this._season = season ?? null;
+    this._lots = lots ?? null;
   }
 
   static create(
@@ -108,6 +112,7 @@ export class ProductEntity {
       null,
       null,
       null,
+      null,
       null
     );
   }
@@ -131,7 +136,8 @@ export class ProductEntity {
     establishment?: EstablishmentEntity | null,
     category?: CategoryEntity | null,
     brand?: BrandEntity | null,
-    season?: SeasonEntity | null
+    season?: SeasonEntity | null,
+    lots?: LotEntity[] | null
   ): ProductEntity {
     return new ProductEntity(
       productId,
@@ -152,7 +158,8 @@ export class ProductEntity {
       establishment ?? null,
       category ?? null,
       brand ?? null,
-      season ?? null
+      season ?? null,
+      lots ?? null
     );
   }
 
@@ -215,6 +222,9 @@ export class ProductEntity {
   }
   get season(): SeasonEntity | null | undefined {
     return this._season;
+  }
+  get lots(): LotEntity[] | null | undefined {
+    return this._lots;
   }
 
   // Métodos de comportamiento del dominio

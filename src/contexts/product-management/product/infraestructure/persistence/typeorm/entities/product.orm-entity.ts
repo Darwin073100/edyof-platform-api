@@ -1,9 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, Index, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, Index, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { ForSaleEnum } from '../../../../domain/enums/for-sale.enum';
 import { EstablishmentOrmEntity } from 'src/contexts/establishment-management/establishment/infraestruture/persistence/typeorm/entities/establishment-orm-entity';
 import { CategoryOrmEntity } from 'src/contexts/product-management/category/infraestructure/persistence/typeorm/entities/category.orm-entity';
 import { BrandOrmEntity } from 'src/contexts/product-management/brand/infraestruture/persistence/typeorm/entities/brand-orm-entity';
 import { SeasonOrmEntity } from 'src/contexts/product-management/season/infraestructure/persistence/typeorm/entities/season.orm-entity';
+import { LotOrmEntity } from 'src/contexts/purchase-management/lot/infraestructura/persistence/typeorm/entities/lot.orm-entity';
 
 @Entity('product')
 @Index(['establishmentId', 'name'])
@@ -61,6 +62,9 @@ export class ProductOrmEntity {
     @ManyToOne(() => SeasonOrmEntity, (season) => season.products)
     @JoinColumn({ name: 'season_id' })
     season?: SeasonOrmEntity | null;
+    
+    @OneToMany(() => LotOrmEntity, (lot) => lot.product, { nullable: true })
+    lots?: LotOrmEntity[] | null;
 
     @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_at' })
     createdAt: Date;
