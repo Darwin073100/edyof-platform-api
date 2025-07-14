@@ -15,6 +15,7 @@ import { SEASON_CHECKER_PORT, SeasonCheckerPort } from '../season/domain/ports/o
 import { ESTABLISHMENT_CHECKER_PORT, EstablishmentCheckerPort } from 'src/contexts/establishment-management/establishment/application/ports/out/establishment-checker.port';
 import { PRODUCT_CHECKER_PORT } from './domain/ports/out/product-checker.port';
 import { ProductCheckerAdapter } from './infraestructure/persistence/typeorm/external-services/product-checker.adapter';
+import { ViewAllProductsUseCase } from './application/use-cases/view-all-products.use-case';
 
 @Module({
     imports: [
@@ -33,6 +34,13 @@ import { ProductCheckerAdapter } from './infraestructure/persistence/typeorm/ext
         {
             provide: PRODUCT_CHECKER_PORT,
             useClass: ProductCheckerAdapter
+        },
+        {
+            provide: ViewAllProductsUseCase,
+            useFactory: (repo: ProductRepository) => {
+                return new ViewAllProductsUseCase(repo);
+            },
+            inject: [PRODUCT_REPOSITORY],
         },
         {
             provide: RegisterProductUseCase,

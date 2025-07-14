@@ -33,4 +33,24 @@ export class TypeOrmProductRepository implements ProductRepository {
             throw error;
         }
   }
+
+  delete(entityId: bigint): Promise<ProductEntity | null> {
+    throw new Error('Este metodo no esta implementado');
+  }
+  
+  async findAll(): Promise<[] | ProductEntity[]> {
+    const result = await  this.ormRepo.find({
+      relations: ['establishment', 'category', 'brand', 'season', 'lots'],
+    });
+
+    if(result.length > 0){
+      return result.map((orm) => ProductTypeOrmMapper.toDomain(orm));  
+    }
+
+    return Promise.resolve([]);
+  }
+
+  findById(entityId: bigint): Promise<ProductEntity | null> {
+    throw new Error('Este metodo no esta implementado');
+  }
 }
