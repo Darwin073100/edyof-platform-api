@@ -8,6 +8,8 @@ import { RegisterBranchOfficeUseCase } from "./application/use-cases/register-br
 import { BRANCH_OFFICE_REPOSITORY, BranchOfficeRepository } from "./domain/repositories/branch-office.repository";
 import { EstablishmentModule } from "../establishment/establishment.module";
 import { ESTABLISHMENT_CHECKER_PORT, EstablishmentCheckerPort } from "../establishment/application/ports/out/establishment-checker.port";
+import { BRANCH_OFFICE_CHECKER_PORT } from "./domain/ports/out/branch-office-checker.port";
+import { BranchOfficeCheckerAdapter } from "./infraestructure/persistence/typeorm/external-service/branch-office-checker.adapter";
 
 /**
  * BranchOfficeModule es el módulo de NestJS que agrupa todos los componentes
@@ -39,6 +41,10 @@ import { ESTABLISHMENT_CHECKER_PORT, EstablishmentCheckerPort } from "../establi
         useClass: TypeOrmBranchOfficeRepository, // La clase concreta que se provee
       },
       {
+        provide: BRANCH_OFFICE_CHECKER_PORT,
+        useClass: BranchOfficeCheckerAdapter,
+      },
+      {
         provide: RegisterBranchOfficeUseCase, // Provee el caso de uso
         useFactory: (repo1: BranchOfficeRepository,repo2: EstablishmentCheckerPort) => {
           // NestJS inyecta el repo aquí basado en el token
@@ -60,6 +66,7 @@ import { ESTABLISHMENT_CHECKER_PORT, EstablishmentCheckerPort } from "../establi
       // Exporta los proveedores y módulos que otras partes de la aplicación (otros módulos)
       // podrían necesitar. Por ejemplo, si otro módulo necesita usar RegisterBranchOfficeUseCase.
       RegisterBranchOfficeUseCase,
+      BRANCH_OFFICE_CHECKER_PORT
     ],
   })
   export class BranchOfficeModule {}

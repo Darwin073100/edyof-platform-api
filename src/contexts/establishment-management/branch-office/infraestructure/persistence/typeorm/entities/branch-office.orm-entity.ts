@@ -1,3 +1,4 @@
+import { EmployeeOrmEntity } from 'src/contexts/employee-management/employee/infraestruture/persistence/typeorm/entities/employee-orm-entity';
 import { EstablishmentOrmEntity } from 'src/contexts/establishment-management/establishment/infraestruture/persistence/typeorm/entities/establishment-orm-entity';
 import { AddressOrmEntity } from 'src/shared/infraestructure/typeorm/address.orm-entity';
 import {
@@ -11,6 +12,7 @@ import {
   JoinColumn,
   PrimaryGeneratedColumn,
   ManyToOne,
+  OneToMany,
 } from 'typeorm';
 
 @Entity('branch_office')
@@ -54,6 +56,9 @@ export class BranchOfficeOrmEntity {
   @ManyToOne(() => EstablishmentOrmEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'establishment_id' })
   establishment: EstablishmentOrmEntity;
+
+  @OneToMany(() => EmployeeOrmEntity, employee => employee.branchOffice)
+  employees?: EmployeeOrmEntity[];
 
   @CreateDateColumn({
     type: 'timestamp with time zone',

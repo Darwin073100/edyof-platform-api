@@ -14,6 +14,8 @@ import { RolePermissionOrmEntity } from 'src/contexts/authentication-management/
 import { ProductOrmEntity } from 'src/contexts/product-management/product/infraestructure/persistence/typeorm/entities/product.orm-entity';
 import { SuplierOrmEntity } from 'src/contexts/purchase-management/suplier/infraestructure/persistence/typeorm/entities/suplier.orm-entity';
 import { LotOrmEntity } from 'src/contexts/purchase-management/lot/infraestructura/persistence/typeorm/entities/lot.orm-entity';
+import { EmployeeRoleOrmEntity } from 'src/contexts/employee-management/employee-role/infraestruture/persistence/typeorm/entities/employee-role-orm-entity';
+import { EmployeeOrmEntity } from 'src/contexts/employee-management/employee/infraestruture/persistence/typeorm/entities/employee-orm-entity';
 
 config();
 
@@ -35,7 +37,9 @@ const AppDataSource = new DataSource({
     RolePermissionOrmEntity,
     ProductOrmEntity,
     SuplierOrmEntity,
-    LotOrmEntity
+    LotOrmEntity,
+    EmployeeRoleOrmEntity,
+    EmployeeOrmEntity
   ],
   migrations: [`${__dirname}/migrations/*.{ts,js}`],
   synchronize: false,

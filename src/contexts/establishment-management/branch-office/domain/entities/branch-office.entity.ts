@@ -1,4 +1,3 @@
-
 // Eventos de Dominio que podríamos definir más adelante (ej. BranchOfficeCreatedEvent)
 // import { BranchOfficeCreatedEvent } from '../events/branch-office-created.event';
 
@@ -8,6 +7,7 @@ import { BranchOfficeNameVO } from "../value-objects/branch-office-name.vo";
 import { DomainEvent } from "src/shared/domain/events/domain-events";
 import { BranchOfficeCreatedEvent } from "../events/branch-office-created.event";
 import { CategoryCreatedEvent } from "src/contexts/product-management/category/domain/events/category-created.event";
+import { EmployeeEntity } from '../../../../employee-management/employee/domain/entities/employee.entity';
   
   /**
    * BranchOffice es una Entidad Raíz de Agregado.
@@ -23,6 +23,7 @@ import { CategoryCreatedEvent } from "src/contexts/product-management/category/d
     private _updatedAt?: Date | null;
     private _deletedAt?: Date | null;
     private _domainEvents: DomainEvent<this>[] = []; // Colección de eventos de dominio
+    private _employees?: EmployeeEntity[];
     // El constructor es privado para forzar el uso de métodos de fábrica para la creación.
     // Esto asegura que la entidad solo se cree en un estado válido.
     private constructor(
@@ -32,7 +33,9 @@ import { CategoryCreatedEvent } from "src/contexts/product-management/category/d
       establishmentId: bigint, // ID del Establishment al que pertenece
       createdAt: Date,
       updatedAt?: Date | null,
-      deletedAt?: Date | null) {
+      deletedAt?: Date | null,
+      employees?: EmployeeEntity[] | null
+    ) {
         this._branchId = branchOfficeId;
         this._name = name;
         this._address = address;
@@ -40,6 +43,7 @@ import { CategoryCreatedEvent } from "src/contexts/product-management/category/d
         this._createdAt = createdAt;
         this._updatedAt = updatedAt;
         this._deletedAt = deletedAt;
+        this._employees = employees ?? undefined;
     }
   
     get branchOfficeId(): bigint {
@@ -68,6 +72,10 @@ import { CategoryCreatedEvent } from "src/contexts/product-management/category/d
   
     get deletedAt(): Date | null | undefined {
       return this._deletedAt;
+    }
+  
+    get employees(): EmployeeEntity[] | undefined {
+      return this._employees;
     }
   
     /**

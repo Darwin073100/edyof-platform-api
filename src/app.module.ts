@@ -11,6 +11,8 @@ import { RoleModule } from './contexts/authentication-management/role/role.modul
 import { ProductModule } from './contexts/product-management/product/product.module';
 import { SuplierModule } from './contexts/purchase-management/suplier/suplier.module';
 import { LotModule } from './contexts/purchase-management/lot/lot.module';
+import { EmployeeRoleModule } from './contexts/employee-management/employee-role/employee-role.module';
+import { EmployeeModule } from './contexts/employee-management/employee/employee.module';
 
 @Module({
   imports: [
@@ -28,7 +30,9 @@ import { LotModule } from './contexts/purchase-management/lot/lot.module';
     RoleModule,
     ProductModule,
     SuplierModule,
-    LotModule
+    LotModule,
+    EmployeeRoleModule,
+    EmployeeModule
   ],
 })
 export class AppModule {}

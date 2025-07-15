@@ -1,9 +1,11 @@
+import { EmployeeOrmEntity } from 'src/contexts/employee-management/employee/infraestruture/persistence/typeorm/entities/employee-orm-entity';
 import { BranchOfficeOrmEntity } from 'src/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/entities/branch-office.orm-entity';
 import {
     Entity,
     PrimaryGeneratedColumn, // ID generado automáticamente por la BD
     Column,
     OneToOne,
+    OneToMany,
     CreateDateColumn,
     UpdateDateColumn,
     DeleteDateColumn,
@@ -56,6 +58,11 @@ import {
     // Aquí no necesitamos cascade ni JoinColumn, la relación es definida en BranchOfficeOrmEntity.
     @OneToOne(() => BranchOfficeOrmEntity, branchOffice => branchOffice.address)
     branchOffice: BranchOfficeOrmEntity;
+
+    // Relación 1:N inversa: una dirección puede estar asociada a muchos empleados.
+    // 'address' en EmployeeOrmEntity es la propiedad que mapea esta relación.
+    @OneToMany(() => EmployeeOrmEntity, employee => employee.address)
+    employees?: EmployeeOrmEntity[];
 
     @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;
