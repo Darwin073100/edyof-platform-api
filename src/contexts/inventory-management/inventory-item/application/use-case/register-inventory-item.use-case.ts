@@ -27,25 +27,25 @@ export class RegisterInventoryItemUseCase{
         // 1. Verificar si el producto existe
         const productExists = await this.productCheckerPort.check(dto.productId);
         if(!productExists){
-            throw new InventoryItemNotFoundException('El producto no existe.');
+            throw new InventoryItemNotFoundException('El producto establecido no existe.');
         }
-        console.log(productExists);
-
-        // 2. Verificar si la sucursal existe
-        const branchOfficeExists = await this.branchOfficeCheckerPort.exists(dto.branchOfficeId);
-        if(!branchOfficeExists){
-            throw new InventoryItemNotFoundException('La sucursal no existe.');
-        }
-        console.log(branchOfficeExists)
-
-        // 3. Verificar si el lote existe
+        // 2. Verificar si el lote existe
         const lotExists = await this.lotCheckerPort.exists(dto.lotId);
         if(!lotExists){
-            throw new InventoryItemNotFoundException('El lote no existe.');
+            throw new InventoryItemNotFoundException('El lote establecido no existe.');
         }
-        console.log(lotExists)
+        // 3. Verificar que el producto sea del lote espesificado
+        const isMatchLotAndProduct = await this.lotCheckerPort.matchLotAndProduct(dto.lotId, dto.productId);
+        if(!isMatchLotAndProduct){
+            throw new InventoryItemNotFoundException('Verifica que el lote sea del producto establecido o que el producto sea del lote.');
+        }
+        // 4. Verificar si la sucursal existe
+        const branchOfficeExists = await this.branchOfficeCheckerPort.exists(dto.branchOfficeId);
+        if(!branchOfficeExists){
+            throw new InventoryItemNotFoundException('La sucursal establecida no existe.');
+        }
 
-        // 4. PASAR LOS DATOS DEL DTO A LA ENTIDAD DE DOMINIO
+        // 5. PASAR LOS DATOS DEL DTO A LA ENTIDAD DE DOMINIO
         const inventoryItem = InventoryItemEntity.create(
             dto.productId,
             dto.lotId,
@@ -62,9 +62,9 @@ export class RegisterInventoryItemUseCase{
             InventoryItemMaxStockBranchVO.create(dto.maxStockBranch),
         );
 
-        // 5. GUARDAR EN EL REPOSITORIO
+        // 6. GUARDAR EN EL REPOSITORIO
         const savedInventoryItem = await this.inventoryItemRepository.save(inventoryItem);
-        // 6. DEVOLVER LA ENTIDAD GUARDADA
+        // 7. DEVOLVER LA ENTIDAD GUARDADA
         return savedInventoryItem;
     }
 }

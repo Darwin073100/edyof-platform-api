@@ -15,8 +15,8 @@ export class TypeormInventoryItemRepository implements InventoryItemRepository{
 
     async save(entity: InventoryItemEntity): Promise<InventoryItemEntity> {
         const ormEntity = InventoryItemMapper.toOrmEntity(entity);
-        console.log(ormEntity);
         const result = await this.inventoryItemRepository.save(ormEntity);
+        console.log('Este es la entidad: '+result.lotId);
         return InventoryItemMapper.toDomain(result);
     }
     

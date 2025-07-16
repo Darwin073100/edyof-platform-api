@@ -16,4 +16,8 @@ export class LotCheckerAdapter implements LotCheckerPort{
             where: { lotId },
         });
     }
+
+    async matchLotAndProduct(lotId: bigint, productId: bigint): Promise<boolean> {
+      return await this.ormLotRepository.existsBy({productId, lotId});
+    }
 }
