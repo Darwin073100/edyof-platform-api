@@ -1,4 +1,4 @@
-import { BranchOffice } from "src/contexts/establishment-management/branch-office/domain/entities/branch-office.entity";
+import { BranchOfficeEntity } from "src/contexts/establishment-management/branch-office/domain/entities/branch-office.entity";
 import { BranchOfficeOrmEntity } from "../entities/branch-office.orm-entity";
 import { AddressOrmEntity } from "src/shared/infraestructure/typeorm/address.orm-entity";
 
@@ -20,7 +20,7 @@ export class BranchOfficeMapper {
    * @param domainEntity La entidad de dominio BranchOffice a mapear.
    * @returns Una instancia de BranchOfficeOrmEntity.
    */
-  public static toOrmEntity(domainEntity: BranchOffice): BranchOfficeOrmEntity {
+  public static toOrmEntity(domainEntity: BranchOfficeEntity): BranchOfficeOrmEntity {
     const ormEntity = new BranchOfficeOrmEntity();
     
     // Mapear propiedades básicas
@@ -55,7 +55,7 @@ export class BranchOfficeMapper {
    * @param ormEntity La entidad ORM BranchOfficeOrmEntity a mapear.
    * @returns Una instancia de BranchOffice.
    */
-  public static toDomainEntity(ormEntity: BranchOfficeOrmEntity): BranchOffice {
+  public static toDomainEntity(ormEntity: BranchOfficeOrmEntity): BranchOfficeEntity {
     // Crear el Value Object de dirección
     const addressVo = AddressEntity.create({
       street: ormEntity.address.street,
@@ -74,7 +74,7 @@ export class BranchOfficeMapper {
     const nameVo = BranchOfficeNameVO.create(ormEntity.name);
 
     // Reconstituir la entidad de dominio
-    return BranchOffice.reconstitute(
+    return BranchOfficeEntity.reconstitute(
       ormEntity.branchOfficeId,
       nameVo,
       addressVo,

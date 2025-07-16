@@ -3,7 +3,7 @@ import { BranchOfficeRepository } from "../../domain/repositories/branch-office.
 import { RegisterBranchOfficeDto } from "../dtos/register-branch-office.dto";
 import { AddressEntity } from "../../../../../shared/domain/value-objects/address.vo";
 import { BranchOfficeResponseDto } from "../dtos/branch-office-response.dto";
-import { BranchOffice } from "../../domain/entities/branch-office.entity";
+import { BranchOfficeEntity } from "../../domain/entities/branch-office.entity";
 import { EstablishmentCheckerPort } from "src/contexts/establishment-management/establishment/application/ports/out/establishment-checker.port";
 import { EstablishmentNotFoundException } from "src/contexts/establishment-management/establishment/domain/exceptions/establishment-not-found.exception";
 
@@ -20,7 +20,7 @@ export class RegisterBranchOfficeUseCase {
     private readonly establishmentCheckerPort: EstablishmentCheckerPort
   ) {}
 
-  async execute(request: RegisterBranchOfficeDto): Promise<BranchOffice> {
+  async execute(request: RegisterBranchOfficeDto): Promise<BranchOfficeEntity> {
     // 1. Verificar la existencia del Establishment
     const establishmentExists = await this.establishmentCheckerPort.exists(request.establishmentId);
     if (!establishmentExists) {
@@ -44,7 +44,7 @@ export class RegisterBranchOfficeUseCase {
     // Generar un nuevo ID para la sucursal.
     const newBranchOfficeId = BigInt(Math.floor(Math.random() * Number.MAX_SAFE_INTEGER));
 
-    const branchOffice = BranchOffice.create(
+    const branchOffice = BranchOfficeEntity.create(
       newBranchOfficeId,
       name,
       address,

@@ -7,9 +7,11 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   ManyToOne,
-  JoinColumn
+  JoinColumn,
+  OneToMany
 } from 'typeorm';
 import { ProductOrmEntity } from 'src/contexts/product-management/product/infraestructure/persistence/typeorm/entities/product.orm-entity';
+import { InventoryItemOrmEntity } from 'src/contexts/inventory-management/inventory-item/infraestructure/persistence/typeorm/entities/inventory-item.orm-entity';
 
 @Entity('lot')
 @Index(['productId', 'lotNumber'], { unique: true })
@@ -41,6 +43,9 @@ export class LotOrmEntity {
 
   @Column({ type: 'date', name: 'received_date', default: () => 'CURRENT_DATE' })
   receivedDate: Date;
+
+  @OneToMany(()=> InventoryItemOrmEntity, (item)=> item.lot)
+  inventoryItems?: InventoryItemOrmEntity[] | [];
 
   @CreateDateColumn({ type: 'timestamptz', name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

@@ -10,7 +10,7 @@ import { EmployeeBirthDateVO } from "../values-objects/employee-birth-date.vo";
 import { GenderEnum } from "../enums/gender.enum";
 import { EmployeeHireDateVO } from "../values-objects/employee-hire-date.vo";
 import { EmployeeTerminationDateVO } from "../values-objects/employee-termination-date.vo";
-import { BranchOffice } from "src/contexts/establishment-management/branch-office/domain/entities/branch-office.entity";
+import { BranchOfficeEntity } from "src/contexts/establishment-management/branch-office/domain/entities/branch-office.entity";
 import { AddressEntity } from "src/shared/domain/value-objects/address.vo";
 import { EmployeeCurrentSalaryVO } from "../values-objects/employee-current-salary.vo";
 
@@ -37,7 +37,7 @@ export class EmployeeEntity {
     private _deletedAt: Date | null;
     private _domainEvents: DomainEvent<this>[] = [];
     private _employeeRole?: EmployeeRoleEntity|null;
-    private _branchOffice?: BranchOffice|null;
+    private _branchOffice?: BranchOfficeEntity|null;
     private _address?: AddressEntity|null;
 
     private constructor(
@@ -62,7 +62,7 @@ export class EmployeeEntity {
     updatedAt: Date | null,
     deletedAt: Date | null,
     employeeRole?: EmployeeRoleEntity | null,
-    branchOffice?: BranchOffice|null,
+    branchOffice?: BranchOfficeEntity|null,
     address?: AddressEntity|null,
     ) {
         this._employeeId = employeeId;
@@ -172,7 +172,7 @@ export class EmployeeEntity {
         updatedAt: Date | null = null,
         deletedAt: Date | null = null,
         employeeRole?: EmployeeRoleEntity | null,
-        branchOffice?: BranchOffice | null,
+        branchOffice?: BranchOfficeEntity | null,
         address?: AddressEntity | null,
     ): EmployeeEntity {
         return new EmployeeEntity(
@@ -254,7 +254,7 @@ export class EmployeeEntity {
     get employeeRole(): EmployeeRoleEntity | undefined | null {
         return this._employeeRole;
     }
-    get branchOffice(): BranchOffice | undefined | null {
+    get branchOffice(): BranchOfficeEntity | undefined | null {
         return this._branchOffice;
     }
     get address(): AddressEntity | undefined | null {

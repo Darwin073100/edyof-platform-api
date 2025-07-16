@@ -17,6 +17,7 @@ import { SuplierOrmEntity } from 'src/contexts/purchase-management/suplier/infra
 import { LotOrmEntity } from 'src/contexts/purchase-management/lot/infraestructura/persistence/typeorm/entities/lot.orm-entity';
 import { EmployeeRoleOrmEntity } from 'src/contexts/employee-management/employee-role/infraestruture/persistence/typeorm/entities/employee-role-orm-entity';
 import { EmployeeOrmEntity } from 'src/contexts/employee-management/employee/infraestruture/persistence/typeorm/entities/employee-orm-entity';
+import { InventoryItemOrmEntity } from 'src/contexts/inventory-management/inventory-item/infraestructure/persistence/typeorm/entities/inventory-item.orm-entity';
 
 @Module({
     imports: [
@@ -47,7 +48,8 @@ import { EmployeeOrmEntity } from 'src/contexts/employee-management/employee/inf
             SuplierOrmEntity,
             LotOrmEntity,
             EmployeeRoleOrmEntity,
-            EmployeeOrmEntity
+            EmployeeOrmEntity,
+            InventoryItemOrmEntity
           ],
           synchronize: false,
           ...(isProduction && {

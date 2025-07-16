@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { BranchOfficeController } from "./presentation/controllers/branch-office.controller";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { BranchOfficeOrmEntity } from "./infraestructure/persistence/typeorm/entities/branch-office.orm-entity";
-import { BranchOffice } from "./domain/entities/branch-office.entity";
+import { BranchOfficeEntity } from "./domain/entities/branch-office.entity";
 import { TypeOrmBranchOfficeRepository } from "./infraestructure/persistence/typeorm/repositories/typeorm-branch-office.repository";
 import { RegisterBranchOfficeUseCase } from "./application/use-cases/register-branch-office.use-case";
 import { BRANCH_OFFICE_REPOSITORY, BranchOfficeRepository } from "./domain/repositories/branch-office.repository";

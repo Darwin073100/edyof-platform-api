@@ -1,4 +1,4 @@
-import { BranchOffice } from "src/contexts/establishment-management/branch-office/domain/entities/branch-office.entity";
+import { BranchOfficeEntity } from "src/contexts/establishment-management/branch-office/domain/entities/branch-office.entity";
 import { AddressOrmEntity } from "src/shared/infraestructure/typeorm/address.orm-entity";
 import { DataSource, Repository } from "typeorm";
 import { SuplierOrmEntity } from "../entities/suplier.orm-entity";

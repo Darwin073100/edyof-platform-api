@@ -1,4 +1,4 @@
-import { BranchOffice } from "../entities/branch-office.entity";
+import { BranchOfficeEntity } from "../entities/branch-office.entity";
 
 /**
  * BranchOfficeRepository es una interfaz (Puerto de Salida) que define
@@ -9,8 +9,8 @@ import { BranchOffice } from "../entities/branch-office.entity";
  * Esto asegura la Inversión de Dependencias y la Independencia del Framework.
  */
 export interface BranchOfficeRepository {
-    save(branchOffice: BranchOffice): Promise<BranchOffice>;
-    findById(id: bigint): Promise<BranchOffice | null>;
+    save(branchOffice: BranchOfficeEntity): Promise<BranchOfficeEntity>;
+    findById(id: bigint): Promise<BranchOfficeEntity | null>;
     // Podríamos añadir otros métodos como:
     // findByEstablishmentId(EstablishmentId: bigint): Promise<BranchOffice[]>;
     // delete(id: bigint): Promise<void>;

@@ -1,8 +1,15 @@
+/**
+ * Punto de entrada principal de la aplicación NestJS.
+ * Configura globalmente validaciones, filtros y CORS.
+ */
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { AllExceptionsFilter } from './shared/presentation/http/filters/all-exceptions.filter';
 
+/**
+ * Inicializa la aplicación NestJS y configura middlewares globales.
+ */
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // Definir un prefijo global para todas las rutas de la API (ej. /api/v1)

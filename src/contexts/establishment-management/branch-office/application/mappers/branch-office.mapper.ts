@@ -1,4 +1,4 @@
-import { BranchOffice } from "../../domain/entities/branch-office.entity";
+import { BranchOfficeEntity } from "../../domain/entities/branch-office.entity";
 import { BranchOfficeResponseDto } from "../dtos/branch-office-response.dto";
 
 /**
@@ -16,7 +16,7 @@ export class BranchOfficeMapper {
      * @param entity La entidad BranchOffice a mapear.
      * @returns Un BranchOfficeResponseDto.
      */
-    public static toResponseDto(entity: BranchOffice): BranchOfficeResponseDto {
+    public static toResponseDto(entity: BranchOfficeEntity): BranchOfficeResponseDto {
       return new BranchOfficeResponseDto(
         entity.branchOfficeId,
         entity.establishmentId,

@@ -7,6 +7,8 @@ import { LOT_REPOSITORY, LotRepository } from "./domain/repositories/lot.reposit
 import { TypeOrmLotRepository } from "./infraestructura/persistence/typeorm/repositories/typeorm-lot.repository";
 import { RegisterLotUseCase } from "./application/use-case/register-lot.use-case";
 import { PRODUCT_CHECKER_PORT, ProductCheckerPort } from "src/contexts/product-management/product/domain/ports/out/product-checker.port";
+import { LOT_CHECKER_PORT } from "./domain/ports/out/lot-checker.port";
+import { LotCheckerAdapter } from "./infraestructura/persistence/typeorm/external-service/lot-checker.adapter";
 
 @Module({
     imports:[
@@ -17,6 +19,10 @@ import { PRODUCT_CHECKER_PORT, ProductCheckerPort } from "src/contexts/product-m
         {
             provide: LOT_REPOSITORY,
             useClass: TypeOrmLotRepository
+        },
+        {
+            provide: LOT_CHECKER_PORT,
+            useClass: LotCheckerAdapter
         },
         {
             provide: RegisterLotUseCase,
@@ -31,6 +37,9 @@ import { PRODUCT_CHECKER_PORT, ProductCheckerPort } from "src/contexts/product-m
     ],
     controllers: [
         LotController
+    ],
+    exports: [
+        LOT_CHECKER_PORT
     ]
 })
 export class LotModule{}

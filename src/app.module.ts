@@ -1,3 +1,6 @@
+/**
+ * Módulo raíz de la aplicación. Importa y agrupa todos los módulos principales.
+ */
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeormConfigModule } from './config/database/typeorm/typeorm-config.module';
@@ -13,6 +16,7 @@ import { SuplierModule } from './contexts/purchase-management/suplier/suplier.mo
 import { LotModule } from './contexts/purchase-management/lot/lot.module';
 import { EmployeeRoleModule } from './contexts/employee-management/employee-role/employee-role.module';
 import { EmployeeModule } from './contexts/employee-management/employee/employee.module';
+import { InventoryItemModule } from './contexts/inventory-management/inventory-item/inventory-item.module';
 
 @Module({
   imports: [
@@ -32,7 +36,8 @@ import { EmployeeModule } from './contexts/employee-management/employee/employee
     SuplierModule,
     LotModule,
     EmployeeRoleModule,
-    EmployeeModule
+    EmployeeModule,
+    InventoryItemModule
   ],
 })
 export class AppModule {}

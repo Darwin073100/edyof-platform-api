@@ -3,14 +3,15 @@
 import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus, Logger } from '@nestjs/common';
 
 /**
- * AllExceptionsFilter es un filtro de excepciones global que captura
- * todas las excepciones que no son manejadas explícitamente en los controladores.
- * Convierte las excepciones en respuestas HTTP estandarizadas.
+ * Filtro global que captura y transforma todas las excepciones en respuestas HTTP estándar.
  */
 @Catch() // Atrapa todas las excepciones
 export class AllExceptionsFilter implements ExceptionFilter {
   private readonly logger = new Logger(AllExceptionsFilter.name);
 
+  /**
+   * Maneja cualquier excepción lanzada en la app y responde con JSON estándar.
+   */
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();

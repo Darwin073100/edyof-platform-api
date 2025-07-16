@@ -14,7 +14,7 @@ import { EmployeeEntity } from '../../../../employee-management/employee/domain/
    * Es el punto de consistencia transaccional para la sucursal y su dirección.
    * Contiene la identidad de la sucursal y encapsula la lógica de negocio.
    */
-  export class BranchOffice {
+  export class BranchOfficeEntity {
     private readonly _branchId: bigint;
     private _name: BranchOfficeNameVO;
     private _address: AddressEntity; // La dirección es parte de la sucursal
@@ -92,8 +92,8 @@ import { EmployeeEntity } from '../../../../employee-management/employee/domain/
       name: Name,
       address: AddressEntity,
       establishmentId: bigint,
-    ): BranchOffice {
-      const branchOffice = new BranchOffice(
+    ): BranchOfficeEntity {
+      const branchOffice = new BranchOfficeEntity(
         branchOfficeId,
         name,
         address,
@@ -129,8 +129,8 @@ import { EmployeeEntity } from '../../../../employee-management/employee/domain/
       createdAt: Date,
       updatedAt: Date | null = null,
       deletedAt: Date | null = null,
-    ): BranchOffice {
-      return new BranchOffice(
+    ): BranchOfficeEntity {
+      return new BranchOfficeEntity(
         branchOfficeId,
         name,
         address,

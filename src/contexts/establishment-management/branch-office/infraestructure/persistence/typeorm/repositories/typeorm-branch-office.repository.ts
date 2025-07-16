@@ -1,4 +1,4 @@
-import { BranchOffice } from "src/contexts/establishment-management/branch-office/domain/entities/branch-office.entity";
+import { BranchOfficeEntity } from "src/contexts/establishment-management/branch-office/domain/entities/branch-office.entity";
 import { AddressOrmEntity } from "src/shared/infraestructure/typeorm/address.orm-entity";
 import { DataSource, Repository } from "typeorm";
 import { BranchOfficeOrmEntity } from "../entities/branch-office.orm-entity";
@@ -18,7 +18,7 @@ export class TypeOrmBranchOfficeRepository implements BranchOfficeRepository {
     this.ormEstablishmentRepository = this.dataSource.getRepository(EstablishmentOrmEntity);
   }
 
-  async save(branchOffice: BranchOffice): Promise<BranchOffice> {
+  async save(branchOffice: BranchOfficeEntity): Promise<BranchOfficeEntity> {
     // 1. Mapear el Value Object de dominio Address a AddressOrmEntity
     // Si la BranchOffice ya existe (tiene un ID), su AddressOrmEntity asociada
     // debería haber sido cargada por 'eager: true'.
@@ -60,7 +60,7 @@ export class TypeOrmBranchOfficeRepository implements BranchOfficeRepository {
     return entity;
   }
 
-  async findById(id: bigint): Promise<BranchOffice | null> {
+  async findById(id: bigint): Promise<BranchOfficeEntity | null> {
     const branchOrmEntity = await this.ormBranchOfficeRepository.findOne({
       where: { branchOfficeId: id },
       relations: ['address'], // 'eager: true' en la entidad ya debería cargarla, pero es buena práctica indicarlo
