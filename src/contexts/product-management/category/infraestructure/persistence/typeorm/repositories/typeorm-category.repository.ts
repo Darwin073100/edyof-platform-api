@@ -24,8 +24,10 @@ export class TypeormCategoryRepository implements CategoryRepository{
         return CategoryMapper.toDomainEntity(ormEntity);
     }
 
-    findAll(): Promise<CategoryEntity[]> {
-        throw new Error("Method not implemented.");
+    async findAll(): Promise<CategoryEntity[]> {
+        const result = await this.typeormRepository.find({});
+        const categoryList = result.map(item => CategoryMapper.toDomainEntity(item));
+        return categoryList;
     }
 
     async save(entity: CategoryEntity): Promise<CategoryEntity> {

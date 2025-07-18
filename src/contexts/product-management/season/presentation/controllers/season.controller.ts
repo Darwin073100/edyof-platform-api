@@ -1,4 +1,4 @@
-import { BadRequestException, Body, ConflictException, Controller, HttpCode, HttpStatus, Post } from "@nestjs/common";
+import { BadRequestException, Body, ConflictException, Controller, Get, HttpCode, HttpStatus, Post } from "@nestjs/common";
 import { RegisterSeasonUseCase } from "../../application/use-cases/register-season.use-case";
 import { RegisterSeasonDto } from "../../application/dtos/register-season.dto";
 import { RegisterSeasonRequestDto } from "../dtos/register-season-request.dto";
@@ -6,10 +6,14 @@ import { SeasonMapper } from "../../application/mappers/season-mapper";
 import { SeasonResponseDto } from "../../application/dtos/season-response.dto";
 import { SeasonAlreadyExistsException } from "../../domain/exceptions/season-already-exists.exception";
 import { InvalidSeasonException } from "../../domain/exceptions/invalid-season.exception";
+import { ViewAllSeasonsUseCase } from "../../application/use-cases/view-all-seasons.use-case";
 
 @Controller('seasons')
 export class SeasonController {
-  constructor(private readonly registerSeasonUseCase: RegisterSeasonUseCase) {}
+  constructor(
+    private readonly registerSeasonUseCase: RegisterSeasonUseCase,
+    private readonly viewAllSeasonsUseCase: ViewAllSeasonsUseCase,
+  ) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -33,6 +37,21 @@ export class SeasonController {
       if (error instanceof SeasonAlreadyExistsException)
         throw new ConflictException(error.message);
 
+      throw error;
+    }
+  }
+
+  @Get()
+  @HttpCode(HttpStatus.OK)
+  async viewAllSeasons(){
+    try {
+      const result = await this.viewAllSeasonsUseCase.execute();
+      const seasonList = result.map(item => SeasonMapper.toResponseDto(item));
+      return {
+        seasons: seasonList
+      }
+
+    } catch (error) {
       throw error;
     }
   }

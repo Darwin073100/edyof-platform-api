@@ -9,6 +9,7 @@ import { BrandRepository } from 'src/contexts/product-management/brand/domain/re
 import { BrandEntity } from 'src/contexts/product-management/brand/domain/entities/brand.entity';
 import { BrandNameVO } from 'src/contexts/product-management/brand/domain/values-objects/brand-name.vo';
 import { BrandAlreadyExistsException } from 'src/contexts/product-management/brand/domain/exceptions/brand-already-exists.exception';
+import { BrandMapper } from '../mappers/brand.mapper';
 
 /**
  * TypeOrmEducationalCenterRepository es la implementación concreta de la interfaz
@@ -126,5 +127,15 @@ export class TypeOrmBrandRepository implements BrandRepository {
       ormEntity.updatedAt,
       ormEntity.deletedAt,
     );
+  }
+
+  delete(entityId: bigint): Promise<BrandEntity | null> {
+    throw new Error('Metodo no implementado');
+  }
+
+  async findAll(): Promise<[] | BrandEntity[]> {
+    const result = await this.typeOrmRepository.find({});
+    const brandList = result.map(item => BrandMapper.toDomainEntity(item));
+    return brandList;
   }
 }

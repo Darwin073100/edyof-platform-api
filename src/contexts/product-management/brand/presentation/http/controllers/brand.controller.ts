@@ -23,6 +23,7 @@ import { RegisterBrandRequestDto } from '../dtos/register-brand-request.dto';
 import { ParamIdDto } from 'src/shared/presentation/http/dtos/param-id.dto';
 import { InvalidBrandException } from '../../../domain/exceptions/invalid-brand.exception';
 import { BrandAlreadyExistsException } from '../../../domain/exceptions/brand-already-exists.exception';
+import { ViewAllBrandsUseCase } from '../../../application/use-cases/view-all-brands.use-case';
 
 /**
  * EducationalCenterController es el controlador de NestJS que maneja las solicitudes HTTP
@@ -36,8 +37,9 @@ import { BrandAlreadyExistsException } from '../../../domain/exceptions/brand-al
 export class BrandController {
   constructor(
     // Inyectamos los Casos de Uso. El controlador no tiene lógica de negocio.
-    private readonly registerEstablishmentUseCase: RegisterBrandUseCase,
-    private readonly findEstablishmentByIdUseCase: FindBrandByIdUseCase, // Se inyectará aquí
+    private readonly registerBrandUseCase: RegisterBrandUseCase,
+    private readonly findBrandByIdUseCase: FindBrandByIdUseCase,
+    private readonly viewAllBrandsUseCase: ViewAllBrandsUseCase,
   ) {}
 
   /**
@@ -66,7 +68,7 @@ export class BrandController {
       const registerAppDto = new RegisterBrandDto(registerRequestDto.name);
 
       // 2. Ejecutar el Caso de Uso (que contiene la orquestación de la lógica de negocio).
-      const brand = await this.registerEstablishmentUseCase.execute(registerAppDto);
+      const brand = await this.registerBrandUseCase.execute(registerAppDto);
         
       // 3. Mapear la entidad de dominio resultante a un DTO de respuesta para la API.
       return BrandMapper.toResponseDto(brand);
@@ -108,7 +110,7 @@ export class BrandController {
 
     // 2. Ejecutar el Caso de Uso para encontrar el centro.
     const establishment =
-      await this.findEstablishmentByIdUseCase.execute(centerId);
+      await this.findBrandByIdUseCase.execute(centerId);
 
     if (!establishment) {
       // Lanzar una excepción de NestJS que se mapee a un 404
@@ -122,5 +124,17 @@ export class BrandController {
     }
   }
 
-  // Otros endpoints como PUT para actualización, DELETE para borrado, etc.
+  @Get()
+  @HttpCode(HttpStatus.OK)
+  async viewAllBrands(){
+    try {
+      const result = await this.viewAllBrandsUseCase.execute();
+      const brandlistResponse = result.map(item => BrandMapper.toResponseDto(item));
+      return {
+        brands: brandlistResponse
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
 }

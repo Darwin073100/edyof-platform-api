@@ -11,6 +11,7 @@ import { PRODUCT_CHECKER_PORT, ProductCheckerPort } from "src/contexts/product-m
 import { LOT_CHECKER_PORT, LotCheckerPort } from "src/contexts/purchase-management/lot/domain/ports/out/lot-checker.port";
 import { BRANCH_OFFICE_CHECKER_PORT, BranchOfficeCheckerPort } from "src/contexts/establishment-management/branch-office/domain/ports/out/branch-office-checker.port";
 import { InventoryItemController } from "./presentation/controllers/inventory-item.controller";
+import { ViewAllInventoryItemUseCase } from "./application/use-case/view-all-inventory-item.use-case";
 
 @Module({
     imports: [
@@ -30,6 +31,13 @@ import { InventoryItemController } from "./presentation/controllers/inventory-it
                 return new RegisterInventoryItemUseCase(repo, productCheck, lotCheck, branchCheck)
             },
             inject:[INVENTORY_ITEM_REPOSITORY, PRODUCT_CHECKER_PORT, LOT_CHECKER_PORT, BRANCH_OFFICE_CHECKER_PORT]
+        },
+        {
+            provide: ViewAllInventoryItemUseCase,
+            useFactory: (repository: InventoryItemRepository)=>{
+                return new ViewAllInventoryItemUseCase(repository);
+            },
+            inject:[INVENTORY_ITEM_REPOSITORY]
         }
     ],
     controllers: [

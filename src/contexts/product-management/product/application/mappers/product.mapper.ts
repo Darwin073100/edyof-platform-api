@@ -1,3 +1,4 @@
+import { CategoryMapper } from 'src/contexts/product-management/category/application/mappers/category-mapper';
 import { ProductEntity } from '../../domain/entities/product.entity';
 import { ProductResponseDto } from '../dtos/product-response.dto';
 
@@ -19,6 +20,7 @@ export class ProductMapper {
       createdAt: product.createdAt,
       updatedAt: product.updatedAt ?? null,
       deletedAt: product.deletedAt ?? null,
+      category: product.category? CategoryMapper.toResponseDto(product.category): null,
     };
   }
 }

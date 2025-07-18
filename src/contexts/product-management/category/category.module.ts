@@ -7,6 +7,7 @@ import { CATEGORY_REPOSITORY, CategoryRepository } from './domain/repositories/c
 import { TypeormCategoryRepository } from './infraestructure/persistence/typeorm/repositories/typeorm-category.repository';
 import { CATEGORY_CHECKER_PORT } from './domain/ports/out/category-checker.port';
 import { TypeormCategoryCheckerAdapter } from './infraestructure/persistence/typeorm/external-services/typeorm-category-checker.adapter';
+import { ViewAllCategoriesUseCase } from './application/use-cases/view-all-categories.use-case';
 
 @Module({
   imports: [TypeOrmModule.forFeature([CategoryOrmEntity])],
@@ -27,10 +28,16 @@ import { TypeormCategoryCheckerAdapter } from './infraestructure/persistence/typ
         return new RegisterCategoryUseCase(repo);
       },
       inject: [
-        CATEGORY_CHECKER_PORT,
         CATEGORY_REPOSITORY
       ], // Declara la dependencia para el factory
     },
+    {
+      provide: ViewAllCategoriesUseCase,
+      useFactory: (repository: CategoryRepository)=>{
+        return new ViewAllCategoriesUseCase(repository);
+      },
+      inject: [CATEGORY_REPOSITORY]
+    }
   ],
   exports: [
     CATEGORY_CHECKER_PORT

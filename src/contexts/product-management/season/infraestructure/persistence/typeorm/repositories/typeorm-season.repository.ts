@@ -25,8 +25,10 @@ export class TypeormSeasonRepository implements SeasonRepository {
     return SeasonMapper.toDomainEntity(ormEntity);
   }
 
-  findAll(): Promise<SeasonEntity[]> {
-    throw new Error("Method not implemented.");
+  async findAll(): Promise<SeasonEntity[]> {
+    const result = await this.typeormRepository.find({});
+    const seasonList = result.map(item => SeasonMapper.toDomainEntity(item)); 
+    return seasonList;
   }
   
   async save(entity: SeasonEntity): Promise<SeasonEntity> {
@@ -55,5 +57,9 @@ export class TypeormSeasonRepository implements SeasonRepository {
       }
       throw error;
     }
+  }
+
+  delete(entityId: bigint): Promise<SeasonEntity | null> {
+    throw new Error('Este metodo no está impementado');
   }
 }

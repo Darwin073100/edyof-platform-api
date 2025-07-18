@@ -21,12 +21,18 @@ export class TypeormInventoryItemRepository implements InventoryItemRepository{
     }
     
     async findById(entityId: bigint): Promise<InventoryItemEntity | null> {
-        const result = await this.inventoryItemRepository.findOne({ where: { inventoryItemId: entityId } });
+        const result = await this.inventoryItemRepository.findOne({ 
+            where: { inventoryItemId: entityId },
+            relations:['product','product.category','lot'] 
+        });
+        console.log(result);
         return result ? InventoryItemMapper.toDomain(result) : null;
     }
 
     async findAll(): Promise<[] | InventoryItemEntity[]> {
-        const result = await this.inventoryItemRepository.find({});
+        const result = await this.inventoryItemRepository.find({
+            relations: ['product','product.category','lot']
+        });
         
         if(result.length === 0) return [];
 

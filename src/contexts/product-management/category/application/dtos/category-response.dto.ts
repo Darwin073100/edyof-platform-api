@@ -7,14 +7,14 @@ export class CategoryResponseDto {
   readonly deletedAt: Date | null; // La fecha de borrado lógico
 
   constructor(
-    educationalCenterId: string,
+    categoryId: string,
     name: string,
     createdAt: Date,
     updatedAt: Date | null,
     deletedAt: Date | null,
     description?: string|null,
   ) {
-    this.categoryId = educationalCenterId;
+    this.categoryId = categoryId;
     this.name = name;
     this.description = description;
     this.createdAt = createdAt;

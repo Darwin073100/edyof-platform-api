@@ -11,6 +11,7 @@ import { FindBrandByIdUseCase } from './application/use-cases/find-brand-by-id.u
 import { BrandController } from './presentation/http/controllers/brand.controller';
 import { BRAND_CHECKER_PORT } from './domain/ports/out/brand-checker.port';
 import { TypeormBrandCheckerAdapter } from './infraestruture/persistence/typeorm/external-services/typeorm-brand-checker.adapter';
+import { ViewAllBrandsUseCase } from './application/use-cases/view-all-brands.use-case';
 
 /**
  * EstablishmentModule es el módulo de NestJS que agrupa todos los componentes
@@ -45,21 +46,17 @@ import { TypeormBrandCheckerAdapter } from './infraestruture/persistence/typeorm
       useClass: TypeormBrandCheckerAdapter
     },
     {
-      provide: RegisterBrandUseCase, // Provee el caso de uso
-      useFactory: (repo: BrandRepository) => {
-        // NestJS inyecta el repo aquí basado en el token
-        return new RegisterBrandUseCase(repo);
-      },
+      provide: RegisterBrandUseCase, useFactory: (repo: BrandRepository) => { return new RegisterBrandUseCase(repo); },
       inject: [BRAND_REPOSITORY], // Declara la dependencia para el factory
     },
     {
-      provide: FindBrandByIdUseCase, // Provee el caso de uso
-      useFactory: (repo: BrandRepository) => {
-        // NestJS inyecta el repo aquí basado en el token
-        return new FindBrandByIdUseCase(repo);
-      },
+      provide: FindBrandByIdUseCase, useFactory: (repo: BrandRepository) => { return new FindBrandByIdUseCase(repo); },
       inject: [BRAND_REPOSITORY], // Declara la dependencia para el factory
     },
+    {
+      provide: ViewAllBrandsUseCase, useFactory: (repository: BrandRepository)=> { return new ViewAllBrandsUseCase(repository); },
+      inject: [BRAND_REPOSITORY] 
+    }
 
     // --- Casos de Uso (Servicios de Aplicación) ---
     // NestJS es lo suficientemente inteligente para inyectar automáticamente
