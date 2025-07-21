@@ -15,6 +15,8 @@ export class InventoryResponseDto {
     readonly internalBarCode?     : string | null;
     readonly salePriceOne?        : number | null;
     readonly salePriceMany?       : number | null;
+    readonly saleQuantityMany?    : number | null;
+    readonly salePriceSpecial?    : number | null;
     readonly minStockBranch?      : number | null;
     readonly maxStockBranch?      : number | null;
     readonly createdAt            : Date;
@@ -37,6 +39,8 @@ export class InventoryResponseDto {
         internalBarCode?     : string | null,
         salePriceOne?        : number | null,
         salePriceMany?       : number | null,
+        saleQuantityMany?    : number | null,
+        salePriceSpecial?    : number | null,
         minStockBranch?      : number | null,
         maxStockBranch?      : number | null,
         updatedAt?           : Date|null,
@@ -57,6 +61,8 @@ export class InventoryResponseDto {
         this.internalBarCode      = internalBarCode ?? null;
         this.salePriceOne         = salePriceOne ?? null;
         this.salePriceMany        = salePriceMany ?? null;
+        this.saleQuantityMany     = saleQuantityMany ?? null;
+        this.salePriceSpecial     = salePriceSpecial ?? null;
         this.minStockBranch       = minStockBranch ?? null;
         this.maxStockBranch       = maxStockBranch ?? null;
         this.updatedAt            = updatedAt ?? null;

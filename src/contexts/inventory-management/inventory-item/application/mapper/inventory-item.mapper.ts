@@ -19,6 +19,8 @@ export class InventoryItemMapper {
             entity.internalBarCode?.value,
             entity.salePriceOne?.value,
             entity.salePriceMany?.value,
+            entity.saleQuantityMany?.value,
+            entity.salePriceSpecial?.value,
             entity.minStockBranch?.value,
             entity.maxStockBranch?.value,
             entity.updatedAt,

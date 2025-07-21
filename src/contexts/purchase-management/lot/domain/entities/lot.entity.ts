@@ -6,6 +6,7 @@ import { ExpirationDateVO } from '../value-objects/expiration-date.vo';
 import { ManufacturingDateVO } from '../value-objects/manufacturing-date.vo';
 import { ReceivedDateVO } from '../value-objects/received-date.vo';
 import { ProductEntity } from 'src/contexts/product-management/product/domain/entities/product.entity';
+import { InventoryItemEntity } from 'src/contexts/inventory-management/inventory-item/domain/entities/inventory-item.entity';
 
 export class LotEntity {
   private readonly _lotId: bigint;
@@ -22,6 +23,7 @@ export class LotEntity {
   private _domainEvents: DomainEvent<LotEntity>[] = [];
 
   private _product?: ProductEntity | null;
+  private _inventoryItems?: InventoryItemEntity[] | null;
 
   private constructor(
     lotId: bigint,
@@ -35,7 +37,8 @@ export class LotEntity {
     manufacturingDate?: ManufacturingDateVO | null,
     updatedAt?: Date | null,
     deletedAt?: Date | null,
-    product?: ProductEntity | null
+    product?: ProductEntity | null,
+    inventoryItems?: InventoryItemEntity[] | null,
   ) {
     this._lotId = lotId;
     this._productId = productId;
@@ -49,6 +52,7 @@ export class LotEntity {
     this._updatedAt = updatedAt;
     this._deletedAt = deletedAt;
     this._product = product ?? null;
+    this._inventoryItems = inventoryItems ?? null;
   }
 
   static create(
@@ -74,7 +78,8 @@ export class LotEntity {
       manufacturingDate,
       null,
       null,
-      null
+      null,
+      null,
     );
   }
 
@@ -90,7 +95,8 @@ export class LotEntity {
     manufacturingDate?: ManufacturingDateVO | null,
     updatedAt?: Date | null,
     deletedAt?: Date | null,
-    product?: ProductEntity | null
+    product?: ProductEntity | null,
+    inventoryItems?: InventoryItemEntity[] | null,
   ): LotEntity {
     return new LotEntity(
       lotId,
@@ -104,7 +110,8 @@ export class LotEntity {
       manufacturingDate,
       updatedAt,
       deletedAt,
-      product ?? null
+      product ?? null,
+      inventoryItems ?? null,
     );
   }
 
@@ -144,6 +151,9 @@ export class LotEntity {
   }
   get product(): ProductEntity | null | undefined {
     return this._product;
+  }
+  get inventoryItems(): InventoryItemEntity[] | null | undefined {
+    return this._inventoryItems;
   }
 
   // Métodos de dominio

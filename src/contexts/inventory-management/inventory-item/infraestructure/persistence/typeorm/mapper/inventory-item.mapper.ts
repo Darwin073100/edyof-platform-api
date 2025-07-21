@@ -10,6 +10,8 @@ import { InventoryItemMaxStockBranchVO } from "src/contexts/inventory-management
 import { ProductTypeOrmMapper } from "src/contexts/product-management/product/infraestructure/persistence/typeorm/mappers/product.mapper";
 import { LotMapper } from "src/contexts/purchase-management/lot/infraestructura/persistence/typeorm/mappers/lot.mapper";
 import { BranchOfficeMapper } from "src/contexts/establishment-management/branch-office/infraestructure/persistence/typeorm/mappers/branch-office.mapper";
+import { InventoryItemSaleQuantityManyVO } from "src/contexts/inventory-management/inventory-item/domain/value-objects/inventory-item-sale-quantity-many.vo";
+import { InventoryItemSalePriceSpecialVO } from "src/contexts/inventory-management/inventory-item/domain/value-objects/inventory-item-sale-price-special.vo";
 
 export class InventoryItemMapper {
     static toDomain(ormEntity: InventoryItemOrmEntity){
@@ -27,6 +29,8 @@ export class InventoryItemMapper {
             InventoryItemInternalBarCodeVO.create(ormEntity.internalBarCode),
             InventoryItemSalePriceOneVO.create(ormEntity.salePriceOne),
             InventoryItemSalePriceManyVO.create(ormEntity.salePriceMany),
+            InventoryItemSaleQuantityManyVO.create(ormEntity.saleQuantityMany),
+            InventoryItemSalePriceSpecialVO.create(ormEntity.salePriceSpecial),
             InventoryItemMinStockBranchVO.create(ormEntity.minStockBranch),
             InventoryItemMaxStockBranchVO.create(ormEntity.maxStockBranch),
             ormEntity.product? ProductTypeOrmMapper.toDomain(ormEntity.product): null,
@@ -53,6 +57,8 @@ export class InventoryItemMapper {
         ormEntity.internalBarCode = domainEntity.internalBarCode?.value;
         ormEntity.salePriceOne = domainEntity.salePriceOne?.value;
         ormEntity.salePriceMany = domainEntity.salePriceMany?.value;
+        ormEntity.saleQuantityMany = domainEntity.saleQuantityMany?.value;
+        ormEntity.salePriceSpecial = domainEntity.salePriceSpecial?.value;
         ormEntity.minStockBranch = domainEntity.minStockBranch?.value;
         ormEntity.maxStockBranch = domainEntity.maxStockBranch?.value;
         ormEntity.product = domainEntity.product ? ProductTypeOrmMapper.toOrm(domainEntity.product): null;

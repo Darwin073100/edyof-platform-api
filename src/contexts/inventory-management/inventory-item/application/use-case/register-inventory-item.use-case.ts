@@ -12,6 +12,8 @@ import { InventoryItemSalePriceManyVO } from "../../domain/value-objects/invento
 import { InventoryItemMinStockBranchVO } from "../../domain/value-objects/inventory-item-min-stock-branch.vo";
 import { InventoryItemMaxStockBranchVO } from "../../domain/value-objects/inventory-item-max-stock-branch.vo";
 import { InventoryItemNotFoundException } from "../../domain/exceptions/inventory-item-not-found.exception";
+import { InventoryItemSaleQuantityManyVO } from "../../domain/value-objects/inventory-item-sale-quantity-many.vo";
+import { InventoryItemSalePriceSpecialVO } from "../../domain/value-objects/inventory-item-sale-price-special.vo";
 
 export class RegisterInventoryItemUseCase{
     constructor(
@@ -58,6 +60,8 @@ export class RegisterInventoryItemUseCase{
             InventoryItemInternalBarCodeVO.create(dto.internalBarCode),
             InventoryItemSalePriceOneVO.create(dto.salePriceOne),
             InventoryItemSalePriceManyVO.create(dto.salePriceMany),
+            InventoryItemSaleQuantityManyVO.create(dto.saleQuantityMany),
+            InventoryItemSalePriceSpecialVO.create(dto.salePriceSpecial),
             InventoryItemMinStockBranchVO.create(dto.minStockBranch),
             InventoryItemMaxStockBranchVO.create(dto.maxStockBranch),
         );

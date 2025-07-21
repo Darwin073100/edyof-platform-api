@@ -9,6 +9,7 @@ import { CategoryEntity } from 'src/contexts/product-management/category/domain/
 import { BrandEntity } from 'src/contexts/product-management/brand/domain/entities/brand.entity';
 import { SeasonEntity } from 'src/contexts/product-management/season/domain/entities/season.entity';
 import { LotEntity } from 'src/contexts/purchase-management/lot/domain/entities/lot.entity';
+import { InventoryItemEntity } from 'src/contexts/inventory-management/inventory-item/domain/entities/inventory-item.entity';
 
 export class ProductEntity {
   private readonly _productId: bigint;
@@ -33,6 +34,7 @@ export class ProductEntity {
   private _brand?: BrandEntity | null;
   private _season?: SeasonEntity | null;
   private _lots?: LotEntity[] | null;
+  private _inventoryItems?: InventoryItemEntity[]|null;
 
   private constructor(
     productId: bigint,
@@ -54,7 +56,8 @@ export class ProductEntity {
     category?: CategoryEntity | null,
     brand?: BrandEntity | null,
     season?: SeasonEntity | null,
-    lots?: LotEntity[] | null
+    lots?: LotEntity[] | null,
+    inventoryItems?: InventoryItemEntity[]|null
   ) {
     this._productId = productId;
     this._establishmentId = establishmentId;
@@ -76,6 +79,7 @@ export class ProductEntity {
     this._brand = brand ?? null;
     this._season = season ?? null;
     this._lots = lots ?? null;
+    this._inventoryItems = inventoryItems ?? null;
   }
 
   static create(
@@ -113,6 +117,7 @@ export class ProductEntity {
       null,
       null,
       null,
+      null,
       null
     );
   }
@@ -137,7 +142,8 @@ export class ProductEntity {
     category?: CategoryEntity | null,
     brand?: BrandEntity | null,
     season?: SeasonEntity | null,
-    lots?: LotEntity[] | null
+    lots?: LotEntity[] | null,
+    inventoryItems?: InventoryItemEntity[]|null,
   ): ProductEntity {
     return new ProductEntity(
       productId,
@@ -159,7 +165,8 @@ export class ProductEntity {
       category ?? null,
       brand ?? null,
       season ?? null,
-      lots ?? null
+      lots ?? null,
+      inventoryItems ?? null,
     );
   }
 
@@ -225,6 +232,9 @@ export class ProductEntity {
   }
   get lots(): LotEntity[] | null | undefined {
     return this._lots;
+  }
+  get inventories(): InventoryItemEntity[] | null | undefined {
+    return this._inventoryItems;
   }
 
   // Métodos de comportamiento del dominio

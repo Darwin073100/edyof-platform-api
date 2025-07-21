@@ -9,6 +9,7 @@ import { InventoryItemMinStockBranchVO } from "../value-objects/inventory-item-m
 import { InventoryItemMaxStockBranchVO } from "../value-objects/inventory-item-max-stock-branch.vo";
 import { LocationEnum } from "../enums/location.enum";
 import { InventoryItemQuantityOnHandVO } from "../value-objects/inventory-item-quantity-on-hand.vo";
+import { InventoryItemSalePriceSpecialVO } from "../value-objects/inventory-item-sale-price-special.vo";
 
 export class InventoryItemEntity{
     private readonly _inventoryItemId : bigint;
@@ -21,6 +22,8 @@ export class InventoryItemEntity{
     private _purchasePriceAtStock     : InventoryItemPurchasePriceAtStockVO;
     private _salePriceOne?            : InventoryItemSalePriceOneVO | null;
     private _salePriceMany?           : InventoryItemSalePriceManyVO | null;
+    private _saleQuantityMany?        : InventoryItemSalePriceSpecialVO | null;
+    private _salePriceSpecial?        : InventoryItemSalePriceSpecialVO | null;
     private _minStockBranch?          : InventoryItemMinStockBranchVO | null;
     private _maxStockBranch?          : InventoryItemMaxStockBranchVO | null;
     private _lastStockedAt            : Date;
@@ -46,6 +49,8 @@ export class InventoryItemEntity{
         internalBarCode?     : InventoryItemInternalBarCodeVO | null,
         salePriceOne?        : InventoryItemSalePriceOneVO | null,
         salePriceMany?       : InventoryItemSalePriceManyVO | null,
+        saleQuantityMany? : InventoryItemSalePriceSpecialVO | null,
+        salePriceSpecial? : InventoryItemSalePriceSpecialVO | null,
         minStockBranch?      : InventoryItemMinStockBranchVO | null,
         maxStockBranch?      : InventoryItemMaxStockBranchVO | null,
         product?             : ProductEntity | null,
@@ -68,6 +73,8 @@ export class InventoryItemEntity{
         this._internalBarCode      = internalBarCode;
         this._salePriceOne         = salePriceOne;
         this._salePriceMany        = salePriceMany;
+        this._saleQuantityMany     = saleQuantityMany;
+        this._salePriceSpecial     = salePriceSpecial;
         this._minStockBranch       = minStockBranch;
         this._maxStockBranch       = maxStockBranch;
         this._product              = product;
@@ -106,6 +113,12 @@ export class InventoryItemEntity{
     }
     get salePriceMany(){
         return this._salePriceMany;
+    }
+    get saleQuantityMany(){
+        return this._saleQuantityMany;
+    }
+    get salePriceSpecial(){
+        return this._salePriceSpecial;
     }
     get minStockBranch(){
         return this._minStockBranch;
@@ -151,6 +164,8 @@ export class InventoryItemEntity{
         internalBarCode?     : InventoryItemInternalBarCodeVO | null,
         salePriceOne?        : InventoryItemSalePriceOneVO | null,
         salePriceMany?       : InventoryItemSalePriceManyVO | null,
+        saleQuantityMany? : InventoryItemSalePriceSpecialVO | null,
+        salePriceSpecial? : InventoryItemSalePriceSpecialVO | null,
         minStockBranch?      : InventoryItemMinStockBranchVO | null,
         maxStockBranch?      : InventoryItemMaxStockBranchVO | null,
     ){
@@ -168,6 +183,8 @@ export class InventoryItemEntity{
             internalBarCode,
             salePriceOne,
             salePriceMany,
+            saleQuantityMany,
+            salePriceSpecial,
             minStockBranch,
             maxStockBranch,
             null,
@@ -193,6 +210,8 @@ export class InventoryItemEntity{
         internalBarCode?     : InventoryItemInternalBarCodeVO | null,
         salePriceOne?        : InventoryItemSalePriceOneVO | null,
         salePriceMany?       : InventoryItemSalePriceManyVO | null,
+        saleQuantityMany? : InventoryItemSalePriceSpecialVO | null,
+        salePriceSpecial? : InventoryItemSalePriceSpecialVO | null,
         minStockBranch?      : InventoryItemMinStockBranchVO | null,
         maxStockBranch?      : InventoryItemMaxStockBranchVO | null,
         product?             : ProductEntity | null,
@@ -215,6 +234,8 @@ export class InventoryItemEntity{
             internalBarCode,
             salePriceOne,
             salePriceMany,
+            saleQuantityMany,
+            salePriceSpecial,
             minStockBranch,
             maxStockBranch,
             product,

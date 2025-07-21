@@ -11,11 +11,12 @@ import { BrandMapper } from 'src/contexts/product-management/brand/infraestrutur
 import { SeasonMapper } from 'src/contexts/product-management/season/infraestructure/persistence/typeorm/mappers/season.mapper';
 import { LotOrmEntity } from 'src/contexts/purchase-management/lot/infraestructura/persistence/typeorm/entities/lot.orm-entity';
 import { LotMapper } from 'src/contexts/purchase-management/lot/infraestructura/persistence/typeorm/mappers/lot.mapper';
+import { InventoryItemMapper } from 'src/contexts/inventory-management/inventory-item/infraestructure/persistence/typeorm/mapper/inventory-item.mapper';
 // Importar los mappers de las entidades relacionadas
 export class ProductTypeOrmMapper {
   static toDomain(entity: ProductOrmEntity): ProductEntity {
-    console.log(entity);
     const lots = entity.lots ? entity.lots.map(lot => LotMapper.toDomain(lot)) : null;
+    console.log(entity)
     return ProductEntity.reconstitute(
       entity.productId,
       entity.establishmentId,
@@ -36,7 +37,8 @@ export class ProductTypeOrmMapper {
       entity.category ? CategoryMapper.toDomainEntity(entity.category) : null,
       entity.brand ? BrandMapper.toDomainEntity(entity.brand) : null,
       entity.season ? SeasonMapper.toDomainEntity(entity.season) : null,
-      lots
+      lots,
+      entity.inventoryItems ? entity.inventoryItems.map(item => InventoryItemMapper.toDomain(item)): null,
     );
   }
 
@@ -63,6 +65,7 @@ export class ProductTypeOrmMapper {
     orm.brand = entity.brand ? BrandMapper.toOrmEntity(entity.brand) : undefined;
     orm.season = entity.season ? SeasonMapper.toOrmEntity(entity.season) : undefined;
     orm.lots = entity.lots ? entity.lots.map(lot => LotMapper.toOrm(lot)) : undefined;
+    orm.inventoryItems = entity.inventories ? entity.inventories.map(item => InventoryItemMapper.toOrmEntity(item)): undefined;
     return orm;
   }
 }

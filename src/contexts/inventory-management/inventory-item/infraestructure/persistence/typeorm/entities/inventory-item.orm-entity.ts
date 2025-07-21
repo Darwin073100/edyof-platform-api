@@ -26,6 +26,10 @@ export class InventoryItemOrmEntity{
     salePriceOne?        : number | null;
     @Column({type: 'decimal', precision: 12, scale: 2, nullable: true, name: 'sale_price_many'})
     salePriceMany?       : number | null;
+    @Column({type: 'decimal', precision: 18, scale: 4, nullable: true, name: 'sale_quantity_many'})
+    saleQuantityMany? : number | null;
+    @Column({type: 'decimal', precision: 12, scale: 2, nullable: true, name: 'sale_price_special'})
+    salePriceSpecial? : number | null;
     @Column({type: 'decimal', precision: 18, scale: 3, nullable: true, name: 'min_stock_branch'})
     minStockBranch?      : number | null;
     @Column({type: 'decimal', precision: 18, scale: 3, nullable: true, name: 'max_stock_branch'})

@@ -16,7 +16,7 @@ import { RegisterBrandUseCase } from '../../../application/use-cases/register-br
 import { FindBrandByIdUseCase } from '../../../application/use-cases/find-brand-by-id.use-case';
 import { RegisterBrandDto } from '../../../application/dtos/register-brand.dto'; // DTO de entrada de la aplicación
 import { BrandResponseDto } from '../../../application/dtos/brand-response.dto'; // DTO de salida de la aplicación
-import { BrandMapper } from '../../../application/mappers/educational-center.mapper';
+import { BrandMapper } from '../../../application/mappers/brand.mapper';
 
 // DTOs específicos de presentación para validación con class-validator (opcional, pero es común)
 import { RegisterBrandRequestDto } from '../dtos/register-brand-request.dto';

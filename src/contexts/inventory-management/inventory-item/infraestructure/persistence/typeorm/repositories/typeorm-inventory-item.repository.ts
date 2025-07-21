@@ -16,7 +16,6 @@ export class TypeormInventoryItemRepository implements InventoryItemRepository{
     async save(entity: InventoryItemEntity): Promise<InventoryItemEntity> {
         const ormEntity = InventoryItemMapper.toOrmEntity(entity);
         const result = await this.inventoryItemRepository.save(ormEntity);
-        console.log('Este es la entidad: '+result.lotId);
         return InventoryItemMapper.toDomain(result);
     }
     
@@ -25,7 +24,6 @@ export class TypeormInventoryItemRepository implements InventoryItemRepository{
             where: { inventoryItemId: entityId },
             relations:['product','product.category','lot'] 
         });
-        console.log(result);
         return result ? InventoryItemMapper.toDomain(result) : null;
     }
 

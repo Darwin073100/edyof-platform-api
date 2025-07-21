@@ -28,6 +28,8 @@ export class InventoryItemController{
             internalBarCode: inventoryItemDto.internalBarCode,
             salePriceOne: inventoryItemDto.salePriceOne,
             salePriceMany: inventoryItemDto.salePriceMany,
+            saleQuantityMany: inventoryItemDto.saleQuantityMany,
+            salePriceSpecial: inventoryItemDto.salePriceSpecial,
             minStockBranch: inventoryItemDto.minStockBranch,
             maxStockBranch: inventoryItemDto.maxStockBranch,
             lastStockedAt: inventoryItemDto.lastStockedAt ? new Date(inventoryItemDto.lastStockedAt) : new Date(),

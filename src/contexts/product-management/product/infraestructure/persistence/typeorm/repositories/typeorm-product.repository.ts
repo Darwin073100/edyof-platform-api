@@ -29,7 +29,6 @@ export class TypeOrmProductRepository implements ProductRepository {
         const saved = await this.ormRepo.save(orm);
         return ProductTypeOrmMapper.toDomain(saved);
         } catch (error){
-            console.log('Aqui ocurrio un error al guardar el producto:', error);
             throw error;
         }
   }
@@ -40,7 +39,7 @@ export class TypeOrmProductRepository implements ProductRepository {
   
   async findAll(): Promise<[] | ProductEntity[]> {
     const result = await  this.ormRepo.find({
-      relations: ['establishment', 'category', 'brand', 'season', 'lots'],
+      relations: ['establishment', 'category', 'brand', 'season', 'lots', 'lots.inventoryItems'],
     });
 
     if(result.length > 0){

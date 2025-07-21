@@ -7,6 +7,7 @@ import { ExpirationDateVO } from 'src/contexts/purchase-management/lot/domain/va
 import { ManufacturingDateVO } from 'src/contexts/purchase-management/lot/domain/value-objects/manufacturing-date.vo';
 import { ReceivedDateVO } from 'src/contexts/purchase-management/lot/domain/value-objects/received-date.vo';
 import { ProductTypeOrmMapper } from 'src/contexts/product-management/product/infraestructure/persistence/typeorm/mappers/product.mapper';
+import { InventoryItemMapper } from 'src/contexts/inventory-management/inventory-item/infraestructure/persistence/typeorm/mapper/inventory-item.mapper';
 
 export class LotMapper {
   static toDomain(entity: LotOrmEntity): LotEntity {
@@ -24,7 +25,8 @@ export class LotMapper {
       ManufacturingDateVO.create(entity.manufacturingDate ?? null),
       entity.updatedAt ?? null,
       entity.deletedAt ?? null,
-      product
+      product,
+      entity.inventoryItems? entity.inventoryItems.map(item => InventoryItemMapper.toDomain(item)): null,
     );
   }
 
@@ -42,6 +44,7 @@ export class LotMapper {
     orm.updatedAt = domain.updatedAt ?? null;
     orm.deletedAt = domain.deletedAt ?? null;
     orm.product = domain.product ? ProductTypeOrmMapper.toOrm(domain.product) : null;
+    orm.inventoryItems = domain.inventoryItems ? domain.inventoryItems.map(item => InventoryItemMapper.toOrmEntity(item)): undefined;
     return orm;
   }
 }

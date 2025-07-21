@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumberString, IsOptional, IsString, IsNumber, IsBoolean, IsDateString, MaxLength } from "class-validator";
+import { IsNotEmpty, IsNumberString, IsOptional, IsString, IsNumber, IsBoolean, IsDateString, MaxLength, IsPositive } from "class-validator";
 import { LocationEnum } from "../../domain/enums/location.enum";
 
 export class InventoryItemDTO{
@@ -25,11 +25,21 @@ export class InventoryItemDTO{
     @IsNumber({}, {message: 'El precio de compra debe ser un número.'})
     purchasePriceAtStock: number;
     @IsOptional()
+    @IsPositive({message: 'El precio de venta por menudeo debe ser positivo.'})
     @IsNumber({}, {message: 'El precio de venta unitario debe ser un número.'})
     salePriceOne?: number;
     @IsOptional()
+    @IsPositive({message: 'El precio de venta por mayoreo debe ser positivo.'})
     @IsNumber({}, {message: 'El precio de venta por mayoreo debe ser un número.'})
     salePriceMany?: number;
+    @IsOptional()
+    @IsPositive({message: 'La cantidad de producto de venta por mayoreo debe ser positivo.'})
+    @IsNumber({}, {message: 'La cantidad de producto de venta por mayoreo debe ser un número.'})
+    saleQuantityMany?    : number | null;
+    @IsOptional()
+    @IsPositive({message: 'El precio especial de venta debe ser positivo.'})
+    @IsNumber({}, {message: 'El precio de venta especial debe ser un número.'})
+    salePriceSpecial?    : number | null;
     @IsOptional()
     @IsNumber({}, {message: 'El stock mínimo debe ser un número.'})
     minStockBranch?: number;
