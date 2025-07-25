@@ -64,10 +64,10 @@ export class ProductOrmEntity {
     @JoinColumn({ name: 'season_id' })
     season?: SeasonOrmEntity | null;
     
-    @OneToMany(() => LotOrmEntity, (lot) => lot.product, { nullable: true })
+    @OneToMany(() => LotOrmEntity, (lot) => lot.product, { nullable: true , cascade: true})
     lots?: LotOrmEntity[] | null;
 
-    @OneToMany(()=> InventoryItemOrmEntity, (item)=> item.product)
+    @OneToMany(()=> InventoryItemOrmEntity, (item)=> item.product, {cascade: true})
     inventoryItems?: InventoryItemOrmEntity[] | [];
 
     @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_at' })

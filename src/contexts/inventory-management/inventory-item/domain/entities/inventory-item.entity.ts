@@ -10,6 +10,7 @@ import { InventoryItemMaxStockBranchVO } from "../value-objects/inventory-item-m
 import { LocationEnum } from "../enums/location.enum";
 import { InventoryItemQuantityOnHandVO } from "../value-objects/inventory-item-quantity-on-hand.vo";
 import { InventoryItemSalePriceSpecialVO } from "../value-objects/inventory-item-sale-price-special.vo";
+import { InventoryItemSaleQuantityManyVO } from "../value-objects/inventory-item-sale-quantity-many.vo";
 
 export class InventoryItemEntity{
     private readonly _inventoryItemId : bigint;
@@ -22,7 +23,7 @@ export class InventoryItemEntity{
     private _purchasePriceAtStock     : InventoryItemPurchasePriceAtStockVO;
     private _salePriceOne?            : InventoryItemSalePriceOneVO | null;
     private _salePriceMany?           : InventoryItemSalePriceManyVO | null;
-    private _saleQuantityMany?        : InventoryItemSalePriceSpecialVO | null;
+    private _saleQuantityMany?        : InventoryItemSaleQuantityManyVO | null;
     private _salePriceSpecial?        : InventoryItemSalePriceSpecialVO | null;
     private _minStockBranch?          : InventoryItemMinStockBranchVO | null;
     private _maxStockBranch?          : InventoryItemMaxStockBranchVO | null;
@@ -49,7 +50,7 @@ export class InventoryItemEntity{
         internalBarCode?     : InventoryItemInternalBarCodeVO | null,
         salePriceOne?        : InventoryItemSalePriceOneVO | null,
         salePriceMany?       : InventoryItemSalePriceManyVO | null,
-        saleQuantityMany? : InventoryItemSalePriceSpecialVO | null,
+        saleQuantityMany? : InventoryItemSaleQuantityManyVO | null,
         salePriceSpecial? : InventoryItemSalePriceSpecialVO | null,
         minStockBranch?      : InventoryItemMinStockBranchVO | null,
         maxStockBranch?      : InventoryItemMaxStockBranchVO | null,
@@ -164,7 +165,7 @@ export class InventoryItemEntity{
         internalBarCode?     : InventoryItemInternalBarCodeVO | null,
         salePriceOne?        : InventoryItemSalePriceOneVO | null,
         salePriceMany?       : InventoryItemSalePriceManyVO | null,
-        saleQuantityMany? : InventoryItemSalePriceSpecialVO | null,
+        saleQuantityMany? : InventoryItemSaleQuantityManyVO | null,
         salePriceSpecial? : InventoryItemSalePriceSpecialVO | null,
         minStockBranch?      : InventoryItemMinStockBranchVO | null,
         maxStockBranch?      : InventoryItemMaxStockBranchVO | null,
@@ -210,7 +211,7 @@ export class InventoryItemEntity{
         internalBarCode?     : InventoryItemInternalBarCodeVO | null,
         salePriceOne?        : InventoryItemSalePriceOneVO | null,
         salePriceMany?       : InventoryItemSalePriceManyVO | null,
-        saleQuantityMany? : InventoryItemSalePriceSpecialVO | null,
+        saleQuantityMany? : InventoryItemSaleQuantityManyVO | null,
         salePriceSpecial? : InventoryItemSalePriceSpecialVO | null,
         minStockBranch?      : InventoryItemMinStockBranchVO | null,
         maxStockBranch?      : InventoryItemMaxStockBranchVO | null,

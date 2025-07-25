@@ -44,7 +44,7 @@ export class LotOrmEntity {
   @Column({ type: 'date', name: 'received_date', default: () => 'CURRENT_DATE' })
   receivedDate: Date;
 
-  @OneToMany(()=> InventoryItemOrmEntity, (item)=> item.lot)
+  @OneToMany(()=> InventoryItemOrmEntity, (item)=> item.lot, {cascade: true})
   inventoryItems?: InventoryItemOrmEntity[];
 
   @CreateDateColumn({ type: 'timestamptz', name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })

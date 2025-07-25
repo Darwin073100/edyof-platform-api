@@ -16,6 +16,7 @@ import { ESTABLISHMENT_CHECKER_PORT, EstablishmentCheckerPort } from 'src/contex
 import { PRODUCT_CHECKER_PORT } from './domain/ports/out/product-checker.port';
 import { ProductCheckerAdapter } from './infraestructure/persistence/typeorm/external-services/product-checker.adapter';
 import { ViewAllProductsUseCase } from './application/use-cases/view-all-products.use-case';
+import { RegisterProductWithLotAndInventoryItemUseCase } from './application/use-cases/register-product-with-lot-and-inventory-item.use-case';
 
 @Module({
     imports: [
@@ -52,6 +53,25 @@ import { ViewAllProductsUseCase } from './application/use-cases/view-all-product
                 checkerEst: EstablishmentCheckerPort,
             ) => {
                 return new RegisterProductUseCase(repo, checkerCat, checkerBrand, checkerSeas, checkerEst);
+            },
+            inject: [
+                PRODUCT_REPOSITORY, 
+                CATEGORY_CHECKER_PORT,
+                BRAND_CHECKER_PORT,
+                SEASON_CHECKER_PORT,
+                ESTABLISHMENT_CHECKER_PORT
+            ],
+        },
+        {
+            provide: RegisterProductWithLotAndInventoryItemUseCase,
+            useFactory: (
+                repo: ProductRepository, 
+                checkerCat: CategoryCheckerPort, 
+                checkerBrand: BrandChekerPort, 
+                checkerSeas: SeasonCheckerPort, 
+                checkerEst: EstablishmentCheckerPort,
+            ) => {
+                return new RegisterProductWithLotAndInventoryItemUseCase(repo, checkerCat, checkerBrand, checkerSeas, checkerEst);
             },
             inject: [
                 PRODUCT_REPOSITORY, 

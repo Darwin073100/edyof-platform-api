@@ -7,5 +7,6 @@ export interface ProductRepository extends TemplateRepository<ProductEntity>{
   findByEstablishmentAndSku(establishmentId: bigint, sku: string): Promise<ProductEntity | null>;
   findByEstablishmentAndUniversalBarCode(establishmentId: bigint, barCode: string): Promise<ProductEntity | null>;
   save(product: ProductEntity): Promise<ProductEntity>;
+  saveProductWithLotAdnInventoryItem(product: ProductEntity): Promise<ProductEntity>;
   // ...otros métodos necesarios
 }

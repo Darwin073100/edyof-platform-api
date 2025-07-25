@@ -5,6 +5,7 @@ import { ProductDescriptionVO } from '../../../../domain/value-objects/product-d
 import { ProductSkuVO } from '../../../../domain/value-objects/product-sku.vo';
 import { ProductUniversalBarCodeVO } from '../../../../domain/value-objects/product-universal-bar-code.vo';
 import { ForSaleEnum } from '../../../../domain/enums/for-sale.enum';
+import { v4 as uuid} from 'uuid';
 import { EstablishmentMapper } from 'src/contexts/establishment-management/establishment/infraestruture/persistence/typeorm/mappers/establishment.mapper';
 import { CategoryMapper } from 'src/contexts/product-management/category/infraestructure/persistence/typeorm/mappers/category.mapper';
 import { BrandMapper } from 'src/contexts/product-management/brand/infraestruture/persistence/typeorm/mappers/brand.mapper';
@@ -24,7 +25,7 @@ export class ProductTypeOrmMapper {
       entity.brandId ? entity.brandId : null,
       entity.seasonId ? entity.seasonId : null,
       new ProductNameVO(entity.name),
-      new ProductSkuVO(entity.sku),
+      new ProductSkuVO(entity.sku ?? uuid()),
       new ProductUniversalBarCodeVO(entity.universalBarCode),
       new ProductDescriptionVO(entity.description),
       entity.unitOfMeasure as ForSaleEnum,

@@ -12,6 +12,7 @@ import { BrandChekerPort } from 'src/contexts/product-management/brand/domain/po
 import { SeasonCheckerPort } from 'src/contexts/product-management/season/domain/ports/out/season-checker.port';
 import { EstablishmentCheckerPort } from 'src/contexts/establishment-management/establishment/application/ports/out/establishment-checker.port';
 import { ProductNotFoundException } from '../../domain/exceptions/product-not-found.exception';
+import {v4 as uuid} from 'uuid';
 
 export class RegisterProductUseCase {
     constructor(
@@ -75,7 +76,7 @@ export class RegisterProductUseCase {
             dto.brandId ?? null,
             dto.seasonId ?? null,
             new ProductNameVO(dto.name),
-            new ProductSkuVO(dto.sku ?? null),
+            new ProductSkuVO(uuid()),
             new ProductUniversalBarCodeVO(dto.universalBarCode ?? null),
             new ProductDescriptionVO(dto.description ?? null),
             dto.unitOfMeasure as ForSaleEnum,
