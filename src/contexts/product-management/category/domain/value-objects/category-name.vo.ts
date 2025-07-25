@@ -19,7 +19,7 @@ export class CategoryNameVO extends ValueObject<CategoryNameProps>{
    * @throws Error si el nombre es inválido (ej. vacío, muy largo).
    */
   public static create(name: string): CategoryNameVO{
-    console.log('Name::::'+name);
+    // ...removed console.log...
     if(!name || name.length === 0){
         throw new InvalidCategoryException('El nombre de la categoría no puede ir vacio.'); 
     }

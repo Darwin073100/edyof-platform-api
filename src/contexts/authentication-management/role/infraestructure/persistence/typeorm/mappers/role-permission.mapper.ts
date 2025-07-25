@@ -17,7 +17,7 @@ export class RolePermissionMapper{
             ormEntity.updatedAt,
             ormEntity.deletedAt
         );
-        console.log(domainEntity)
+        // ...removed console.log...
         return domainEntity;
     }
 
@@ -33,7 +33,7 @@ export class RolePermissionMapper{
         ormEntity.createdAt = domainEntity.createdAt;
         ormEntity.updatedAt = domainEntity.updatedAt;
         ormEntity.deletedAt = domainEntity.deletedAt;
-        console.log(ormEntity)
+        // ...removed console.log...
         return ormEntity;
     }
 }

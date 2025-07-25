@@ -6,8 +6,8 @@ import { RegisterSeasonUseCase } from './application/use-cases/register-season.u
 import { SEASON_REPOSITORY, SeasonRepository } from './domain/repositories/season.repository';
 import { TypeormSeasonRepository } from './infraestructure/persistence/typeorm/repositories/typeorm-season.repository';
 import { SEASON_CHECKER_PORT } from './domain/ports/out/season-checker.port';
-import { TypeormBrandCheckerAdapter } from '../brand/infraestruture/persistence/typeorm/external-services/typeorm-brand-checker.adapter';
 import { ViewAllSeasonsUseCase } from './application/use-cases/view-all-seasons.use-case';
+import { TypeormSeasonCheckerAdapter } from './infraestructure/persistence/typeorm/external-services/typeorm-season-checker.adapter';
 
 @Module({
   imports: [TypeOrmModule.forFeature([SeasonOrmEntity])],
@@ -19,7 +19,7 @@ import { ViewAllSeasonsUseCase } from './application/use-cases/view-all-seasons.
     },
     {
       provide: SEASON_CHECKER_PORT,
-      useClass: TypeormBrandCheckerAdapter,
+      useClass: TypeormSeasonCheckerAdapter,
     },
     {
       provide: RegisterSeasonUseCase,useFactory: (repo: SeasonRepository) => { return new RegisterSeasonUseCase(repo); },

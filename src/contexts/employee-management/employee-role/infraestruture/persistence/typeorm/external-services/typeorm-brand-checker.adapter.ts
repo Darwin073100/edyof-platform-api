@@ -12,9 +12,9 @@ export class TypeormEmployeeRoleCheckerAdapter implements EmployeeRoleChekerPort
     }
 
     async exists(employeeRoleId: bigint): Promise<boolean> {
-        console.log(employeeRoleId);
+        // ...removed console.log...
         const result = await this.repository.existsBy({ employeeRoleId });
-        console.log(result);
+        // ...removed console.log...
         return result;
     }
 }

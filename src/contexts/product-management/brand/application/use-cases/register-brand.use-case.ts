@@ -56,7 +56,7 @@ export class RegisterBrandUseCase {
     //   this.eventBus.publish(event); // Se inyectaría EventBus en el constructor
     // }
     // Por ahora, solo lo imprimimos para demostrar que los eventos se registran.
-    console.log(`[${this.constructor.name}] Domain Events Recorded:`, domainEvents);
+    // ...removed console.log...
 
 
     // 5. Retornar el resultado.

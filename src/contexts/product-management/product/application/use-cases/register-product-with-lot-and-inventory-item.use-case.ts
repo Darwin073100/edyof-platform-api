@@ -41,7 +41,6 @@ export class RegisterProductWithLotAndInventoryItemUseCase {
     ) { }
 
     async execute(dto: RegisterProductWhitLotAndInventoryDto) {
-
         // Validar unicidad SKU
         if (dto.sku) {
             const existingBySku = await this.productRepository.findByEstablishmentAndSku(dto.establishmentId, dto.sku);
@@ -68,6 +67,7 @@ export class RegisterProductWithLotAndInventoryItemUseCase {
         if (dto.seasonId) {
             // Validar existencia de la temporada
             const seasonExists = await this.seasonChecker.exists(dto.seasonId);
+            // ...removed console.log...
             if (!seasonExists) {
                 throw new ProductNotFoundException(`La temporada a la que deseas asignar el producto no existe.`);
             }

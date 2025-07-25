@@ -83,7 +83,7 @@ export class TypeOrmProductRepository implements ProductRepository {
       await queryRunner.release();
       if (error instanceof QueryFailedError) {
 
-        console.log(error);
+        // ...removed console.log...
         throw new ProductValidateException(`Producto no registrado, verifica los datos ingresados.`);
       }      
       throw error;

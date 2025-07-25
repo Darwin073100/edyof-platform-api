@@ -104,7 +104,7 @@ export class ProductController {
             if (error instanceof ProductNotFoundException) {
                 throw new NotFoundException(error.message);
             }
-            console.log(error);
+            // ...removed console.log...
             
             throw error;
         }

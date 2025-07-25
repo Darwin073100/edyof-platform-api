@@ -19,7 +19,7 @@ export class TypeormRolePermissionRepository implements RolePermissionRepository
     
     async save(entity: RolePermissionEntity):Promise<RolePermissionEntity>{
         const ormEntity = RolePermissionMapper.toOrmEntity(entity);
-        console.log(ormEntity);
+        // ...removed console.log...
         const isValidRoleName = await this.roleRepository.findOne({where:{name: ormEntity.role?.name}});
         if(isValidRoleName){
             throw new RoleAlreadyExistException('El nombre del rol ya existe.');

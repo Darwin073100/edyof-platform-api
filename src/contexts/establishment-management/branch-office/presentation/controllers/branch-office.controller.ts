@@ -46,7 +46,7 @@ export class BranchOfficeController{
             },
             registerRequestDto.establishmentId,
         );
-          // console.log(registerRequestDto);
+          // ...removed commented console.log...
     
           // 2. Ejecutar el Caso de Uso (que contiene la orquestación de la lógica de negocio).
           const branchOffice = await this.registerBranchOfficeUseCase.execute(registerAppDto);

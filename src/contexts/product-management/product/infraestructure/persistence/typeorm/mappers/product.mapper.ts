@@ -17,7 +17,7 @@ import { InventoryItemMapper } from 'src/contexts/inventory-management/inventory
 export class ProductTypeOrmMapper {
   static toDomain(entity: ProductOrmEntity): ProductEntity {
     const lots = entity.lots ? entity.lots.map(lot => LotMapper.toDomain(lot)) : null;
-    console.log(entity)
+    // ...removed console.log...
     return ProductEntity.reconstitute(
       entity.productId,
       entity.establishmentId,

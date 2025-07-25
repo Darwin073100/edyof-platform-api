@@ -107,7 +107,7 @@ export class RegisterEmployeeRoleUseCase {
 
     // 5. Despachar eventos de dominio si aplica
     const domainEvents = employee.getAndClearEvents();
-    console.log(`[${this.constructor.name}] Domain Events Recorded:`, domainEvents);
+    // ...removed console.log...
 
     return savedEntity;
   }

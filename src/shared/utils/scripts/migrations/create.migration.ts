@@ -9,5 +9,5 @@ if (!migrationName) {
 
 const command = `npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -d src/config/database/typeorm/app.data.source.ts src/config/database/typeorm/migrations/${migrationName}`;
 
-console.log(`🚀 Ejecutando: ${command}`);
+// ...removed console.log...
 execSync(command, { stdio: "inherit" });

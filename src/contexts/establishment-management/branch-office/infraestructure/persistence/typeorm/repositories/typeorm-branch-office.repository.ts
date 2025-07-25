@@ -24,7 +24,7 @@ export class TypeOrmBranchOfficeRepository implements BranchOfficeRepository {
     // debería haber sido cargada por 'eager: true'.
     // Si es una nueva BranchOffice, se crea una nueva AddressOrmEntity.
     const isEstablishment = await this.ormEstablishmentRepository.findBy({establishmentId: branchOffice.establishmentId});
-    console.log(isEstablishment);
+    // ...removed console.log...
     
     if(!isEstablishment){
       throw new NotFoundException('Debe ser un id de un establecimeinto existente.');
