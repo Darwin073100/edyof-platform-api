@@ -7,8 +7,8 @@ export class SeasonEntity {
   private readonly _seasonId: bigint;
   private _name: SeasonNameVO;
   private _description?: SeasonDescriptionVO | null;
-  private _dateInit: Date;
-  private _dateFinish: Date;
+  private _dateInit?: Date | null;
+  private _dateFinish?: Date | null;
   private _deletedAt: Date | null;
   private readonly _createdAt: Date;
   private _updatedAt: Date | null;
@@ -18,11 +18,11 @@ export class SeasonEntity {
   private constructor(
     seasonId: bigint,
     name: SeasonNameVO,
-    dateInit: Date,
-    dateFinish: Date,
     createdAt: Date,
-    updatedAt: Date | null,
-    deletedAt: Date | null,
+    dateInit?: Date | null,
+    dateFinish?: Date | null,
+    updatedAt?: Date | null,
+    deletedAt?: Date | null,
     description?: SeasonDescriptionVO | null,
     products?: ProductEntity[] | null,
   ) {
@@ -32,23 +32,23 @@ export class SeasonEntity {
     this._dateInit = dateInit;
     this._dateFinish = dateFinish;
     this._createdAt = createdAt;
-    this._updatedAt = updatedAt;
-    this._deletedAt = deletedAt;
+    this._updatedAt = updatedAt ?? null;
+    this._deletedAt = deletedAt ?? null;
     this._products = products ?? undefined;
   }
 
   static create(
     name: SeasonNameVO,
-    dateInit: Date,
-    dateFinish: Date,
+    dateInit?: Date | null,
+    dateFinish?: Date | null,
     description?: SeasonDescriptionVO | null,
   ): SeasonEntity {
     return new SeasonEntity(
       BigInt(Date.now()),
       name,
+      new Date(),
       dateInit,
       dateFinish,
-      new Date(),
       null,
       null,
       description,
@@ -59,20 +59,20 @@ export class SeasonEntity {
   static reconstitute(
     seasonId: bigint,
     name: SeasonNameVO,
-    dateInit: Date,
-    dateFinish: Date,
     createdAt: Date,
-    updatedAt: Date | null,
-    deletedAt: Date | null,
+    dateInit?: Date | null,
+    dateFinish?: Date | null,
+    updatedAt?: Date | null,
+    deletedAt?: Date | null,
     description?: SeasonDescriptionVO | null,
     products?: ProductEntity[] | null,
   ): SeasonEntity {
     return new SeasonEntity(
       seasonId,
       name,
+      createdAt,
       dateInit,
       dateFinish,
-      createdAt,
       updatedAt,
       deletedAt,
       description,

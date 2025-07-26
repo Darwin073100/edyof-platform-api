@@ -1,10 +1,10 @@
 export enum ForSaleEnum {
-  KG = 'kg',
-  L = 'l',
-  M = 'm',
-  PC = 'pc',
-  DOC = 'doc',
-  PAQUETE = 'paquete',
-  CAJA = 'caja',
-  SET = 'set',
+  KG = 'kg', // Kilogramo
+  L = 'l', // Litro
+  M = 'm', // Metro
+  PC = 'pc', // Pieza
+  DOC = 'doc', // Docena
+  PAQUETE = 'paquete', // Paquete
+  CAJA = 'caja', // Caja
+  SET = 'set', // Set
 }

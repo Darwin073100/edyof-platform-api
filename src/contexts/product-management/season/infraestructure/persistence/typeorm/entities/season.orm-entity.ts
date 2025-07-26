@@ -13,11 +13,11 @@ export class SeasonOrmEntity {
   @Column({ type: 'text', nullable: true })
   description?: string | null;
 
-  @Column({ type: 'date', name: 'date_init', nullable: false })
-  dateInit: Date;
+  @Column({ type: 'date', name: 'date_init', nullable: true })
+  dateInit?: Date | null;
 
-  @Column({ type: 'date', name: 'date_finish', nullable: false })
-  dateFinish: Date;
+  @Column({ type: 'date', name: 'date_finish', nullable: true })
+  dateFinish?: Date | null;
 
   @OneToMany(() => ProductOrmEntity, (product) => product.category)
   products?: ProductOrmEntity[]|null;
@@ -26,8 +26,8 @@ export class SeasonOrmEntity {
   createdAt: Date;
   
   @UpdateDateColumn({ type: 'timestamp with time zone', name: 'updated_at', nullable: true, onUpdate: 'CURRENT_TIMESTAMP' })
-  updatedAt: Date | null;
+  updatedAt?: Date | null;
   
   @DeleteDateColumn({ type: 'timestamp with time zone', name: 'deleted_at', nullable: true })
-  deletedAt: Date | null;
+  deletedAt?: Date | null;
 }

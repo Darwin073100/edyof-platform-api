@@ -26,9 +26,9 @@ export class SeasonMapper {
     return SeasonEntity.reconstitute(
       ormEntity.seasonId,
       SeasonNameVO.create(ormEntity.name),
+      ormEntity.createdAt,
       ormEntity.dateInit,
       ormEntity.dateFinish,
-      ormEntity.createdAt,
       ormEntity.updatedAt,
       ormEntity.deletedAt,
       SeasonDescriptionVO.create(ormEntity.description),

@@ -24,10 +24,12 @@ export class SeasonController {
       const registerAppDto = new RegisterSeasonDto(
         registerRequestDto.name,
         registerRequestDto.description ?? null,
-        new Date(registerRequestDto.dateInit),
-        new Date(registerRequestDto.dateFinish)
+        registerRequestDto.dateInit? new Date(registerRequestDto.dateInit): null,
+        registerRequestDto.dateFinish? new Date(registerRequestDto.dateFinish): null,
       );
+
       const season = await this.registerSeasonUseCase.execute(registerAppDto);
+      
       return SeasonMapper.toResponseDto(season);
     } catch (error) {
       if(error instanceof InvalidSeasonException){

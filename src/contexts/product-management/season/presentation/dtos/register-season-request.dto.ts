@@ -12,9 +12,11 @@ export class RegisterSeasonRequestDto {
   @MinLength(3, { message: 'La descripción debe tener como mínimo 3 caracteres.' })
   description?: string | null;
 
+  @IsOptional()
   @IsDateString({}, { message: 'La fecha de inicio debe ser una fecha válida.' })
-  dateInit: string;
+  dateInit?: string | null;
 
+  @IsOptional()
   @IsDateString({}, { message: 'La fecha de fin debe ser una fecha válida.' })
-  dateFinish: string;
+  dateFinish?: string | null;
 }
