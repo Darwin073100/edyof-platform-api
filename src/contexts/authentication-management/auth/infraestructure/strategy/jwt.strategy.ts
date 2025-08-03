@@ -33,15 +33,30 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         if(!user){
             throw new UnauthorizedException('El token recibido no es valido.');
         }
+
+        // Extraer roles y permisos del usuario cargado desde la BD
+        const roles = user.userRoles?.map(userRole => userRole.roleName) || [];
+        const permissions = user.userRoles?.flatMap(userRole => userRole.permissions) || [];
+
+        console.log('🔍 DEBUG JWT Strategy - Usuario cargado:', {
+            userId: user.userId,
+            username: user.username?.value,
+            userRolesCount: user.userRoles?.length || 0,
+            roles: roles,
+            permissions: permissions,
+            userRolesDetail: user.userRoles?.map(ur => ({
+                roleName: ur.roleName,
+                rolePermissions: ur._role?.permissions,
+                permissions: ur.permissions
+            }))
+        });
+
         return {
-            userId: payload.userId,
-            username: payload.username,
-            email: payload.email,
-            permissions: payload.permissions, // Adherimos los permisos
-            roles: payload.roles,         // Adherimos los roles
-            // Si necesitas el modelo de dominio completo 'User', tendrías que inyectar
-            // UsersRepository aquí y hacer un findById. Pero para la autorización,
-            // el payload suele ser suficiente.
+            userId: user.userId,
+            username: user.username?.value,
+            email: user.email?.value,
+            permissions: permissions, // Usar los permisos del usuario de la BD
+            roles: roles,            // Usar los roles del usuario de la BD
         };
     }
 }

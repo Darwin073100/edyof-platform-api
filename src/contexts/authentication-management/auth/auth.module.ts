@@ -18,16 +18,22 @@ import { USER_ROLE_REPOSITORY, UserRoleRepository } from "./domain/repositories/
 import { TypeormUserRoleRepository } from "./infraestructure/repositories/typeorm-user-role.repository";
 import { RoleModule } from "../role/role.module";
 import { ROLE_CHECKER_PORT, RoleCheckerPort } from "../role/domain/ports/out/role-checker.port";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
 @Module({
     imports: [
         RoleModule,
         TypeOrmModule.forFeature([UserOrmEntity]),
         PassportModule,
-        JwtModule.register({
-            secret: process.env.JWT_SECRET || 'SuperSecretKey', // Usar variable de entorno
-            signOptions: {expiresIn: '60m'} // Token valido por 60 minutos
-        }),
+        JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: { expiresIn: '60m' },
+      }),
+      inject: [ConfigService],
+    }),
+    ConfigModule,
     ],
     providers:[
         {

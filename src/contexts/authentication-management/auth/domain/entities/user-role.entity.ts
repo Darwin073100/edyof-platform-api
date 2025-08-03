@@ -114,8 +114,8 @@ export class UserRoleEntity {
   }
 
   get permissions(): string[] {
-    // Suponiendo que el rol tiene una propiedad permissions: PermissionEntity[]
-    return this._role?.permissions?.map(p => p.name?.name) || [];
+    // Los permisos ya están procesados como strings en RoleEntity._permissions
+    return this._role?.permissions || [];
   }
     // Otros métodos que representen reglas de negocio o comportamiento del usuario
 }

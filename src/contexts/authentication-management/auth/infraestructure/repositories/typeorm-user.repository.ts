@@ -40,7 +40,13 @@ export class TyperomUserRepository implements UserRepository{
 
     async findByEmail(email: string): Promise<UserEntity | null> {
         const resp = await this.repository.findOne({
-            where:{email: email as any}
+            where:{email: email as any},
+            relations: [
+                'userRoles',
+                'userRoles.role',
+                'userRoles.role.rolePermissions',
+                'userRoles.role.rolePermissions.permission'
+            ]
         });
         
         if(!resp){
@@ -64,7 +70,13 @@ export class TyperomUserRepository implements UserRepository{
 
     async findById(id: bigint): Promise<UserEntity | null> {
         const resp = await this.repository.findOne({
-            where:{userId: id as any}
+            where:{userId: id as any},
+            relations: [
+                'userRoles',
+                'userRoles.role',
+                'userRoles.role.rolePermissions',
+                'userRoles.role.rolePermissions.permission'
+            ]
         });
         
         if(!resp){

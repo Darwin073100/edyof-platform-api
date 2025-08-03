@@ -27,7 +27,7 @@ export class UserMapper{
 
     static toDomain(ormEntity: UserOrmEntity):UserEntity{
 
-        const userRoles = ormEntity?.userRoles?.map(item => UserRoleMapper.toDomain(item));
+        const userRoles = ormEntity?.userRoles?.map(item => UserRoleMapper.toDomain(item)) || [];
         
         const domainEntity = UserEntity.reconstitute(
             ormEntity.userId,
@@ -38,7 +38,7 @@ export class UserMapper{
             ormEntity.isActive,
             ormEntity.lastLogin,
             ormEntity.createdAt,
-            userRoles && [],
+            userRoles,
             ormEntity.updatedAt,
             ormEntity.deletedAt
         );
