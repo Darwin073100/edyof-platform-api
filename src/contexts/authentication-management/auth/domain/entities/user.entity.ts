@@ -5,6 +5,7 @@ import { DomainEvent } from 'src/shared/domain/events/domain-events';
 import { UserUsernameVO } from '../value-objects/user.username.vo';
 import { UserEmailVO } from '../value-objects/user.email.vo';
 import { UserPasswordHashVO } from '../value-objects/user.password-hash.vo';
+import { EmployeeEntity } from 'src/contexts/employee-management/employee/domain/entities/employee.entity';
 
 export class UserEntity {
   // Un error común es no tener un tipo explícito para los IDs,
@@ -20,6 +21,7 @@ export class UserEntity {
   private _createdAt: Date;
   private _updatedAt?: Date | null;
   private _deletedAt?: Date | null;
+  private _employee?: EmployeeEntity|null;
   private _domainEvents: DomainEvent<this>[] = [];
 
   private constructor(
@@ -32,6 +34,7 @@ export class UserEntity {
     lastLogin?: Date | null,
     createdAt: Date = new Date(),
     userRoles?: UserRoleEntity[] | [],
+    employee?: EmployeeEntity|null,
     updatedAt?: Date | null,
     deletedAt?: Date | null,
   ) {
@@ -46,6 +49,7 @@ export class UserEntity {
     this._userRoles = userRoles;
     this._updatedAt = updatedAt;
     this._deletedAt = deletedAt;
+    this._employee = employee;
   }
 
   static create(
@@ -67,6 +71,7 @@ export class UserEntity {
       [],
       null,
       null,
+      null,
     );
 
     return user;
@@ -82,6 +87,7 @@ export class UserEntity {
     lastLogin?: Date | null,
     createdAt: Date = new Date(),
     userRoles?: UserRoleEntity[] | [],
+    employee?: EmployeeEntity|null,
     updatedAt?: Date | null,
     deletedAt?: Date | null,
   ) {
@@ -95,6 +101,7 @@ export class UserEntity {
       lastLogin,
       createdAt,
       userRoles,
+      employee,
       updatedAt,
       deletedAt,
     );
@@ -145,7 +152,10 @@ export class UserEntity {
   get deletedAt(): Date | null | undefined {
     return this._deletedAt;
   }
-
+  
+  get employee(): EmployeeEntity | null | undefined {
+    return this._employee;
+  }
   // Métodos de dominio (comportamiento)
   public markAsActive(): void {
     this._isActive = true;

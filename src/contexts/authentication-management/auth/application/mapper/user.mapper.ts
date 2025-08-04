@@ -15,7 +15,7 @@ export class UserMapper{
             entity.user?.username.value,
             entity.user?.email.value,
             {
-                roleId: entity.roleId,
+                roleId: entity.role?.roleId,
                 name: entity.role?.name.name,
                 description: entity.role?.description?.description,
                 createdAt: entity.role?.createdAt,

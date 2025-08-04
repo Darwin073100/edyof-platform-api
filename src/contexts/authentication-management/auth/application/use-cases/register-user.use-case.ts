@@ -8,20 +8,29 @@ import { UserRoleRepository } from "../../domain/repositories/user-role.reposito
 import { UserRoleEntity } from "../../domain/entities/user-role.entity";
 import { RoleCheckerPort } from "src/contexts/authentication-management/role/domain/ports/out/role-checker.port";
 import { NotFoundRoleException } from "src/contexts/authentication-management/role/domain/exceptions/not-found-role.exception";
+import { EmployeeChekerPort } from "src/contexts/employee-management/employee/domain/ports/out/employee-checker.port";
+import { UserNotFoundException } from "../../domain/exceptions/user-not-found.exception";
 
 export class RegisterUserUseCase{
     constructor(
         private readonly roleCheckerPort: RoleCheckerPort,
+        private readonly employeeCheckerPort: EmployeeChekerPort,
         private readonly userRoleRepository: UserRoleRepository,
         private readonly encryptionRepository: EncryptionRepository,
     ){}
 
     async excecute(dto: RegisterUserDTO):Promise<UserRoleEntity>{
         const roleIsValid = await this.roleCheckerPort.check(dto.roleId);
+        const employeeIsValid = await this.employeeCheckerPort.exists(dto.employeeId);
 
         // Verificamos que el id del rol asignado al usuario exista.
         if(!roleIsValid){
             throw new NotFoundRoleException('El rol asignado a este usuario no existe.');
+        }
+
+        // Verificamos que el id del empleado asignado al usuario exista.
+        if(!employeeIsValid){
+            throw new UserNotFoundException('El empleado asignado a este usuario no existe.');
         }
 
         // Realizamos el hash de la contraseña en texto plano

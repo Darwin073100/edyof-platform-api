@@ -19,10 +19,15 @@ import { TypeormUserRoleRepository } from "./infraestructure/repositories/typeor
 import { RoleModule } from "../role/role.module";
 import { ROLE_CHECKER_PORT, RoleCheckerPort } from "../role/domain/ports/out/role-checker.port";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { GetUserProfileUseCase } from "./application/use-cases/get-user-profile.use-case";
+import { EmployeeModule } from "src/contexts/employee-management/employee/employee.module";
+import { EMPLOYEE_REPOSITORY, EmployeeRepository } from "src/contexts/employee-management/employee/domain/repositories/employee.repository";
+import { EMPLOYEE_CHECKER_PORT, EmployeeChekerPort } from "src/contexts/employee-management/employee/domain/ports/out/employee-checker.port";
 
 @Module({
     imports: [
         RoleModule,
+        EmployeeModule,
         TypeOrmModule.forFeature([UserOrmEntity]),
         PassportModule,
         JwtModule.registerAsync({
@@ -50,10 +55,10 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
         },
         {
             provide: RegisterUserUseCase,
-            useFactory: (roleCheckerPort: RoleCheckerPort, userRoleRepo: UserRoleRepository, encrypt: EncryptionRepository)=>{
-                return new RegisterUserUseCase(roleCheckerPort, userRoleRepo, encrypt)
+            useFactory: (roleCheckerPort: RoleCheckerPort,employeeCheckerPort: EmployeeChekerPort, userRoleRepo: UserRoleRepository, encrypt: EncryptionRepository)=>{
+                return new RegisterUserUseCase(roleCheckerPort, employeeCheckerPort, userRoleRepo, encrypt)
             },
-            inject: [ROLE_CHECKER_PORT, USER_ROLE_REPOSITORY, ENCRYPTION_REPOSITORY]
+            inject: [ROLE_CHECKER_PORT, EMPLOYEE_CHECKER_PORT, USER_ROLE_REPOSITORY, ENCRYPTION_REPOSITORY]
         },
         {
             provide: ValidateAuthUseCase,
@@ -75,6 +80,13 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
                 return new loginAuthUseCase(jwtService);
             },
             inject: [JwtService]
+        },
+        {
+            provide: GetUserProfileUseCase,
+            useFactory: (userRepo: UserRepository, employeeRepo: EmployeeRepository) => {
+                return new GetUserProfileUseCase(userRepo, employeeRepo);
+            },
+            inject: [USER_REPOSITORY, EMPLOYEE_REPOSITORY]
         },
         JwtStrategy,
         LocalStrategy,

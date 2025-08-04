@@ -38,19 +38,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         const roles = user.userRoles?.map(userRole => userRole.roleName) || [];
         const permissions = user.userRoles?.flatMap(userRole => userRole.permissions) || [];
 
-        console.log('🔍 DEBUG JWT Strategy - Usuario cargado:', {
-            userId: user.userId,
-            username: user.username?.value,
-            userRolesCount: user.userRoles?.length || 0,
-            roles: roles,
-            permissions: permissions,
-            userRolesDetail: user.userRoles?.map(ur => ({
-                roleName: ur.roleName,
-                rolePermissions: ur._role?.permissions,
-                permissions: ur.permissions
-            }))
-        });
-
         return {
             userId: user.userId,
             username: user.username?.value,

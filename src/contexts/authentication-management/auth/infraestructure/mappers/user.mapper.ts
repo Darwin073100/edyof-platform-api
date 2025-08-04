@@ -1,3 +1,4 @@
+import { EmployeeMapper } from "src/contexts/employee-management/employee/infraestruture/persistence/typeorm/mappers/employee.mapper";
 import { UserEntity } from "../../domain/entities/user.entity";
 import { UserEmailVO } from "../../domain/value-objects/user.email.vo";
 import { UserPasswordHashVO } from "../../domain/value-objects/user.password-hash.vo";
@@ -18,6 +19,7 @@ export class UserMapper{
             isActive: domainEntity.isActive,
             lastLogin: domainEntity.lastLogin,
             userRoles: userRoles && [],
+            employee: domainEntity.employee? EmployeeMapper.toOrmEntity(domainEntity.employee): null,
             createdAt: domainEntity.createdAt,
             updatedAt: domainEntity.updatedAt,
             deletedAt: domainEntity.deletedAt
@@ -39,6 +41,7 @@ export class UserMapper{
             ormEntity.lastLogin,
             ormEntity.createdAt,
             userRoles,
+            ormEntity.employee ? EmployeeMapper.toDomainEntity(ormEntity.employee) : null,
             ormEntity.updatedAt,
             ormEntity.deletedAt
         );

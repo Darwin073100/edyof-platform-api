@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { UserRoleOrmEntity } from "./user-role.orm-entity";
+import { EmployeeOrmEntity } from "src/contexts/employee-management/employee/infraestruture/persistence/typeorm/entities/employee-orm-entity";
 
 @Entity({name: 'user'})
 export class UserOrmEntity{
@@ -35,5 +36,9 @@ export class UserOrmEntity{
 
     @OneToMany(()=> UserRoleOrmEntity, (userRole)=> userRole.user)
     userRoles?: UserRoleOrmEntity[]|[];
+
+    @OneToOne(() => EmployeeOrmEntity, { nullable: false })
+    @JoinColumn({ name: 'employee_id' })
+    employee?: EmployeeOrmEntity|null;
 
 }
