@@ -16,7 +16,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     // NestJS/Passport maneja esto lanzando UnauthorizedException si el resultado es null.
     const user = await this.authService.execute({email, password});
     if (!user) {
-      throw new UnauthorizedException('Credenciales inválidas'); // Mensaje genérico por seguridad
+      throw new UnauthorizedException('Correo electrónico o contraseña incorrectos'); // Mensaje genérico por seguridad
     }
     // Si el usuario es validado, se adjunta a req.user
     return user;

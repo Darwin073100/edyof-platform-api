@@ -6,6 +6,7 @@ import { HasPermission } from "src/shared/decorators/has-permission.decorator";
 import { PermissionsGuard } from "src/shared/guards/permissions.guard";
 import { JwtAuthGuard } from "src/shared/guards/jwt-auth.guard";
 import { GetUserProfileUseCase } from "../../../application/use-cases/get-user-profile.use-case";
+import { UserMapper } from "../../../application/mapper/user.mapper";
 
 @Controller('auth')
 export class AuthController {
@@ -38,27 +39,29 @@ export class AuthController {
     @HttpCode(HttpStatus.OK)
     async getProfile(@Request() req) {
         const userId = req.user.userId;
-        return this.getUserProfileUseCase.execute(BigInt(userId));
+        const profile = await this.getUserProfileUseCase.execute(BigInt(userId));
+        const response = UserMapper.toProfileResponse(profile);
+        return response;
     }
 
-    @Get('workspace-info') // Obtener información del área de trabajo (establecimiento/sucursal)
-    @UseGuards(JwtAuthGuard)
-    @HttpCode(HttpStatus.OK)
-    async getWorkspaceInfo(@Request() req) {
-        // Por ahora retornar información básica usando los datos del perfil
-        const userId = req.user.userId;
-        const profile = await this.getUserProfileUseCase.execute(BigInt(userId));
+    // @Get('workspace-info') // Obtener información del área de trabajo (establecimiento/sucursal)
+    // @UseGuards(JwtAuthGuard)
+    // @HttpCode(HttpStatus.OK)
+    // async getWorkspaceInfo(@Request() req) {
+    //     // Por ahora retornar información básica usando los datos del perfil
+    //     const userId = req.user.userId;
+    //     const profile = await this.getUserProfileUseCase.execute(BigInt(userId));
         
-        return {
-            user: profile.user,
-            employee: profile.employee,
-            workspace: {
-                branchOfficeId: profile.employee?.branchOfficeId || null,
-                employeeRoleId: profile.employee?.employeeRoleId || null,
-                // Estas propiedades se pueden expandir cuando implementes los otros use cases
-                branchOfficeName: 'Sucursal Principal', // Placeholder
-                establishmentName: 'Mi Establecimiento', // Placeholder
-            }
-        };
-    }
+    //     return {
+    //         user: profile.user,
+    //         employee: profile.employee,
+    //         workspace: {
+    //             branchOfficeId: profile.employee?.branchOfficeId || null,
+    //             employeeRoleId: profile.employee?.employeeRoleId || null,
+    //             // Estas propiedades se pueden expandir cuando implementes los otros use cases
+    //             branchOfficeName: 'Sucursal Principal', // Placeholder
+    //             establishmentName: 'Mi Establecimiento', // Placeholder
+    //         }
+    //     };
+    // }
 }

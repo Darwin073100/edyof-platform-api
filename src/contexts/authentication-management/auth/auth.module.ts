@@ -83,10 +83,10 @@ import { EMPLOYEE_CHECKER_PORT, EmployeeChekerPort } from "src/contexts/employee
         },
         {
             provide: GetUserProfileUseCase,
-            useFactory: (userRepo: UserRepository, employeeRepo: EmployeeRepository) => {
-                return new GetUserProfileUseCase(userRepo, employeeRepo);
+            useFactory: (userRepo: UserRepository) => {
+                return new GetUserProfileUseCase(userRepo);
             },
-            inject: [USER_REPOSITORY, EMPLOYEE_REPOSITORY]
+            inject: [USER_REPOSITORY]
         },
         JwtStrategy,
         LocalStrategy,
