@@ -17,7 +17,6 @@ export class UserRoleMapper{
             ormEntity.updatedAt,
             ormEntity.deletedAt
         );
-        console.log(domainEntity)
         return domainEntity;
     }
 
@@ -33,7 +32,6 @@ export class UserRoleMapper{
         ormEntity.createdAt = domainEntity.createdAt;
         ormEntity.updatedAt = domainEntity.updatedAt;
         ormEntity.deletedAt = domainEntity.deletedAt;
-        console.log(ormEntity)
         return ormEntity;
     }
 }

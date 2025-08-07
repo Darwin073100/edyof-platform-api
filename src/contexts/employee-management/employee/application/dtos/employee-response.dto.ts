@@ -14,20 +14,20 @@ export class EmployeeResponseDto {
   readonly firstName: string; // El nombre del empleado
   readonly lastName: string; // El apellido del empleado
   readonly email: string; // El correo electrónico del empleado
-  readonly phoneNumber: string | null; // El número de teléfono del empleado (puede ser nulo)
-  readonly birthDate: Date | null; // La fecha de nacimiento del empleado (puede ser nulo)
-  readonly gender: string | null; // El género del empleado (puede ser nulo)
-  readonly hireDate: Date; // La fecha de contratación
-  readonly terminationDate: Date | null; // La fecha de terminación (puede ser nulo)
-  readonly entryTime: string | null; // La hora de entrada (puede ser nulo)
-  readonly exitTime: string | null; // La hora de salida (puede ser nulo)
-  readonly currentSalary: string; // El salario actual
-  readonly isActive: boolean; // Estado de actividad
-  readonly photoUrl: string | null; // URL de la foto del empleado (puede ser nulo)
+  readonly phoneNumber?: string | null; // El número de teléfono del empleado (puede ser nulo)
+  readonly birthDate?: Date | null; // La fecha de nacimiento del empleado (puede ser nulo)
+  readonly gender?: string | null; // El género del empleado (puede ser nulo)
+  readonly hireDate?: Date|null; // La fecha de contratación
+  readonly terminationDate?: Date | null; // La fecha de terminación (puede ser nulo)
+  readonly entryTime?: string | null; // La hora de entrada (puede ser nulo)
+  readonly exitTime?: string | null; // La hora de salida (puede ser nulo)
+  readonly currentSalary?: number|null; // El salario actual
+  readonly isActive?: boolean|null; // Estado de actividad
+  readonly photoUrl?: string | null; // URL de la foto del empleado (puede ser nulo)
   readonly createdAt: Date; // La fecha de creación
-  readonly updatedAt: Date | null; // La fecha de la última actualización
-  readonly deletedAt: Date | null; // La fecha de borrado lógico
-  readonly address: {
+  readonly updatedAt?: Date | null; // La fecha de la última actualización
+  readonly deletedAt?: Date | null; // La fecha de borrado lógico
+  readonly address?: {
     street: string;
     externalNumber: string;
     internalNumber?: string | null;
@@ -48,20 +48,20 @@ export class EmployeeResponseDto {
     firstName: string,
     lastName: string,
     email: string,
-    phoneNumber: string | null,
-    birthDate: Date | null,
-    gender: string | null,
-    hireDate: Date,
-    terminationDate: Date | null,
-    entryTime: string | null,
-    exitTime: string | null,
-    currentSalary: string,
-    isActive: boolean,
-    photoUrl: string | null,
     createdAt: Date,
-    updatedAt: Date | null,
-    deletedAt: Date | null,
-    address: {
+    phoneNumber?: string | null,
+    birthDate?: Date | null,
+    gender?: string | null,
+    hireDate?: Date|null,
+    terminationDate?: Date | null,
+    entryTime?: string | null,
+    exitTime?: string | null,
+    currentSalary?: number,
+    isActive?: boolean|null,
+    photoUrl?: string | null,
+    updatedAt?: Date | null,
+    deletedAt?: Date | null,
+    address?: {
       street: string;
       externalNumber: string;
       internalNumber?: string | null;

@@ -20,14 +20,21 @@ import { RoleModule } from "../role/role.module";
 import { ROLE_CHECKER_PORT, RoleCheckerPort } from "../role/domain/ports/out/role-checker.port";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { GetUserProfileUseCase } from "./application/use-cases/get-user-profile.use-case";
-import { EmployeeModule } from "src/contexts/employee-management/employee/employee.module";
-import { EMPLOYEE_REPOSITORY, EmployeeRepository } from "src/contexts/employee-management/employee/domain/repositories/employee.repository";
-import { EMPLOYEE_CHECKER_PORT, EmployeeChekerPort } from "src/contexts/employee-management/employee/domain/ports/out/employee-checker.port";
+import { EmployeeModule } from "src/contexts/employee-management/employee/employee.module";import { EMPLOYEE_CHECKER_PORT, EmployeeChekerPort } from "src/contexts/employee-management/employee/domain/ports/out/employee-checker.port";
+import { GetUserWorkspaceUseCase } from "./application/use-cases/get-user-workspace.use-case";
+import { RegisterUserWithEmployeeUseCase } from "./application/use-cases/register-user-with-employee.use-case";
+import { ROLE_REPOSITORY, RoleRepository } from "../role/domain/repositories/role.repository";
+import { BRANCH_OFFICE_CHECKER_PORT, BranchOfficeCheckerPort } from "src/contexts/establishment-management/branch-office/domain/ports/out/branch-office-checker.port";
+import { EMPLOYEE_ROLE_REPOSITORY, EmployeeRoleRepository } from "src/contexts/employee-management/employee-role/domain/repositories/employee-role.repository";
+import { BranchOfficeModule } from "src/contexts/establishment-management/branch-office/branch-office.module";
+import { EmployeeRoleModule } from "src/contexts/employee-management/employee-role/employee-role.module";
 
 @Module({
     imports: [
         RoleModule,
         EmployeeModule,
+        EmployeeRoleModule,
+        BranchOfficeModule,
         TypeOrmModule.forFeature([UserOrmEntity]),
         PassportModule,
         JwtModule.registerAsync({
@@ -87,6 +94,25 @@ import { EMPLOYEE_CHECKER_PORT, EmployeeChekerPort } from "src/contexts/employee
                 return new GetUserProfileUseCase(userRepo);
             },
             inject: [USER_REPOSITORY]
+        },
+        {
+            provide: GetUserWorkspaceUseCase,
+            useFactory: (userRepo: UserRepository) => {
+                return new GetUserWorkspaceUseCase(userRepo);
+            },
+            inject: [USER_REPOSITORY]
+        },
+        {
+            provide: RegisterUserWithEmployeeUseCase,
+            useFactory:(
+                userRoleRepo: UserRoleRepository, branchRepo: BranchOfficeCheckerPort, emploRepo: EmployeeRoleRepository, 
+                roleRepo: RoleRepository, encryptionRepo: EncryptionRepository)=>{
+                return new RegisterUserWithEmployeeUseCase(userRoleRepo, branchRepo, emploRepo, roleRepo, encryptionRepo);
+            },
+            inject:[
+                USER_ROLE_REPOSITORY, BRANCH_OFFICE_CHECKER_PORT, EMPLOYEE_ROLE_REPOSITORY, 
+                ROLE_REPOSITORY, ENCRYPTION_REPOSITORY
+            ]
         },
         JwtStrategy,
         LocalStrategy,

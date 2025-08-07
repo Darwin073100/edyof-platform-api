@@ -56,7 +56,7 @@ export class BranchOfficeOrmEntity {
 
   @ManyToOne(() => EstablishmentOrmEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'establishment_id' })
-  establishment: EstablishmentOrmEntity;
+  establishment?: EstablishmentOrmEntity | null;
 
   @OneToMany(() => EmployeeOrmEntity, employee => employee.branchOffice)
   employees?: EmployeeOrmEntity[];

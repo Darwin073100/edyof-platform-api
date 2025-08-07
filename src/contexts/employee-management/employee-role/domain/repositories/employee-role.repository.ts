@@ -11,5 +11,5 @@ export const EMPLOYEE_ROLE_REPOSITORY = Symbol('EMPLOYEE_ROLE_REPOSITORY');
  * Esto asegura la Inversión de Dependencias y la Independencia del Framework.
  */
 export interface EmployeeRoleRepository extends TemplateRepository<EmployeeRoleEntity> {
-  
+    findByName(name: string): Promise<EmployeeRoleEntity | null>;
 }

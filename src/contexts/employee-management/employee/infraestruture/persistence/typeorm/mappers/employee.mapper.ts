@@ -27,14 +27,14 @@ export class EmployeeMapper {
     orm.firstName = domainEntity.firstName.value ?? '';
     orm.lastName = domainEntity.lastName.value;
     orm.email = domainEntity.email.value;
-    orm.phoneNumber = domainEntity.phoneNumber.value;
-    orm.birthDate = domainEntity.birthDate.value ?? null;
+    orm.phoneNumber = domainEntity.phoneNumber? domainEntity.phoneNumber?.value: null;
+    orm.birthDate = domainEntity.birthDate ? domainEntity.birthDate.value: null;
     orm.gender = domainEntity.gender ?? null;
-    orm.hireDate = domainEntity.hireDate.value ?? new Date();
-    orm.terminationDate = domainEntity.terminationDate.value ?? null;
+    orm.hireDate = domainEntity.hireDate ? domainEntity.hireDate.value: new Date();
+    orm.terminationDate = domainEntity?.terminationDate ? domainEntity?.terminationDate?.value : null;
     orm.entryTime = domainEntity.entryTime;
     orm.exitTime = domainEntity.exitTime;
-    orm.currentSalary = domainEntity["currentSalary"] ? domainEntity["currentSalary"].value.toString() : '0';
+    orm.currentSalary = domainEntity["currentSalary"] ? domainEntity["currentSalary"].value : 0;
     orm.isActive = domainEntity.isActive;
     orm.photoUrl = domainEntity.photoUrl;
     orm.createdAt = domainEntity.createdAt;
@@ -48,11 +48,12 @@ export class EmployeeMapper {
       orm.employeeId,
       orm.employeeRoleId,
       orm.branchOfficeId,
-      orm.addressId ?? BigInt(0),
       EmployeeFirstNameVO.create(orm.firstName),
       EmployeeLastNameVO.create(orm.lastName),
       EmployeeEmailVO.create(orm.email),
-      EmployeePhoneNumberVO.create(orm.phoneNumber ?? ''),
+      orm.createdAt,
+      orm.addressId ?? BigInt(0),
+      orm.phoneNumber? EmployeePhoneNumberVO.create(orm?.phoneNumber): null,
       EmployeeBirthDateVO.create(orm.birthDate ?? undefined),
       orm.gender ?? GenderEnum.OTHER,
       EmployeeHireDateVO.create(orm.hireDate),
@@ -62,7 +63,6 @@ export class EmployeeMapper {
       orm.isActive,
       orm.photoUrl ?? '',
       EmployeeCurrentSalaryVO.create(Number(orm.currentSalary)),
-      orm.createdAt,
       orm.updatedAt,
       orm.deletedAt,
       orm.employeeRole ? EmployeeRoleMapper.toDomainEntity(orm.employeeRole) : undefined,

@@ -5,7 +5,7 @@ import {
   EMPLOYEE_ROLE_REPOSITORY,
   EmployeeRoleRepository,
 } from './domain/repositories/employee-role.repository';
-import { TypeOrmBrandRepository } from './infraestruture/persistence/typeorm/repositories/typeorm-employee-role.repository';
+import { TypeOrmEmployeeRoleRepository } from './infraestruture/persistence/typeorm/repositories/typeorm-employee-role.repository';
 import { RegisterEmployeeRoleUseCase } from './application/use-cases/register-employee-role.use-case';
 import { FindEmployeeRoleByIdUseCase } from './application/use-cases/find-employee-role-by-id.use-case';
 import { EmployeeRoleController } from './presentation/http/controllers/employee-role.controller';
@@ -38,7 +38,7 @@ import { TypeormEmployeeRoleCheckerAdapter } from './infraestruture/persistence/
     // con su implementación de infraestructura (TypeOrmEstablishmentRepository).
     {
       provide: EMPLOYEE_ROLE_REPOSITORY, // El "token" o la "interfaz" que se pide
-      useClass: TypeOrmBrandRepository, // La clase concreta que se provee
+      useClass: TypeOrmEmployeeRoleRepository, // La clase concreta que se provee
     },
     {
       provide: EMPLOYEE_ROLE_CHECKER_PORT, // Provee el puerto de verificación de marcas

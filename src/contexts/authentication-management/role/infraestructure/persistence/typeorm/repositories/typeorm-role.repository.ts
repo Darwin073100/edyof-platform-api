@@ -14,6 +14,7 @@ export class TypeormRoleRepository implements RoleRepository {
   ) {
     this.typeormRepository = typeormRepository;
   }
+
   async findByName(name: string): Promise<RoleEntity | null> {
     const ormEntity = await this.typeormRepository.findOne({
       where: { name: name },
@@ -23,6 +24,7 @@ export class TypeormRoleRepository implements RoleRepository {
     }
     return RoleMapper.toDomainEntity(ormEntity);
   }
+  
   async findById(roleId: bigint): Promise<RoleEntity | null> {
     const ormEntity = await this.typeormRepository.findOne({
       where: { roleId: roleId },

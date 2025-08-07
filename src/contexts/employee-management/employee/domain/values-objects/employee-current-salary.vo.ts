@@ -29,9 +29,6 @@ export class EmployeeCurrentSalaryVO extends ValueObject<Prop> {
    * @throws Error si el Los apellidos es inválido (ej. vacío, muy largo).
    */
   public static create(salary: number): EmployeeCurrentSalaryVO {
-    if (!salary || salary === 0) {
-      throw new InvalidEmployeeException('El salario del empleado no puede ser 0.'); // Un error de dominio apropiado
-    }
     if (salary < 0) { // Un ejemplo de límite, puedes ajustar
       throw new InvalidEmployeeException('El salario del empleado no puede ser negativo.');
     }

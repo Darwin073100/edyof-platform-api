@@ -7,13 +7,15 @@ import { PermissionsGuard } from "src/shared/guards/permissions.guard";
 import { JwtAuthGuard } from "src/shared/guards/jwt-auth.guard";
 import { GetUserProfileUseCase } from "../../../application/use-cases/get-user-profile.use-case";
 import { UserMapper } from "../../../application/mapper/user.mapper";
+import { GetUserWorkspaceUseCase } from "../../../application/use-cases/get-user-workspace.use-case";
 
 @Controller('auth')
 export class AuthController {
     constructor(
         private readonly validateAuthUseCase: ValidateAuthUseCase,
         private readonly loginAuthUseCase: loginAuthUseCase,
-        private readonly getUserProfileUseCase: GetUserProfileUseCase
+        private readonly getUserProfileUseCase: GetUserProfileUseCase,
+        private readonly getUserWorkspaceUseCase: GetUserWorkspaceUseCase,
     ) { }
     @Post('login')
     @HttpCode(HttpStatus.OK)
@@ -44,24 +46,14 @@ export class AuthController {
         return response;
     }
 
-    // @Get('workspace-info') // Obtener información del área de trabajo (establecimiento/sucursal)
-    // @UseGuards(JwtAuthGuard)
-    // @HttpCode(HttpStatus.OK)
-    // async getWorkspaceInfo(@Request() req) {
-    //     // Por ahora retornar información básica usando los datos del perfil
-    //     const userId = req.user.userId;
-    //     const profile = await this.getUserProfileUseCase.execute(BigInt(userId));
-        
-    //     return {
-    //         user: profile.user,
-    //         employee: profile.employee,
-    //         workspace: {
-    //             branchOfficeId: profile.employee?.branchOfficeId || null,
-    //             employeeRoleId: profile.employee?.employeeRoleId || null,
-    //             // Estas propiedades se pueden expandir cuando implementes los otros use cases
-    //             branchOfficeName: 'Sucursal Principal', // Placeholder
-    //             establishmentName: 'Mi Establecimiento', // Placeholder
-    //         }
-    //     };
-    // }
+    @Get('workspace-info') // Obtener información del área de trabajo (establecimiento/sucursal)
+    @UseGuards(JwtAuthGuard)
+    @HttpCode(HttpStatus.OK)
+    async getWorkspaceInfo(@Request() req) {
+        // Por ahora retornar información básica usando los datos del perfil
+        const userId = req.user.userId;
+        const profile = await this.getUserWorkspaceUseCase.execute(BigInt(userId));
+        const response = UserMapper.toUserWorkspaceResponse(profile);
+        return response;
+    }
 }

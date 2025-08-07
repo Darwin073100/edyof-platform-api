@@ -40,47 +40,47 @@ export class EmployeeOrmEntity {
   email: string;
 
   @Column({ type: 'varchar', length: 25, name: 'phone_number', nullable: true })
-  phoneNumber: string | null;
+  phoneNumber?: string | null;
 
   @ManyToOne(() => AddressOrmEntity, { nullable: true, cascade: true })
   @JoinColumn({ name: 'address_id' })
   address?: AddressOrmEntity | null;
   @Column({ type: 'bigint', name: 'address_id', nullable: true })
-  addressId: bigint | null;
+  addressId?: bigint | null;
 
   @Column({ type: 'date', name: 'birth_date', nullable: true })
-  birthDate: Date | null;
+  birthDate?: Date | null;
 
   @Column({ type: 'enum', enum: GenderEnum, name: 'gender', nullable: true })
-  gender: GenderEnum | null;
+  gender?: GenderEnum | null;
 
-  @Column({ type: 'date', name: 'hire_date', nullable: false })
-  hireDate: Date;
+  @Column({ type: 'date', name: 'hire_date', nullable: true })
+  hireDate?: Date|null;
 
   @Column({ type: 'date', name: 'termination_date', nullable: true })
-  terminationDate: Date | null;
+  terminationDate?: Date | null;
 
   @Column({ type: 'time', name: 'entry_time', nullable: true })
-  entryTime: string | null;
+  entryTime?: string | null;
 
   @Column({ type: 'time', name: 'exit_time', nullable: true })
-  exitTime: string | null;
+  exitTime?: string | null;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, name: 'current_salary', nullable: false })
-  currentSalary: string;
+  @Column({ type: 'decimal', precision: 10, scale: 2, name: 'current_salary', default: 0, nullable: true })
+  currentSalary?: number|null;
 
-  @Column({ type: 'boolean', name: 'is_active', default: true, nullable: false })
-  isActive: boolean;
+  @Column({ type: 'boolean', name: 'is_active', default: true, nullable: true })
+  isActive?: boolean|null;
 
   @Column({ type: 'varchar', length: 255, name: 'photo_url', nullable: true })
-  photoUrl: string | null;
+  photoUrl?: string | null;
 
   @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamp with time zone', name: 'updated_at', nullable: true, onUpdate: 'CURRENT_TIMESTAMP' })
-  updatedAt: Date | null;
+  updatedAt?: Date | null;
 
   @DeleteDateColumn({ type: 'timestamp with time zone', name: 'deleted_at', nullable: true })
-  deletedAt: Date | null;
+  deletedAt?: Date | null;
 }

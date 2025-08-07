@@ -8,6 +8,7 @@ import { DomainEvent } from "src/shared/domain/events/domain-events";
 import { BranchOfficeCreatedEvent } from "../events/branch-office-created.event";
 import { CategoryCreatedEvent } from "src/contexts/product-management/category/domain/events/category-created.event";
 import { EmployeeEntity } from '../../../../employee-management/employee/domain/entities/employee.entity';
+import { EstablishmentEntity } from "src/contexts/establishment-management/establishment/domain/entities/establishment.entity";
   
   /**
    * BranchOffice es una Entidad Raíz de Agregado.
@@ -22,6 +23,7 @@ import { EmployeeEntity } from '../../../../employee-management/employee/domain/
     private readonly _createdAt: Date;
     private _updatedAt?: Date | null;
     private _deletedAt?: Date | null;
+    private _establishment?: EstablishmentEntity|null;
     private _domainEvents: DomainEvent<this>[] = []; // Colección de eventos de dominio
     private _employees?: EmployeeEntity[];
     // El constructor es privado para forzar el uso de métodos de fábrica para la creación.
@@ -32,6 +34,7 @@ import { EmployeeEntity } from '../../../../employee-management/employee/domain/
       address: AddressEntity, // La dirección es parte de la sucursal
       establishmentId: bigint, // ID del Establishment al que pertenece
       createdAt: Date,
+      establishment?: EstablishmentEntity|null,
       updatedAt?: Date | null,
       deletedAt?: Date | null,
       employees?: EmployeeEntity[] | null
@@ -44,6 +47,7 @@ import { EmployeeEntity } from '../../../../employee-management/employee/domain/
         this._updatedAt = updatedAt;
         this._deletedAt = deletedAt;
         this._employees = employees ?? undefined;
+        this._establishment = establishment ?? undefined;
     }
   
     get branchOfficeId(): bigint {
@@ -60,6 +64,10 @@ import { EmployeeEntity } from '../../../../employee-management/employee/domain/
   
     get establishmentId(): bigint {
       return this._establishmentId;
+    }
+
+    get establishment(): EstablishmentEntity | null | undefined {
+      return this._establishment;
     }
   
     get createdAt(): Date {
@@ -101,6 +109,7 @@ import { EmployeeEntity } from '../../../../employee-management/employee/domain/
         new Date(),
         null,
         null,
+        null,
       );
   
       // Opcional: Registrar un evento de dominio BranchOfficeCreatedEvent
@@ -127,6 +136,7 @@ import { EmployeeEntity } from '../../../../employee-management/employee/domain/
       address: AddressEntity,
       establishmentId: bigint,
       createdAt: Date,
+      establishment?: EstablishmentEntity|null,
       updatedAt: Date | null = null,
       deletedAt: Date | null = null,
     ): BranchOfficeEntity {
@@ -136,6 +146,7 @@ import { EmployeeEntity } from '../../../../employee-management/employee/domain/
         address,
         establishmentId,
         createdAt,
+        establishment,
         updatedAt,
         deletedAt,
       );

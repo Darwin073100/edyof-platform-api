@@ -16,7 +16,7 @@ import { EmployeeRoleAlreadyExistsException } from 'src/contexts/employee-manage
  * Actúa como un adaptador entre el dominio puro y el ORM.
  */
 @Injectable() // Hace que esta clase sea inyectable por el sistema de inyección de dependencias de NestJS
-export class TypeOrmBrandRepository implements EmployeeRoleRepository {
+export class TypeOrmEmployeeRoleRepository implements EmployeeRoleRepository {
   private readonly typeOrmRepository: Repository<EmployeeRoleOrmEntity>;
 
   constructor(
@@ -100,6 +100,24 @@ export class TypeOrmBrandRepository implements EmployeeRoleRepository {
     // 2. Reconstituir la entidad de dominio desde la entidad ORM.
     // Usamos el método de fábrica 'reconstitute' para crear la entidad de dominio
     // a partir de datos ya existentes, sin emitir eventos de dominio.
+    return EmployeeRoleEntity.reconstitute(
+      ormEntity.employeeRoleId,
+      EmployeeRoleNameVO.create(ormEntity.name), // Reconstruimos el Value Object Name
+      ormEntity.createdAt,
+      ormEntity.updatedAt,
+      ormEntity.deletedAt,
+    );
+  }
+
+  async findByName(name: string): Promise<EmployeeRoleEntity | null> {
+    const ormEntity = await this.typeOrmRepository.findOne({
+      where: { name: name }, // TypeORM y BigInt
+    });
+
+    if (!ormEntity) {
+      return null;
+    }
+
     return EmployeeRoleEntity.reconstitute(
       ormEntity.employeeRoleId,
       EmployeeRoleNameVO.create(ormEntity.name), // Reconstruimos el Value Object Name

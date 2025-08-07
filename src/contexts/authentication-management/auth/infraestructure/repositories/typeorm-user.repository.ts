@@ -34,6 +34,18 @@ export class TyperomUserRepository implements UserRepository{
             throw error;
         }
     }
+    
+    async saveWithEmployee(entity: UserEntity): Promise<UserEntity> {
+        try {    
+            const ormEntity = UserMapper.toOrmEntity(entity);
+            const resp = await this.repository.save(ormEntity);
+            return UserMapper.toDomain(resp);
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+        
+    }
 
     async findByEmail(email: string): Promise<UserEntity | null> {
         const resp = await this.repository.findOne({
@@ -81,7 +93,26 @@ export class TyperomUserRepository implements UserRepository{
             return null;
         }
         const entity = UserMapper.toDomain(resp);
-        console.log(entity);
+        return entity;
+    }
+    async findByIdWithWorkspace(id: bigint): Promise<UserEntity | null> {
+        const resp = await this.repository.findOne({
+            where:{userId: id as any},
+            relations: [
+                'userRoles',
+                'employee',
+                'employee.branchOffice',
+                'employee.branchOffice.establishment',
+                'userRoles.role',
+                'userRoles.role.rolePermissions',
+                'userRoles.role.rolePermissions.permission'
+            ]
+        });
+        
+        if(!resp){
+            return null;
+        }
+        const entity = UserMapper.toDomain(resp);
         return entity;
     }
 

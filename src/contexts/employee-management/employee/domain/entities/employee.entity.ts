@@ -18,23 +18,23 @@ export class EmployeeEntity {
     private readonly _employeeId: bigint;
     private _employeeRoleId: bigint;
     private _branchOfficeId: bigint;
-    private _addressId: bigint;
+    private _addressId?: bigint|null;
     private _firstName: EmployeeFirstNameVO;
     private _lastName: EmployeeLastNameVO;
     private _email: EmployeeEmailVO;
-    private _phoneNumber: EmployeePhoneNumberVO;
-    private _birthDate: EmployeeBirthDateVO;
-    private _gender: GenderEnum;
-    private _hireDate: EmployeeHireDateVO;
-    private _terminationDate: EmployeeTerminationDateVO;
-    private _entryTime: string;
-    private _exitTime: string;
-    private _isActive: boolean;
-    private _photoUrl: string;
-    private _currentSalary: EmployeeCurrentSalaryVO;
+    private _phoneNumber?: EmployeePhoneNumberVO|null;
+    private _birthDate?: EmployeeBirthDateVO|null;
+    private _gender?: GenderEnum|null;
+    private _hireDate?: EmployeeHireDateVO|null;
+    private _terminationDate?: EmployeeTerminationDateVO|null;
+    private _entryTime?: string|null;
+    private _exitTime?: string|null;
+    private _isActive?: boolean|null;
+    private _photoUrl?: string|null;
+    private _currentSalary?: EmployeeCurrentSalaryVO|null;
     private readonly _createdAt: Date;
-    private _updatedAt: Date | null;
-    private _deletedAt: Date | null;
+    private _updatedAt?: Date | null;
+    private _deletedAt?: Date | null;
     private _domainEvents: DomainEvent<this>[] = [];
     private _employeeRole?: EmployeeRoleEntity|null;
     private _branchOffice?: BranchOfficeEntity|null;
@@ -44,23 +44,23 @@ export class EmployeeEntity {
     employeeId: bigint,
     employeeRoleId: bigint,
     branchOfficeId: bigint,
-    addressId: bigint,
     firstName: EmployeeFirstNameVO,
     lastName: EmployeeLastNameVO,
     email: EmployeeEmailVO,
-    phoneNumber: EmployeePhoneNumberVO,
-    birthDate: EmployeeBirthDateVO,
-    gender: GenderEnum,
-    hireDate: EmployeeHireDateVO,
-    terminationDate: EmployeeTerminationDateVO,
-    entryTime: string,
-    exitTime: string,
-    isActive: boolean,
-    photoUrl: string,
-    currentSalary: EmployeeCurrentSalaryVO,
     createdAt: Date,
-    updatedAt: Date | null,
-    deletedAt: Date | null,
+    addressId?: bigint|null,
+    phoneNumber?: EmployeePhoneNumberVO|null,
+    birthDate?: EmployeeBirthDateVO|null,
+    gender?: GenderEnum|null,
+    hireDate?: EmployeeHireDateVO|null,
+    terminationDate?: EmployeeTerminationDateVO|null,
+    entryTime?: string|null,
+    exitTime?: string|null,
+    isActive?: boolean|null,
+    photoUrl?: string|null,
+    currentSalary?: EmployeeCurrentSalaryVO|null,
+    updatedAt?: Date | null,
+    deletedAt?: Date | null,
     employeeRole?: EmployeeRoleEntity | null,
     branchOffice?: BranchOfficeEntity|null,
     address?: AddressEntity|null,
@@ -101,29 +101,29 @@ export class EmployeeEntity {
         employeeId: bigint,
         employeeRoleId: bigint,
         branchOfficeId: bigint,
-        addressId: bigint,
         firstName: EmployeeFirstNameVO,
         lastName: EmployeeLastNameVO,
         email: EmployeeEmailVO,
-        phoneNumber: EmployeePhoneNumberVO,
-        birthDate: EmployeeBirthDateVO,
-        gender: GenderEnum,
-        hireDate: EmployeeHireDateVO,
-        terminationDate: EmployeeTerminationDateVO,
-        entryTime: string,
-        exitTime: string,
-        photoUrl: string,
-        currentSalary: EmployeeCurrentSalaryVO,
-        createdAt: Date,
+        addressId?: bigint|null,
+        phoneNumber?: EmployeePhoneNumberVO|null,
+        birthDate?: EmployeeBirthDateVO|null,
+        gender?: GenderEnum|null,
+        hireDate?: EmployeeHireDateVO|null,
+        terminationDate?: EmployeeTerminationDateVO|null,
+        entryTime?: string|null,
+        exitTime?: string|null,
+        photoUrl?: string|null,
+        currentSalary?: EmployeeCurrentSalaryVO|null,
     ): EmployeeEntity {
         const employee = new EmployeeEntity(
             employeeId,
             employeeRoleId,
             branchOfficeId,
-            addressId,
             firstName,
             lastName,
             email,
+            new Date(),
+            addressId,
             phoneNumber,
             birthDate,
             gender,
@@ -131,10 +131,9 @@ export class EmployeeEntity {
             terminationDate,
             entryTime,
             exitTime,
-            true,
+            undefined,
             photoUrl,
             currentSalary,
-            createdAt,
             null,
             null,
             null,
@@ -154,23 +153,23 @@ export class EmployeeEntity {
         employeeId: bigint,
         employeeRoleId: bigint,
         branchOfficeId: bigint,
-        addressId: bigint,
         firstName: EmployeeFirstNameVO,
         lastName: EmployeeLastNameVO,
         email: EmployeeEmailVO,
-        phoneNumber: EmployeePhoneNumberVO,
-        birthDate: EmployeeBirthDateVO,
-        gender: GenderEnum,
-        hireDate: EmployeeHireDateVO,
-        terminationDate: EmployeeTerminationDateVO,
-        entryTime: string,
-        exitTime: string,
-        isActive: boolean,
-        photoUrl: string,
-        currentSalary: EmployeeCurrentSalaryVO,
         createdAt: Date,
-        updatedAt: Date | null = null,
-        deletedAt: Date | null = null,
+        addressId?: bigint|null,
+        phoneNumber?: EmployeePhoneNumberVO|null,
+        birthDate?: EmployeeBirthDateVO|null,
+        gender?: GenderEnum|null,
+        hireDate?: EmployeeHireDateVO|null,
+        terminationDate?: EmployeeTerminationDateVO|null,
+        entryTime?: string|null,
+        exitTime?: string|null,
+        isActive?: boolean|null,
+        photoUrl?: string|null,
+        currentSalary?: EmployeeCurrentSalaryVO|null,
+        updatedAt?: Date | null,
+        deletedAt?: Date | null,
         employeeRole?: EmployeeRoleEntity | null,
         branchOffice?: BranchOfficeEntity | null,
         address?: AddressEntity | null,
@@ -179,10 +178,11 @@ export class EmployeeEntity {
             employeeId,
             employeeRoleId,
             branchOfficeId,
-            addressId,
             firstName,
             lastName,
             email,
+            createdAt,
+            addressId,
             phoneNumber,
             birthDate,
             gender,
@@ -193,7 +193,6 @@ export class EmployeeEntity {
             isActive,
             photoUrl,
             currentSalary,
-            createdAt,
             updatedAt,
             deletedAt,
             employeeRole,
@@ -212,7 +211,7 @@ export class EmployeeEntity {
     get branchOfficeId(): bigint {
         return this._branchOfficeId;
     }
-    get addressId(): bigint {
+    get addressId(): bigint|undefined|null {
         return this._addressId;
     }
     get firstName(): EmployeeFirstNameVO {
@@ -224,31 +223,31 @@ export class EmployeeEntity {
     get email(): EmployeeEmailVO {
         return this._email;
     }
-    get phoneNumber(): EmployeePhoneNumberVO {
+    get phoneNumber(): EmployeePhoneNumberVO | undefined| null {
         return this._phoneNumber;
     }
-    get birthDate(): EmployeeBirthDateVO {
+    get birthDate(): EmployeeBirthDateVO | undefined| null {
         return this._birthDate;
     }
-    get gender(): GenderEnum {
+    get gender(): GenderEnum | undefined| null {
         return this._gender;
     }
-    get hireDate(): EmployeeHireDateVO {
+    get hireDate(): EmployeeHireDateVO | undefined| null {
         return this._hireDate;
     }
-    get terminationDate(): EmployeeTerminationDateVO {
+    get terminationDate(): EmployeeTerminationDateVO | undefined| null {
         return this._terminationDate;
     }
-    get entryTime(): string {
+    get entryTime(): string | undefined| null {
         return this._entryTime;
     }
-    get exitTime(): string {
+    get exitTime(): string | undefined| null {
         return this._exitTime;
     }
-    get isActive(): boolean {
+    get isActive(): boolean | undefined| null {
         return this._isActive;
     }
-    get photoUrl(): string {
+    get photoUrl(): string | undefined| null {
         return this._photoUrl;
     }
     get employeeRole(): EmployeeRoleEntity | undefined | null {
@@ -260,16 +259,16 @@ export class EmployeeEntity {
     get address(): AddressEntity | undefined | null {
         return this._address;
     }
-    get currentSalary(): EmployeeCurrentSalaryVO {
+    get currentSalary(): EmployeeCurrentSalaryVO| null| undefined {
         return this._currentSalary;
     }
     get createdAt(): Date {
         return this._createdAt;
     }
-    get updatedAt(): Date | null {
+    get updatedAt(): Date | null | undefined {
         return this._updatedAt;
     }
-    get deletedAt(): Date | null {
+    get deletedAt(): Date | null | undefined {
         return this._deletedAt;
     }
 

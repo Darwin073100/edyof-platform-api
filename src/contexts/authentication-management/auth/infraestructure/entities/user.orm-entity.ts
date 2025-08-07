@@ -37,7 +37,7 @@ export class UserOrmEntity{
     @OneToMany(()=> UserRoleOrmEntity, (userRole)=> userRole.user)
     userRoles?: UserRoleOrmEntity[]|[];
 
-    @OneToOne(() => EmployeeOrmEntity, { nullable: false })
+    @OneToOne(() => EmployeeOrmEntity, { nullable: false, cascade: true })
     @JoinColumn({ name: 'employee_id' })
     employee?: EmployeeOrmEntity|null;
 

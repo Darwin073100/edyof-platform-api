@@ -4,6 +4,7 @@ import { AddressOrmEntity } from "src/shared/infraestructure/typeorm/address.orm
 
 import { AddressEntity } from "src/shared/domain/value-objects/address.vo";
 import { BranchOfficeNameVO } from "src/contexts/establishment-management/branch-office/domain/value-objects/branch-office-name.vo";
+import { EstablishmentMapper } from "src/contexts/establishment-management/establishment/infraestruture/persistence/typeorm/mappers/establishment.mapper";
 
 /**
  * BranchOfficeMapper es una clase que se encarga de transformar
@@ -27,6 +28,7 @@ export class BranchOfficeMapper {
     ormEntity.branchOfficeId = domainEntity.branchOfficeId;
     ormEntity.name = domainEntity.name.value;
     ormEntity.establishmentId = domainEntity.establishmentId;
+    ormEntity.establishment = domainEntity.establishment ? EstablishmentMapper.toOrmEntity(domainEntity.establishment): undefined
     ormEntity.createdAt = domainEntity.createdAt;
     ormEntity.updatedAt = domainEntity.updatedAt ?? null;
     ormEntity.deletedAt = domainEntity.deletedAt ?? null;
@@ -80,6 +82,7 @@ export class BranchOfficeMapper {
       addressVo,
       ormEntity.establishmentId,
       ormEntity.createdAt,
+      ormEntity.establishment ? EstablishmentMapper.toDomainEntity(ormEntity.establishment) : null,
       ormEntity.updatedAt,
       ormEntity.deletedAt
     );

@@ -41,6 +41,7 @@ import { PERMISSION_CHECKER_PORT, PermissionCheckerPort } from '../permission/do
     },
   ],
   exports:[
+    ROLE_REPOSITORY,
     ROLE_CHECKER_PORT
   ]
 })

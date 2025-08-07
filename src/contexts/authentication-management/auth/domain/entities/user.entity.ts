@@ -77,6 +77,35 @@ export class UserEntity {
     return user;
   }
 
+  /**
+   * Este metodo es paran usuario con la informacion del empleado
+   */
+  static createWithEmployee(
+    userId: bigint,
+    employeeId: bigint,
+    username: UserUsernameVO,
+    email: UserEmailVO,
+    passwordHash: UserPasswordHashVO,
+    employee: EmployeeEntity
+  ) {
+    const user = new UserEntity(
+      userId,
+      employeeId,
+      username,
+      email,
+      passwordHash,
+      true,
+      null,
+      new Date(),
+      [],
+      employee, // employee
+      null,
+      null,
+    );
+
+    return user;
+  }
+
   static reconstitute(
     userId: bigint,
     employeeId: bigint,

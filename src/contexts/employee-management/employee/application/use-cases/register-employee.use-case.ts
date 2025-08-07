@@ -84,10 +84,10 @@ export class RegisterEmployeeRoleUseCase {
       newEmployeeId,
       command.employeeRoleId,
       command.branchOfficeId,
-      BigInt(0), // addressId se asignará tras persistir (cascade)
       firstName,
       lastName,
       email,
+      BigInt(0), // addressId se asignará tras persistir (cascade)
       phoneNumber,
       birthDate,
       gender,
@@ -97,7 +97,6 @@ export class RegisterEmployeeRoleUseCase {
       command.exitTime ?? '',
       command.photoUrl ?? '',
       currentSalary,
-      new Date(),
     );
     // Asignar address en memoria (cascade)
     (employee as any)._address = address;

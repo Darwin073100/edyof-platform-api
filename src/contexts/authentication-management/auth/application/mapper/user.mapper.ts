@@ -3,6 +3,7 @@ import { UserRoleEntity } from "../../domain/entities/user-role.entity";
 import { UserEntity } from "../../domain/entities/user.entity";
 import { UserProfileResponse } from "../dtos/user-profile-response";
 import { UserResponseDTO } from "../dtos/user-response.dto";
+import { UserWorkspaceResponseDTO } from "../dtos/user-workspace-response.dto";
 
 export class UserMapper{
     /**
@@ -53,6 +54,50 @@ export class UserMapper{
                 branchOfficeId: entity.employee.branchOfficeId,
                 employeeRoleId: entity.employee.employeeRoleId
             } : undefined,
+        }
+
+        return profile;
+    }
+    static toUserWorkspaceResponse(entity: UserEntity): UserWorkspaceResponseDTO{
+        const profile: UserWorkspaceResponseDTO = {
+            user:{
+                email: entity.email?.value || '',
+                employeeId: entity.employeeId?.toString() || '0',
+                // permissions: entity.userRoles?.flatMap((ur:UserRoleEntity) => ur.role?.rolePermissions?.map(rp => rp.permission.name)) || [],
+                permissions: entity.userRoles?.flatMap((ur:UserRoleEntity) => ur.role?.permissions) || [],
+                roles: entity.userRoles?.map(ur => ur.role?.name.name) || [],
+                userId: entity.userId?.toString() || '0',
+                username: entity.username?.value || ''
+            },
+            employee: entity.employee ? {
+                employeeId: entity.employee.employeeId?.toString() || '0',
+                firstName: entity.employee.firstName?.value || '',
+                lastName: entity.employee.lastName?.value || '',
+                email: entity.employee.email?.value || '',
+                phoneNumber: entity.employee.phoneNumber?.value || '',
+                branchOfficeId: entity.employee.branchOfficeId?.toString() || '0',
+                employeeRoleId: entity.employee.employeeRoleId?.toString() || '0'
+            } : undefined,
+            branchOffice: {
+                branchOfficeId: (entity.employee?.branchOffice?.branchOfficeId || 0n).toString(),
+                name: entity.employee?.branchOffice?.name.value || '',
+                address:{
+                    street: entity.employee?.branchOffice?.address?.street || '',
+                    externalNumber: entity.employee?.branchOffice?.address?.externalNumber || '',
+                    internalNumber: entity.employee?.branchOffice?.address?.internalNumber || '',
+                    city: entity.employee?.branchOffice?.address?.city || '',
+                    state: entity.employee?.branchOffice?.address?.state || '',
+                    country: entity.employee?.branchOffice?.address?.country || '',
+                    municipality: entity.employee?.branchOffice?.address?.municipality || '',
+                    neighborhood: entity.employee?.branchOffice?.address?.neighborhood || '',
+                    postalCode: entity.employee?.branchOffice?.address?.postalCode || ''
+                }
+            },
+            establishment: {
+                establishmentId: (entity.employee?.branchOffice?.establishment?.establishmentId || 0n).toString(),
+                name: entity.employee?.branchOffice?.establishment?.name.value || ''
+            }
+
         }
 
         return profile;
