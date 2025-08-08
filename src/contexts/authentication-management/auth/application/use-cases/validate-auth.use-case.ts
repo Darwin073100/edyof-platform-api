@@ -26,7 +26,9 @@ export class ValidateAuthUseCase{
         if(!isPasswordValid){
             return null;
         }
-        const {passwordHash, ...result} = user;
-        return result as UserEntity;
+        
+        // Retornar la entidad completa, no destructurarla
+        // La contraseña está encapsulada en el objeto de dominio y no se expone en JSON
+        return user;
     }
 }

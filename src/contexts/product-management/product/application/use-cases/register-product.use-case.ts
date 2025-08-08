@@ -5,7 +5,7 @@ import { ProductNameVO } from '../../domain/value-objects/product-name.vo';
 import { ProductDescriptionVO } from '../../domain/value-objects/product-description.vo';
 import { ProductSkuVO } from '../../domain/value-objects/product-sku.vo';
 import { ProductUniversalBarCodeVO } from '../../domain/value-objects/product-universal-bar-code.vo';
-import { ForSaleEnum } from '../../domain/enums/for-sale.enum';
+import { ForSaleEnum } from '../../../../../shared/domain/enums/for-sale.enum';
 import { ProductAlreadyExistsException } from '../../domain/exceptions/product-already-exists.exception';
 import { CategoryCheckerPort } from 'src/contexts/product-management/category/domain/ports/out/category-checker.port';
 import { BrandChekerPort } from 'src/contexts/product-management/brand/domain/ports/out/brand-checker.port';

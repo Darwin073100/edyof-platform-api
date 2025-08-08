@@ -1,5 +1,5 @@
 import { DomainEvent } from 'src/shared/domain/events/domain-events';
-import { ForSaleEnum } from '../enums/for-sale.enum';
+import { ForSaleEnum } from '../../../../../shared/domain/enums/for-sale.enum';
 import { ProductNameVO } from '../value-objects/product-name.vo';
 import { ProductDescriptionVO } from '../value-objects/product-description.vo';
 import { ProductSkuVO } from '../value-objects/product-sku.vo';

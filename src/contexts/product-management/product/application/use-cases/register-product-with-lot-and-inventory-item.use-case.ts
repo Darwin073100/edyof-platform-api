@@ -15,7 +15,7 @@ import { ProductSkuVO } from "src/contexts/product-management/product/domain/val
 import { ProductUniversalBarCodeVO } from "src/contexts/product-management/product/domain/value-objects/product-universal-bar-code.vo";
 import { ProductDescriptionVO } from "src/contexts/product-management/product/domain/value-objects/product-description.vo";
 import { v4 as uuid } from 'uuid'
-import { ForSaleEnum } from "src/contexts/product-management/product/domain/enums/for-sale.enum";
+import { ForSaleEnum } from "src/shared/domain/enums/for-sale.enum";
 import { LotEntity } from "src/contexts/purchase-management/lot/domain/entities/lot.entity";
 import { LotNumberVO } from "src/contexts/purchase-management/lot/domain/value-objects/lot-number.vo";
 import { PurchasePriceVO } from "src/contexts/purchase-management/lot/domain/value-objects/purchase-price.vo";

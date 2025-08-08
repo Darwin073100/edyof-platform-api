@@ -11,7 +11,7 @@ export class loginAuthUseCase{
     const payload = {
       username: user.username?.value,
       email: user.email?.value,
-      userId: user.userId,
+      userId: user.userId?.toString(), // Convertir bigint a string para evitar error de serialización
       permissions: user.userRoles?.flatMap(role => role.permissions) || [],
       roles: user.userRoles?.map(role => role.roleName) || [],
     };

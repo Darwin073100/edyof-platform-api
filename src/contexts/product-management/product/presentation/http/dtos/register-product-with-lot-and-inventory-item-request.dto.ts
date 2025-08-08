@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsOptional, IsString, IsNumber, IsEnum, IsUrl, IsInt, IsPositive, IsNumberString, IsDateString, IsBoolean, MaxLength } from 'class-validator';
-import { ForSaleEnum } from '../../../domain/enums/for-sale.enum';
+import { ForSaleEnum } from '../../../../../../shared/domain/enums/for-sale.enum';
 import { LocationEnum } from 'src/contexts/inventory-management/inventory-item/domain/enums/location.enum';
 
 export class RegisterProductWithLotAndInventoryItemRequestDto {

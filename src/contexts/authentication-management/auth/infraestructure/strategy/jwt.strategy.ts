@@ -5,7 +5,7 @@ import { UserRepository, USER_REPOSITORY } from "src/contexts/authentication-man
 // Define la interfaz del payload que esperas en el JWT
 // IMPORTANTE: Asegúrate de que esto refleje lo que pones en AuthService.login
 export interface JwtPayload {
-  userId: bigint;
+  userId: string; // Cambiado de bigint a string
   username: string;
   email: string;
   permissions: string[]; // Nombres de los permisos (ej. 'product:read')
@@ -28,7 +28,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     async validate(payload: JwtPayload):Promise<any> {
         // El payload es el objeto decodificado del JWT
         const { userId } = payload;
-        const user = await this.userRepository.findById(userId);
+        // Convertir userId de string a bigint para la consulta en la BD
+        const user = await this.userRepository.findById(BigInt(userId));
 
         if(!user){
             throw new UnauthorizedException('El token recibido no es valido.');
@@ -39,7 +40,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         const permissions = user.userRoles?.flatMap(userRole => userRole.permissions) || [];
 
         return {
-            userId: user.userId,
+            userId: user.userId.toString(), // Mantener como string para consistencia
             username: user.username?.value,
             email: user.email?.value,
             permissions: permissions, // Usar los permisos del usuario de la BD

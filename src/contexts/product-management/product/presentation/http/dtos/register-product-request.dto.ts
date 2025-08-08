@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsOptional, IsString, IsNumber, IsEnum, IsUrl, IsInt, IsPositive, IsNumberString } from 'class-validator';
-import { ForSaleEnum } from '../../../domain/enums/for-sale.enum';
+import { ForSaleEnum } from '../../../../../../shared/domain/enums/for-sale.enum';
 
 export class RegisterProductRequestDto {
   @IsNotEmpty({message: 'El ID del establecimiento es obligatorio.'})

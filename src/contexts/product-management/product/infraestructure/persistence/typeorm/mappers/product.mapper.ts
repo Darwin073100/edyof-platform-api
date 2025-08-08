@@ -4,7 +4,7 @@ import { ProductNameVO } from '../../../../domain/value-objects/product-name.vo'
 import { ProductDescriptionVO } from '../../../../domain/value-objects/product-description.vo';
 import { ProductSkuVO } from '../../../../domain/value-objects/product-sku.vo';
 import { ProductUniversalBarCodeVO } from '../../../../domain/value-objects/product-universal-bar-code.vo';
-import { ForSaleEnum } from '../../../../domain/enums/for-sale.enum';
+import { ForSaleEnum } from '../../../../../../../shared/domain/enums/for-sale.enum';
 import { v4 as uuid} from 'uuid';
 import { EstablishmentMapper } from 'src/contexts/establishment-management/establishment/infraestruture/persistence/typeorm/mappers/establishment.mapper';
 import { CategoryMapper } from 'src/contexts/product-management/category/infraestructure/persistence/typeorm/mappers/category.mapper';
