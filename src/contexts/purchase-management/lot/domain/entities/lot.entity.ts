@@ -7,6 +7,7 @@ import { ManufacturingDateVO } from '../value-objects/manufacturing-date.vo';
 import { ReceivedDateVO } from '../value-objects/received-date.vo';
 import { ProductEntity } from 'src/contexts/product-management/product/domain/entities/product.entity';
 import { InventoryItemEntity } from 'src/contexts/inventory-management/inventory-item/domain/entities/inventory-item.entity';
+import { LotUnitPurchaseEntity } from './lot-unit-purchase.entity';
 
 export class LotEntity {
   private readonly _lotId: bigint;
@@ -24,6 +25,7 @@ export class LotEntity {
 
   private _product?: ProductEntity | null;
   private _inventoryItems?: InventoryItemEntity[] | null;
+  private _lotUnitPurchases?: LotUnitPurchaseEntity[] | null;
 
   private constructor(
     lotId: bigint,
@@ -39,6 +41,7 @@ export class LotEntity {
     deletedAt?: Date | null,
     product?: ProductEntity | null,
     inventoryItems?: InventoryItemEntity[] | null,
+    lotUnitPurchases?: LotUnitPurchaseEntity[] | null,
   ) {
     this._lotId = lotId;
     this._productId = productId;
@@ -53,6 +56,7 @@ export class LotEntity {
     this._deletedAt = deletedAt;
     this._product = product ?? null;
     this._inventoryItems = inventoryItems ?? null;
+    this._lotUnitPurchases = lotUnitPurchases ?? null;
   }
 
   static create(
@@ -80,6 +84,7 @@ export class LotEntity {
       null,
       null,
       null,
+      null,
     );
   }
 
@@ -97,6 +102,7 @@ export class LotEntity {
     deletedAt?: Date | null,
     product?: ProductEntity | null,
     inventoryItems?: InventoryItemEntity[] | null,
+    lotUnitPurchases?: LotUnitPurchaseEntity[] | null,
   ): LotEntity {
     return new LotEntity(
       lotId,
@@ -112,6 +118,7 @@ export class LotEntity {
       deletedAt,
       product ?? null,
       inventoryItems ?? null,
+      lotUnitPurchases ?? null,
     );
   }
 
@@ -154,6 +161,9 @@ export class LotEntity {
   }
   get inventoryItems(): InventoryItemEntity[] | null | undefined {
     return this._inventoryItems;
+  }
+  get lotUnitPurchases(): LotUnitPurchaseEntity[] | null | undefined {
+    return this._lotUnitPurchases;
   }
 
   // Métodos de dominio

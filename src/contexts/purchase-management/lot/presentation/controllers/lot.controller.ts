@@ -25,7 +25,15 @@ export class LotController {
                 purchasePrice: body.purchasePrice,
                 receivedDate: body.receivedDate,
                 expirationDate: body.expirationDate,
-                manufacturingDate: body.manufacturingDate
+                manufacturingDate: body.manufacturingDate,
+                lotUnitPurchases: body.lotUnitPurchases?.map(item => {
+                    return {
+                        // No pasar lotId aquí, se establecerá automáticamente por la relación
+                        purchasePrice: item.purchasePrice,
+                        purchaseQuantity: item.purchaseQuantity,
+                        unit: item.unit,
+                    };
+                }) || null,
             });
             
             return LotMapper.toResponseDto(result);

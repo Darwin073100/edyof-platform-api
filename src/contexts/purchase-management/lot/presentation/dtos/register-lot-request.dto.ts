@@ -1,4 +1,6 @@
-import { IsNotEmpty, IsString, IsNumber, IsOptional, IsDateString, IsNumberString } from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber, IsOptional, IsDateString, IsNumberString, ValidateNested } from 'class-validator';
+import { RegisterLotUnitPurchaseRequestDTO } from './register-lot-unit-purchase-request.dto';
+import { Type } from 'class-transformer';
 
 export class RegisterLotRequestDto {
   @IsNotEmpty({ message: 'El ID del producto es obligatorio.' })
@@ -27,4 +29,8 @@ export class RegisterLotRequestDto {
 
   @IsDateString({}, { message: 'La fecha de recepción debe ser una fecha válida (YYYY-MM-DD).' })
   receivedDate: Date;
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => RegisterLotUnitPurchaseRequestDTO)
+  lotUnitPurchases?: RegisterLotUnitPurchaseRequestDTO[] | null;
 }

@@ -5,6 +5,7 @@ import { LotEntity } from 'src/contexts/purchase-management/lot/domain/entities/
 import { LotOrmEntity } from '../entities/lot.orm-entity';
 import { LotMapper } from '../mappers/lot.mapper';
 import { LotAlreadyExistsException } from 'src/contexts/purchase-management/lot/domain/exceptions/lot-already-exists.exception';
+import { LotUnitPurchaseOrmEntity } from '../entities/lot-unit-purchase.orm-entity';
 
 @Injectable()
 export class TypeOrmLotRepository implements LotRepository {
@@ -15,14 +16,47 @@ export class TypeOrmLotRepository implements LotRepository {
   }
 
   async save(lotEntity: LotEntity): Promise<LotEntity> {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
     try {
       // Conversion de una entidad de dominio a una entidad de Typeorm
       const lotOrmEntity = LotMapper.toOrm(lotEntity);
+      const lotUnitPurchases = lotOrmEntity.lotUnitPurchases;
+      // Limpiar lotUnitPurchases para evitar problemas de referencia circular
+      const lotOrmEntityClean = {
+        ...lotOrmEntity,
+        lotUnitPurchases: undefined,
+      }
+
       // Guardar la entidad
-      const resp = await this.ormLotRepository.save(lotOrmEntity);
+      const resp = await queryRunner.manager.save(LotOrmEntity, lotOrmEntityClean);
+      // Guardar las relaciones de lotUnitPurchases
+      if (lotUnitPurchases && lotUnitPurchases.length > 0) {
+
+        // verificar que no vengan repetidos los unidades de compra, 
+        // lanzar un error si es así y hacer rollback de la transacción
+        const uniqueUnits = new Set();
+        for (const item of lotUnitPurchases) {
+          if (uniqueUnits.has(item.lotUnitPurchaseId)) {
+            throw new LotAlreadyExistsException('Los unidades de compra no pueden estar duplicados');
+          }
+          uniqueUnits.add(item.lotUnitPurchaseId);
+        }
+        // Asignar lotId a cada lotUnitPurchase
+        lotUnitPurchases.forEach(item => {
+          item.lotId = resp.lotId;
+        });
+        await queryRunner.manager.save(LotUnitPurchaseOrmEntity, lotUnitPurchases);
+      }
+      // Confirmar la transacción
+      await queryRunner.commitTransaction();
       // Convertir una entidad de Typeorm a una entidad de dominio
       return LotMapper.toDomain(resp);
     } catch (error) {
+        // Revertir la transacción en caso de error
+        await queryRunner.rollbackTransaction();
+
         if(error instanceof QueryFailedError) {
           const pgError = error as any;
           // Manejo de errores específicos de TypeORM

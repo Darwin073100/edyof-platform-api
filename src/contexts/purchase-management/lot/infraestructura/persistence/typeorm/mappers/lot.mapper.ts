@@ -8,6 +8,7 @@ import { ManufacturingDateVO } from 'src/contexts/purchase-management/lot/domain
 import { ReceivedDateVO } from 'src/contexts/purchase-management/lot/domain/value-objects/received-date.vo';
 import { ProductTypeOrmMapper } from 'src/contexts/product-management/product/infraestructure/persistence/typeorm/mappers/product.mapper';
 import { InventoryItemMapper } from 'src/contexts/inventory-management/inventory-item/infraestructure/persistence/typeorm/mapper/inventory-item.mapper';
+import { LotUnitPurchaseMapper } from './lot-unit-purchase.mapper';
 
 export class LotMapper {
   static toDomain(entity: LotOrmEntity): LotEntity {
@@ -27,6 +28,7 @@ export class LotMapper {
       entity.deletedAt ?? null,
       product,
       entity.inventoryItems? entity.inventoryItems.map(item => InventoryItemMapper.toDomain(item)): null,
+      entity.lotUnitPurchases ? entity.lotUnitPurchases.map(lotUnitPurchase => LotUnitPurchaseMapper.toDomain(lotUnitPurchase)) : null
     );
   }
 
@@ -45,6 +47,7 @@ export class LotMapper {
     orm.deletedAt = domain.deletedAt ?? null;
     orm.product = domain.product ? ProductTypeOrmMapper.toOrm(domain.product) : null;
     orm.inventoryItems = domain.inventoryItems ? domain.inventoryItems.map(item => InventoryItemMapper.toOrmEntity(item)): undefined;
+    orm.lotUnitPurchases = domain.createdAt ? domain.lotUnitPurchases?.map(lotUnitPurchase => LotUnitPurchaseMapper.toOrmEntity(lotUnitPurchase)) : null;
     return orm;
   }
 }

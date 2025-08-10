@@ -12,6 +12,7 @@ import {
 } from 'typeorm';
 import { ProductOrmEntity } from 'src/contexts/product-management/product/infraestructure/persistence/typeorm/entities/product.orm-entity';
 import { InventoryItemOrmEntity } from 'src/contexts/inventory-management/inventory-item/infraestructure/persistence/typeorm/entities/inventory-item.orm-entity';
+import { LotUnitPurchaseOrmEntity } from './lot-unit-purchase.orm-entity';
 
 @Entity('lot')
 @Index(['productId', 'lotNumber'], { unique: true })
@@ -46,6 +47,9 @@ export class LotOrmEntity {
 
   @OneToMany(()=> InventoryItemOrmEntity, (item)=> item.lot, {cascade: true})
   inventoryItems?: InventoryItemOrmEntity[];
+
+  @OneToMany(()=> LotUnitPurchaseOrmEntity, (lotUnitPurchase)=> lotUnitPurchase.lot, {cascade: true})
+  lotUnitPurchases?: LotUnitPurchaseOrmEntity[]|null
 
   @CreateDateColumn({ type: 'timestamptz', name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
