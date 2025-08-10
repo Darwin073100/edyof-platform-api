@@ -20,6 +20,7 @@ export class LotController {
         try {
             const result = await this.registerLotUseCase.execute({
                 initialQuantity: body.initialQuantity,
+                purchaseUnit: body.purchaseUnit,
                 lotNumber: body.lotNumber,
                 productId: body.productId,
                 purchasePrice: body.purchasePrice,

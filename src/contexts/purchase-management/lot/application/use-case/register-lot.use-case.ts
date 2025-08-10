@@ -32,6 +32,7 @@ export class RegisterLotUseCase {
             LotNumberVO.create(dto.lotNumber),
             PurchasePriceVO.create(dto.purchasePrice),
             InitialQuantityVO.create(dto.initialQuantity),
+            dto.purchaseUnit,
             ReceivedDateVO.create(dto.receivedDate),
             new Date(),
             ExpirationDateVO.create(dto.expirationDate),

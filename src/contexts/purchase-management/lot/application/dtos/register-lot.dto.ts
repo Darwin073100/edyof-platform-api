@@ -1,3 +1,4 @@
+import { ForSaleEnum } from "src/shared/domain/enums/for-sale.enum";
 import { RegisterLotUnitPurchaseDTO } from "./register-lot-unit-purchase.dto";
 
 export class RegisterLotDto {
@@ -5,6 +6,7 @@ export class RegisterLotDto {
   lotNumber: string;
   purchasePrice: number;
   initialQuantity: number;
+  purchaseUnit: ForSaleEnum;
   expirationDate?: Date | null;
   manufacturingDate?: Date | null;
   receivedDate: Date;

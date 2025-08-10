@@ -8,6 +8,7 @@ import { ReceivedDateVO } from '../value-objects/received-date.vo';
 import { ProductEntity } from 'src/contexts/product-management/product/domain/entities/product.entity';
 import { InventoryItemEntity } from 'src/contexts/inventory-management/inventory-item/domain/entities/inventory-item.entity';
 import { LotUnitPurchaseEntity } from './lot-unit-purchase.entity';
+import { ForSaleEnum } from 'src/shared/domain/enums/for-sale.enum';
 
 export class LotEntity {
   private readonly _lotId: bigint;
@@ -15,6 +16,7 @@ export class LotEntity {
   private _lotNumber: LotNumberVO;
   private _purchasePrice: PurchasePriceVO;
   private _initialQuantity: InitialQuantityVO;
+  private _purchaseUnit: ForSaleEnum;
   private _expirationDate?: ExpirationDateVO | null;
   private _manufacturingDate?: ManufacturingDateVO | null;
   private readonly _receivedDate: ReceivedDateVO;
@@ -33,6 +35,7 @@ export class LotEntity {
     lotNumber: LotNumberVO,
     purchasePrice: PurchasePriceVO,
     initialQuantity: InitialQuantityVO,
+    purchaseUnit: ForSaleEnum,
     receivedDate: ReceivedDateVO,
     createdAt: Date,
     expirationDate?: ExpirationDateVO | null,
@@ -48,6 +51,8 @@ export class LotEntity {
     this._lotNumber = lotNumber;
     this._purchasePrice = purchasePrice;
     this._initialQuantity = initialQuantity;
+    this._purchaseUnit = purchaseUnit;
+
     this._expirationDate = expirationDate;
     this._manufacturingDate = manufacturingDate;
     this._receivedDate = receivedDate;
@@ -65,6 +70,7 @@ export class LotEntity {
     lotNumber: LotNumberVO,
     purchasePrice: PurchasePriceVO,
     initialQuantity: InitialQuantityVO,
+    purchaseUnit: ForSaleEnum,
     receivedDate: ReceivedDateVO,
     expirationDate?: ExpirationDateVO| null,
     manufacturingDate?: ManufacturingDateVO| null,
@@ -76,6 +82,7 @@ export class LotEntity {
       lotNumber,
       purchasePrice,
       initialQuantity,
+      purchaseUnit,
       receivedDate,
       now,
       expirationDate,
@@ -94,6 +101,7 @@ export class LotEntity {
     lotNumber: LotNumberVO,
     purchasePrice: PurchasePriceVO,
     initialQuantity: InitialQuantityVO,
+    purchaseUnit: ForSaleEnum,
     receivedDate: ReceivedDateVO,
     createdAt: Date,
     expirationDate?: ExpirationDateVO | null,
@@ -110,6 +118,7 @@ export class LotEntity {
       lotNumber,
       purchasePrice,
       initialQuantity,
+      purchaseUnit,
       receivedDate,
       createdAt,
       expirationDate,
@@ -137,6 +146,9 @@ export class LotEntity {
   }
   get initialQuantity(): InitialQuantityVO {
     return this._initialQuantity;
+  }
+  get purchaseUnit(): ForSaleEnum {
+    return this._purchaseUnit;
   }
   get expirationDate(): ExpirationDateVO | null | undefined {
     return this._expirationDate;

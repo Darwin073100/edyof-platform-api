@@ -105,6 +105,10 @@ export class RegisterProductWithLotAndInventoryItemRequestDto {
   @IsNumber({ maxDecimalPlaces: 3 }, { message: 'La cantidad inicial debe ser un número con hasta 3 decimales.' })
   initialQuantity: number;
 
+  @IsNotEmpty({ message: 'La unidad de medida es obligatoria.' })
+  @IsEnum(ForSaleEnum, { message: 'La unidad de medida debe ser un valor válido.' })
+  purchaseUnit: ForSaleEnum;
+
   @IsOptional()
   @IsDateString({}, { message: 'La fecha de caducidad debe ser una fecha válida (YYYY-MM-DD).' })
   expirationDate?: Date | null;

@@ -20,6 +20,7 @@ export class LotMapper {
       LotNumberVO.create(entity.lotNumber),
       PurchasePriceVO.create(Number(entity.purchasePrice)),
       InitialQuantityVO.create(Number(entity.initialQuantity)),
+      entity.purchaseUnit,
       ReceivedDateVO.create(entity.receivedDate),
       entity.createdAt,
       ExpirationDateVO.create(entity.expirationDate ?? null),
@@ -39,6 +40,7 @@ export class LotMapper {
     orm.lotNumber = domain.lotNumber.value;
     orm.purchasePrice = domain.purchasePrice.value.toString();
     orm.initialQuantity = domain.initialQuantity.value.toString();
+    orm.purchaseUnit = domain.purchaseUnit;
     orm.expirationDate = domain.expirationDate?.value ?? null;
     orm.manufacturingDate = domain.manufacturingDate?.value ?? null;
     orm.receivedDate = domain.receivedDate.value;

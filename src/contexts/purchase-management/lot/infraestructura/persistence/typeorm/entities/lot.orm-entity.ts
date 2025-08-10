@@ -13,6 +13,7 @@ import {
 import { ProductOrmEntity } from 'src/contexts/product-management/product/infraestructure/persistence/typeorm/entities/product.orm-entity';
 import { InventoryItemOrmEntity } from 'src/contexts/inventory-management/inventory-item/infraestructure/persistence/typeorm/entities/inventory-item.orm-entity';
 import { LotUnitPurchaseOrmEntity } from './lot-unit-purchase.orm-entity';
+import { ForSaleEnum } from 'src/shared/domain/enums/for-sale.enum';
 
 @Entity('lot')
 @Index(['productId', 'lotNumber'], { unique: true })
@@ -32,6 +33,9 @@ export class LotOrmEntity {
 
   @Column({ type: 'decimal', precision: 12, scale: 4, name: 'purchase_price' })
   purchasePrice: string;
+
+  @Column({ type: 'enum', enum: ForSaleEnum, name: 'purchase_unit', nullable: false })
+  purchaseUnit: ForSaleEnum;
 
   @Column({ type: 'decimal', precision: 18, scale: 3, name: 'initial_quantity' })
   initialQuantity: string;

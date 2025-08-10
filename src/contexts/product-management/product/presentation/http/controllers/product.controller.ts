@@ -70,6 +70,7 @@ export class ProductController {
                 minStockGlobal: body.minStockGlobal,
                 imageUrl: body.imageUrl ?? null,
                 initialQuantity: body.initialQuantity,
+                purchaseUnit: body.purchaseUnit,
                 lotNumber: body.lotNumber,
                 purchasePrice: body.purchasePrice,
                 receivedDate: body.receivedDate,

@@ -1,6 +1,7 @@
-import { IsNotEmpty, IsString, IsNumber, IsOptional, IsDateString, IsNumberString, ValidateNested } from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber, IsOptional, IsDateString, IsNumberString, ValidateNested, IsEnum } from 'class-validator';
 import { RegisterLotUnitPurchaseRequestDTO } from './register-lot-unit-purchase-request.dto';
 import { Type } from 'class-transformer';
+import { ForSaleEnum } from 'src/shared/domain/enums/for-sale.enum';
 
 export class RegisterLotRequestDto {
   @IsNotEmpty({ message: 'El ID del producto es obligatorio.' })
@@ -18,6 +19,10 @@ export class RegisterLotRequestDto {
   @IsNotEmpty({ message: 'La cantidad inicial es obligatoria.' })
   @IsNumber({ maxDecimalPlaces: 3 }, { message: 'La cantidad inicial debe ser un número con hasta 3 decimales.' })
   initialQuantity: number;
+
+  @IsNotEmpty({ message: 'La unidad de compra es obligatoria.' })
+  @IsEnum(ForSaleEnum, { message: 'La unidad de compra debe ser un valor válido.' })
+  purchaseUnit: ForSaleEnum;
 
   @IsOptional()
   @IsDateString({}, { message: 'La fecha de caducidad debe ser una fecha válida (YYYY-MM-DD).' })

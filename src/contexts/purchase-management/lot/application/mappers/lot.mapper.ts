@@ -12,6 +12,7 @@ export class LotMapper {
       lotNumber: lot.lotNumber.value,
       purchasePrice: lot.purchasePrice.value,
       initialQuantity: lot.initialQuantity.value,
+      purchaseUnit: lot.purchaseUnit,
       expirationDate: lot.expirationDate?.value ?? null,
       manufacturingDate: lot.manufacturingDate?.value ?? null,
       receivedDate: lot.receivedDate.value,
