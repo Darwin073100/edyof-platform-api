@@ -9,6 +9,8 @@ import { LotOrmEntity } from 'src/contexts/purchase-management/lot/infraestructu
 import { InventoryItemOrmEntity } from 'src/contexts/inventory-management/inventory-item/infraestructure/persistence/typeorm/entities/inventory-item.orm-entity';
 import { LotMapper } from 'src/contexts/purchase-management/lot/infraestructura/persistence/typeorm/mappers/lot.mapper';
 import { ProductValidateException } from 'src/contexts/product-management/product/domain/exceptions/product-validate.exception';
+import { LotAlreadyExistsException } from 'src/contexts/purchase-management/lot/domain/exceptions/lot-already-exists.exception';
+import { LotUnitPurchaseOrmEntity } from 'src/contexts/purchase-management/lot/infraestructura/persistence/typeorm/entities/lot-unit-purchase.orm-entity';
 
 @Injectable()
 export class TypeOrmProductRepository implements ProductRepository {
@@ -34,6 +36,7 @@ export class TypeOrmProductRepository implements ProductRepository {
     let productOrm = ProductTypeOrmMapper.toOrm(product);
     let lotOrm = productOrm.lots ? productOrm.lots[0] : undefined;
     let inventoryItemOrm = lotOrm?.inventoryItems ? lotOrm.inventoryItems[0] : undefined;
+    let lotUnitPurchaseOrm = lotOrm?.lotUnitPurchases;
 
     const queryRunner = this.datasource.createQueryRunner();
 
@@ -55,9 +58,28 @@ export class TypeOrmProductRepository implements ProductRepository {
           ...lotOrm,
           productId: savedProduct.productId,
           inventoryItems: undefined,
-          product: undefined
+          product: undefined,
+          lotUnitPurchases: undefined,
         }
         const savedLot = await queryRunner.manager.save(LotOrmEntity, lotOrm);
+
+        if (lotUnitPurchaseOrm && lotUnitPurchaseOrm.length > 0) {
+          console.log(lotUnitPurchaseOrm);
+          // verificar que no vengan repetidos los unidades de compra, 
+          // lanzar un error si es así y hacer rollback de la transacción
+          const uniqueUnits = new Set();
+          for (const item of lotUnitPurchaseOrm) {
+            if (uniqueUnits.has(item.unit)) {
+              throw new LotAlreadyExistsException('Las unidades de compra no pueden estar duplicadas');
+            }
+            uniqueUnits.add(item.lotUnitPurchaseId);
+          }
+          // Asignar lotId a cada lotUnitPurchase
+          lotUnitPurchaseOrm.forEach(item => {
+            item.lotId = savedLot.lotId;
+          });
+          await queryRunner.manager.save(LotUnitPurchaseOrmEntity, lotUnitPurchaseOrm);
+        }
 
         // Guarda los inventoryItems de cada lot, asignando el lot y el producto guardados
         if (inventoryItemOrm) {

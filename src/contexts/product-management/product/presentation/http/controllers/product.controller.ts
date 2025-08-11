@@ -89,6 +89,7 @@ export class ProductController {
                 maxStockBranch: body.maxStockBranch,
                 lastStockedAt: body.lastStockedAt ? new Date(body.lastStockedAt) : new Date(),
                 isSellable: body.isSellable,
+                lotUnitPurchases: body.lotUnitPurchases
             });
 
             return ProductMapper.toResponseDto(result);

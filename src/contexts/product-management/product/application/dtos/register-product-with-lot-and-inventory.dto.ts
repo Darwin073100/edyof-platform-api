@@ -1,5 +1,6 @@
 import { ForSaleEnum } from "src/shared/domain/enums/for-sale.enum";
 import { LocationEnum } from "../../../../inventory-management/inventory-item/domain/enums/location.enum";
+import { RegisterLotUnitPurchaseDTO } from "src/contexts/purchase-management/lot/application/dtos/register-lot-unit-purchase.dto";
 
 export class RegisterProductWhitLotAndInventoryDto {
     // InventoryItem
@@ -24,6 +25,7 @@ export class RegisterProductWhitLotAndInventoryDto {
     expirationDate?: Date | null;
     manufacturingDate?: Date | null;
     receivedDate: Date;
+    lotUnitPurchases?: RegisterLotUnitPurchaseDTO[] | null;
     // Product
     establishmentId: bigint;
     categoryId: bigint;

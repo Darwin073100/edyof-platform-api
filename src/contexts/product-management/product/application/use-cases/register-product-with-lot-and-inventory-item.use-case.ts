@@ -30,6 +30,8 @@ import { CategoryCheckerPort } from "src/contexts/product-management/category/do
 import { BrandChekerPort } from "src/contexts/product-management/brand/domain/ports/out/brand-checker.port";
 import { SeasonCheckerPort } from "src/contexts/product-management/season/domain/ports/out/season-checker.port";
 import { EstablishmentCheckerPort } from "src/contexts/establishment-management/establishment/application/ports/out/establishment-checker.port";
+import { LotUnitPurchaseEntity } from "src/contexts/purchase-management/lot/domain/entities/lot-unit-purchase.entity";
+import { LotPurchaseQuantityVO } from "src/contexts/purchase-management/lot/domain/value-objects/lot-purchase-quantity.vo";
 
 export class RegisterProductWithLotAndInventoryItemUseCase {
     constructor(
@@ -125,6 +127,14 @@ export class RegisterProductWithLotAndInventoryItemUseCase {
             null,
             null,
             [inventoryItemEntity],
+            dto.lotUnitPurchases?.map(item => {
+                return LotUnitPurchaseEntity.create(
+                    item.lotId ?? BigInt(0),
+                    PurchasePriceVO.create(item.purchasePrice),
+                    LotPurchaseQuantityVO.create(item.purchasePrice),
+                    item.unit
+                )
+            })
         );
         const productEntity = ProductEntity.reconstitute(
             BigInt(new Date().getDate()),

@@ -1,6 +1,8 @@
-import { IsNotEmpty, IsOptional, IsString, IsNumber, IsEnum, IsUrl, IsInt, IsPositive, IsNumberString, IsDateString, IsBoolean, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsNumber, IsEnum, IsUrl, IsInt, IsPositive, IsNumberString, IsDateString, IsBoolean, MaxLength, ValidateNested } from 'class-validator';
 import { ForSaleEnum } from '../../../../../../shared/domain/enums/for-sale.enum';
 import { LocationEnum } from 'src/contexts/inventory-management/inventory-item/domain/enums/location.enum';
+import { Type } from 'class-transformer';
+import { RegisterLotUnitPurchaseRequestDTO } from 'src/contexts/purchase-management/lot/presentation/dtos/register-lot-unit-purchase-request.dto';
 
 export class RegisterProductWithLotAndInventoryItemRequestDto {
   @IsNotEmpty({ message: 'El ID del establecimiento es obligatorio.' })
@@ -119,4 +121,8 @@ export class RegisterProductWithLotAndInventoryItemRequestDto {
 
   @IsDateString({}, { message: 'La fecha de recepción debe ser una fecha válida (YYYY-MM-DD).' })
   receivedDate: Date;
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => RegisterLotUnitPurchaseRequestDTO)
+  lotUnitPurchases?: RegisterLotUnitPurchaseRequestDTO[] | null;
 }
