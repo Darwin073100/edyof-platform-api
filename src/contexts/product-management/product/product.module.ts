@@ -17,6 +17,7 @@ import { PRODUCT_CHECKER_PORT } from './domain/ports/out/product-checker.port';
 import { ProductCheckerAdapter } from './infraestructure/persistence/typeorm/external-services/product-checker.adapter';
 import { ViewAllProductsUseCase } from './application/use-cases/view-all-products.use-case';
 import { RegisterProductWithLotAndInventoryItemUseCase } from './application/use-cases/register-product-with-lot-and-inventory-item.use-case';
+import { ViewProductByIdUseCase } from './application/use-cases/view-product-by-id.use-case';
 
 @Module({
     imports: [
@@ -40,6 +41,13 @@ import { RegisterProductWithLotAndInventoryItemUseCase } from './application/use
             provide: ViewAllProductsUseCase,
             useFactory: (repo: ProductRepository) => {
                 return new ViewAllProductsUseCase(repo);
+            },
+            inject: [PRODUCT_REPOSITORY],
+        },
+        {
+            provide: ViewProductByIdUseCase,
+            useFactory: (repo: ProductRepository) => {
+                return new ViewProductByIdUseCase(repo);
             },
             inject: [PRODUCT_REPOSITORY],
         },

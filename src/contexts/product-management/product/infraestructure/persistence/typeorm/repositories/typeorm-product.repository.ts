@@ -11,6 +11,7 @@ import { LotMapper } from 'src/contexts/purchase-management/lot/infraestructura/
 import { ProductValidateException } from 'src/contexts/product-management/product/domain/exceptions/product-validate.exception';
 import { LotAlreadyExistsException } from 'src/contexts/purchase-management/lot/domain/exceptions/lot-already-exists.exception';
 import { LotUnitPurchaseOrmEntity } from 'src/contexts/purchase-management/lot/infraestructura/persistence/typeorm/entities/lot-unit-purchase.orm-entity';
+import { ProductNotFoundException } from 'src/contexts/product-management/product/domain/exceptions/product-not-found.exception';
 
 @Injectable()
 export class TypeOrmProductRepository implements ProductRepository {
@@ -138,7 +139,20 @@ export class TypeOrmProductRepository implements ProductRepository {
     return Promise.resolve([]);
   }
 
-  findById(entityId: bigint): Promise<ProductEntity | null> {
-    throw new Error('Este metodo no esta implementado');
+  async findById(entityId: bigint): Promise<ProductEntity | null> {
+    try {
+      const result = await this.productRepository.findOne({
+        where: { productId: entityId },
+        relations: ['establishment', 'category', 'brand', 'season', 'lots', 'lots.inventoryItems'],
+      });
+
+      if (!result) {
+        throw new ProductNotFoundException('El producto que buscas no existe');
+      }
+
+      return ProductTypeOrmMapper.toDomain(result);;
+    } catch (error) {
+      throw error;
+    }
   }
 }

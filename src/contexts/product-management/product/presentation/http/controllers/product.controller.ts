@@ -1,4 +1,4 @@
-import { BadRequestException, Body, ConflictException, Controller, Get, HttpCode, HttpStatus, NotFoundException, Post } from '@nestjs/common';
+import { BadRequestException, Body, ConflictException, Controller, Get, HttpCode, HttpStatus, NotFoundException, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { RegisterProductUseCase } from '../../../application/use-cases/register-product.use-case';
 import { RegisterProductRequestDto } from '../dtos/register-product-request.dto';
 import { ProductMapper } from '../../../application/mappers/product.mapper';
@@ -8,12 +8,14 @@ import { ProductNotFoundException } from '../../../domain/exceptions/product-not
 import { ViewAllProductsUseCase } from '../../../application/use-cases/view-all-products.use-case';
 import { RegisterProductWithLotAndInventoryItemRequestDto } from '../dtos/register-product-with-lot-and-inventory-item-request.dto';
 import { RegisterProductWithLotAndInventoryItemUseCase } from '../../../application/use-cases/register-product-with-lot-and-inventory-item.use-case';
+import { ViewProductByIdUseCase } from '../../../application/use-cases/view-product-by-id.use-case';
 
 @Controller('products')
 export class ProductController {
     constructor(
         private readonly registerProductUseCase: RegisterProductUseCase,
         private readonly viewAllProductsUseCase: ViewAllProductsUseCase,
+        private readonly viewProductByIdUseCase: ViewProductByIdUseCase,
         private readonly registerProductWithLotAndInventoryItemUseCase: RegisterProductWithLotAndInventoryItemUseCase
     ) { }
 
@@ -120,6 +122,23 @@ export class ProductController {
             return {
                 products: result.map(product => ProductMapper.toResponseDto(product))
             };
+        } catch (error) {
+            if (error instanceof ProductNotFoundException) {
+                throw new NotFoundException(error.message);
+            }
+            throw error;
+        }
+    }
+
+    @Get(':id')
+    @HttpCode(HttpStatus.OK)
+    async findById(@Param('id', ParseIntPipe) id: bigint) {
+        try {
+            const result = await this.viewProductByIdUseCase.execute(id);
+            if (!result) {
+                throw new ProductNotFoundException('El producto que buscas no existe');
+            }
+            return ProductMapper.toResponseDto(result);
         } catch (error) {
             if (error instanceof ProductNotFoundException) {
                 throw new NotFoundException(error.message);
