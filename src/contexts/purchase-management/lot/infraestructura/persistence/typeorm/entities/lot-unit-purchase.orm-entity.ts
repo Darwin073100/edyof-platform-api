@@ -14,6 +14,8 @@ export class LotUnitPurchaseOrmEntity {
     purchaseQuantity: number;
     @Column({ type: 'enum', enum: ForSaleEnum, name: 'unit', nullable: false })
     unit: ForSaleEnum;
+    @Column({ type: 'decimal', precision: 18, scale: 3, name: 'units_in_purchase_unit', nullable: false })
+    unitsInPurchaseUnit: number; // Cantidad de UNIDADES BASE que hay en esta unidad de compra (ej. 1 paquete = 10 bolsas)
     @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_at' })
     createdAt: Date;
     @UpdateDateColumn({ type: 'timestamp with time zone', name: 'updated_at', nullable: true })

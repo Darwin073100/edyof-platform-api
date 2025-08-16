@@ -2,6 +2,7 @@ import { ForSaleEnum } from "src/shared/domain/enums/for-sale.enum";
 import { PurchasePriceVO } from "../value-objects/purchase-price.vo";
 import { LotPurchaseQuantityVO } from "../value-objects/lot-purchase-quantity.vo";
 import { LotEntity } from "./lot.entity";
+import { LotUnitsInPurchaseUnitVO } from "../value-objects/lot-units-in-purchase-unit.vo";
 
 export class LotUnitPurchaseEntity {
     private readonly _lotUnitPurchaseId: bigint;
@@ -9,6 +10,7 @@ export class LotUnitPurchaseEntity {
     private _purchasePrice: PurchasePriceVO;
     private _purchaseQuantity: LotPurchaseQuantityVO;
     private _unit: ForSaleEnum;
+    private _unitsInPurchaseUnit: LotUnitsInPurchaseUnitVO;
     private readonly _createdAt: Date;
     private _updatedAt?: Date | null;
     private _deletedAt?: Date | null;
@@ -20,6 +22,7 @@ export class LotUnitPurchaseEntity {
         purchasePrice: PurchasePriceVO,
         purchaseQuantity: LotPurchaseQuantityVO,
         unit: ForSaleEnum,
+        unitsInPurchaseUnit: LotUnitsInPurchaseUnitVO,
         createdAt: Date,
         updatedAt?: Date | null,
         deletedAt?: Date | null,
@@ -30,6 +33,7 @@ export class LotUnitPurchaseEntity {
         this._purchasePrice = purchasePrice;
         this._purchaseQuantity = purchaseQuantity;
         this._unit = unit;
+        this._unitsInPurchaseUnit = unitsInPurchaseUnit;
         this._createdAt = createdAt;
         this._updatedAt = updatedAt;
         this._deletedAt = deletedAt;
@@ -41,6 +45,7 @@ export class LotUnitPurchaseEntity {
         purchasePrice: PurchasePriceVO,
         purchaseQuantity: LotPurchaseQuantityVO,
         unit: ForSaleEnum,
+        unitsInPurchaseUnit: LotUnitsInPurchaseUnitVO,
     ) {
         const lotUnitPurchaseEntity = new LotUnitPurchaseEntity(
             BigInt(new Date().getTime()),
@@ -48,6 +53,7 @@ export class LotUnitPurchaseEntity {
             purchasePrice,
             purchaseQuantity,
             unit,
+            unitsInPurchaseUnit,
             new Date(),
             null,
             null,
@@ -62,6 +68,7 @@ export class LotUnitPurchaseEntity {
         purchasePrice: PurchasePriceVO,
         purchaseQuantity: LotPurchaseQuantityVO,
         unit: ForSaleEnum,
+        unitsInPurchaseUnit: LotUnitsInPurchaseUnitVO,
         createdAt: Date,
         updatedAt?: Date | null,
         deletedAt?: Date | null,
@@ -73,6 +80,7 @@ export class LotUnitPurchaseEntity {
             purchasePrice,
             purchaseQuantity,
             unit,
+            unitsInPurchaseUnit,
             createdAt,
             updatedAt,
             deletedAt,
@@ -95,6 +103,9 @@ export class LotUnitPurchaseEntity {
     }
     get unit(): ForSaleEnum {
         return this._unit;
+    }
+    get unitsInPurchaseUnit(): LotUnitsInPurchaseUnitVO{
+        return this._unitsInPurchaseUnit;
     }
     get createdAt(): Date {
         return this._createdAt;

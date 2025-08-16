@@ -3,6 +3,7 @@ import { LotUnitPurchaseOrmEntity } from "../entities/lot-unit-purchase.orm-enti
 import { PurchasePriceVO } from "src/contexts/purchase-management/lot/domain/value-objects/purchase-price.vo";
 import { LotPurchaseQuantityVO } from "src/contexts/purchase-management/lot/domain/value-objects/lot-purchase-quantity.vo";
 import { LotMapper } from "./lot.mapper";
+import { LotUnitsInPurchaseUnitVO } from "src/contexts/purchase-management/lot/domain/value-objects/lot-units-in-purchase-unit.vo";
 
 export class LotUnitPurchaseMapper{
     static toDomain(ormEntity: LotUnitPurchaseOrmEntity){
@@ -12,6 +13,7 @@ export class LotUnitPurchaseMapper{
             PurchasePriceVO.create(ormEntity.purchasePrice),
             LotPurchaseQuantityVO.create(ormEntity.purchaseQuantity),
             ormEntity.unit,
+            LotUnitsInPurchaseUnitVO.create(ormEntity.unitsInPurchaseUnit),
             ormEntity.createdAt,
             ormEntity.updatedAt,
             ormEntity.deletedAt,
@@ -27,6 +29,7 @@ export class LotUnitPurchaseMapper{
         ormEntity.purchasePrice = domainEntity.purchasePrice.value;
         ormEntity.purchaseQuantity = domainEntity.purchaseQuantity.value;
         ormEntity.unit = domainEntity.unit;
+        ormEntity.unitsInPurchaseUnit = domainEntity.unitsInPurchaseUnit.value;
         ormEntity.createdAt = domainEntity.createdAt;
         ormEntity.updatedAt = domainEntity.updatedAt;
         ormEntity.deletedAt = domainEntity.deletedAt;

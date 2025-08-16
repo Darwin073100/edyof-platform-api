@@ -11,6 +11,7 @@ import { RegisterLotDto } from "../dtos/register-lot.dto";
 import { ProductNotFoundException } from "src/contexts/product-management/product/domain/exceptions/product-not-found.exception";
 import { LotUnitPurchaseEntity } from "../../domain/entities/lot-unit-purchase.entity";
 import { LotPurchaseQuantityVO } from "../../domain/value-objects/lot-purchase-quantity.vo";
+import { LotUnitsInPurchaseUnitVO } from "../../domain/value-objects/lot-units-in-purchase-unit.vo";
 
 export class RegisterLotUseCase {
     constructor(
@@ -46,7 +47,8 @@ export class RegisterLotUseCase {
                     BigInt(new Date().getTime()),
                     PurchasePriceVO.create(item.purchasePrice),
                     LotPurchaseQuantityVO.create(item.purchaseQuantity),
-                    item.unit
+                    item.unit,
+                    LotUnitsInPurchaseUnitVO.create(item.unitsInPurchaseUnit)
                 )
             })
         );

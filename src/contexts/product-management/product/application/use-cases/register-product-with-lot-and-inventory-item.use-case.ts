@@ -32,6 +32,7 @@ import { SeasonCheckerPort } from "src/contexts/product-management/season/domain
 import { EstablishmentCheckerPort } from "src/contexts/establishment-management/establishment/application/ports/out/establishment-checker.port";
 import { LotUnitPurchaseEntity } from "src/contexts/purchase-management/lot/domain/entities/lot-unit-purchase.entity";
 import { LotPurchaseQuantityVO } from "src/contexts/purchase-management/lot/domain/value-objects/lot-purchase-quantity.vo";
+import { LotUnitsInPurchaseUnitVO } from "src/contexts/purchase-management/lot/domain/value-objects/lot-units-in-purchase-unit.vo";
 
 export class RegisterProductWithLotAndInventoryItemUseCase {
     constructor(
@@ -132,7 +133,8 @@ export class RegisterProductWithLotAndInventoryItemUseCase {
                     item.lotId ?? BigInt(0),
                     PurchasePriceVO.create(item.purchasePrice),
                     LotPurchaseQuantityVO.create(item.purchasePrice),
-                    item.unit
+                    item.unit,
+                    LotUnitsInPurchaseUnitVO.create(item.unitsInPurchaseUnit)
                 )
             })
         );

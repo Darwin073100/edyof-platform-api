@@ -5,4 +5,5 @@ export class RegisterLotUnitPurchaseDTO{
     purchasePrice: number;
     purchaseQuantity: number;
     unit: ForSaleEnum;
+    unitsInPurchaseUnit: number;
 }

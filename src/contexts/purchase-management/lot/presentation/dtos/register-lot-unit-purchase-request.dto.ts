@@ -12,4 +12,7 @@ export class RegisterLotUnitPurchaseRequestDTO{
     @IsEnum(ForSaleEnum, {message: 'La unidad debe ser un valor válido.'})
     @IsNotEmpty({message: 'La unidad es obligatoria'})
     unit: ForSaleEnum;
+    @IsNumber({maxDecimalPlaces: 3}, {message: 'La Cantidad de unidades base debe ser un número con hasta 3 decimales.'})
+    @IsNotEmpty({message: 'La Cantidad de unidades base es obligatoria'})
+    unitsInPurchaseUnit: number;
 }

@@ -33,6 +33,7 @@ export class LotController {
                         purchasePrice: item.purchasePrice,
                         purchaseQuantity: item.purchaseQuantity,
                         unit: item.unit,
+                        unitsInPurchaseUnit: item.unitsInPurchaseUnit
                     };
                 }) || null,
             });
