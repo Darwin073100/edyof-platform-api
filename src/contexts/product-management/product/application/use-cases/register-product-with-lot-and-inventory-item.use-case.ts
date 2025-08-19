@@ -1,14 +1,11 @@
 import { ProductEntity } from "src/contexts/product-management/product/domain/entities/product.entity";
-import { InventoryItemEntity } from "../../../../inventory-management/inventory-item/domain/entities/inventory-item.entity";
-import { InventoryItemInternalBarCodeVO } from "../../../../inventory-management/inventory-item/domain/value-objects/inventory-item-internal-bar-code.vo";
-import { InventoryItemMaxStockBranchVO } from "../../../../inventory-management/inventory-item/domain/value-objects/inventory-item-max-stock-branch.vo";
-import { InventoryItemMinStockBranchVO } from "../../../../inventory-management/inventory-item/domain/value-objects/inventory-item-min-stock-branch.vo";
-import { InventoryItemPurchasePriceAtStockVO } from "../../../../inventory-management/inventory-item/domain/value-objects/inventory-item-purchase-price-at-stock.vo";
-import { InventoryItemQuantityOnHandVO } from "../../../../inventory-management/inventory-item/domain/value-objects/inventory-item-quantity-on-hand.vo";
-import { InventoryItemSalePriceManyVO } from "../../../../inventory-management/inventory-item/domain/value-objects/inventory-item-sale-price-many.vo";
-import { InventoryItemSalePriceOneVO } from "../../../../inventory-management/inventory-item/domain/value-objects/inventory-item-sale-price-one.vo";
-import { InventoryItemSalePriceSpecialVO } from "../../../../inventory-management/inventory-item/domain/value-objects/inventory-item-sale-price-special.vo";
-import { InventoryItemSaleQuantityManyVO } from "../../../../inventory-management/inventory-item/domain/value-objects/inventory-item-sale-quantity-many.vo";
+import { InventoryEntity } from "../../../../inventory-management/inventory/domain/entities/inventory.entity";
+import { InventoryMaxStockBranchVO } from "../../../../inventory-management/inventory/domain/value-objects/inventory-max-stock-branch.vo";
+import { InventoryMinStockBranchVO } from "../../../../inventory-management/inventory/domain/value-objects/inventory-min-stock-branch.vo";
+import { InventorySalePriceManyVO } from "../../../../inventory-management/inventory/domain/value-objects/inventory-sale-price-many.vo";
+import { InventorySalePriceOneVO } from "../../../../inventory-management/inventory/domain/value-objects/inventory-sale-price-one.vo";
+import { InventorySalePriceSpecialVO } from "../../../../inventory-management/inventory/domain/value-objects/inventory-sale-price-special.vo";
+import { InventorySaleQuantityManyVO } from "../../../../inventory-management/inventory/domain/value-objects/inventory-sale-quantity-many.vo";
 import { RegisterProductWhitLotAndInventoryDto } from "../dtos/register-product-with-lot-and-inventory.dto";
 import { ProductNameVO } from "src/contexts/product-management/product/domain/value-objects/product-name.vo";
 import { ProductSkuVO } from "src/contexts/product-management/product/domain/value-objects/product-sku.vo";
@@ -33,6 +30,10 @@ import { EstablishmentCheckerPort } from "src/contexts/establishment-management/
 import { LotUnitPurchaseEntity } from "src/contexts/purchase-management/lot/domain/entities/lot-unit-purchase.entity";
 import { LotPurchaseQuantityVO } from "src/contexts/purchase-management/lot/domain/value-objects/lot-purchase-quantity.vo";
 import { LotUnitsInPurchaseUnitVO } from "src/contexts/purchase-management/lot/domain/value-objects/lot-units-in-purchase-unit.vo";
+import { InventoryItemEntity } from "src/contexts/inventory-management/inventory-item/domain/entities/inventory-item.entity";
+import { InventoryItemQuantityOnHandVO } from "src/contexts/inventory-management/inventory-item/domain/value-objects/inventory-item-quantity-on-hand.vo";
+import { InventoryItemPurchasePriceAtStockVO } from "src/contexts/inventory-management/inventory-item/domain/value-objects/inventory-item-purchase-price-at-stock.vo";
+import { InventoryItemInternalBarCodeVO } from "src/contexts/inventory-management/inventory-item/domain/value-objects/inventory-item-internal-bar-code.vo";
 
 export class RegisterProductWithLotAndInventoryItemUseCase {
     constructor(
@@ -89,29 +90,40 @@ export class RegisterProductWithLotAndInventoryItemUseCase {
                 throw new ProductNotFoundException(`La categoría a la que deseas asignar el producto no existe.`);
             }
         }
-        const inventoryItemEntity = InventoryItemEntity.reconstitute(
+
+        const inventoryEntity = InventoryEntity.reconstitute(
             0n,
             BigInt(new Date().getDate()),
             BigInt(new Date().getDate()),
             dto.branchOfficeId,
-            dto.location,
-            InventoryItemQuantityOnHandVO.create(dto.quantityOnHan),
-            dto.lastStockedAt,
             dto.isSellable,
             new Date(),
-            InventoryItemPurchasePriceAtStockVO.create(dto.purchasePriceAtStock),
-            InventoryItemInternalBarCodeVO.create(dto.internalBarCode),
-            InventoryItemSalePriceOneVO.create(dto.salePriceOne),
-            InventoryItemSalePriceManyVO.create(dto.salePriceMany),
-            InventoryItemSaleQuantityManyVO.create(dto.saleQuantityMany),
-            InventoryItemSalePriceSpecialVO.create(dto.salePriceSpecial),
-            InventoryItemMinStockBranchVO.create(dto.minStockBranch),
-            InventoryItemMaxStockBranchVO.create(dto.maxStockBranch),
+            InventorySalePriceOneVO.create(dto.salePriceOne),
+            InventorySalePriceManyVO.create(dto.salePriceMany),
+            InventorySaleQuantityManyVO.create(dto.saleQuantityMany),
+            InventorySalePriceSpecialVO.create(dto.salePriceSpecial),
+            InventoryMinStockBranchVO.create(dto.minStockBranch),
+            InventoryMaxStockBranchVO.create(dto.maxStockBranch),
             null, // Product
             null, // Lot
             null,
+            dto.inventoryItems?.map(item=>{
+                return InventoryItemEntity.reconstitute(
+                    BigInt(new Date().getTime()),
+                    BigInt(new Date().getTime()),
+                    item.location,
+                    InventoryItemQuantityOnHandVO.create(item.quantityOnHan),
+                    item.lastStockedAt,
+                    new Date(),
+                    InventoryItemPurchasePriceAtStockVO.create(item.purchasePriceAtStock),
+                    InventoryItemInternalBarCodeVO.create(item.internalBarCode),
+                    null,
+                    null,
+                    null
+                )
+            }),
             null,
-            null,
+            null
         );
         const lot = LotEntity.reconstitute(
             BigInt(new Date().getDate()),
@@ -127,7 +139,7 @@ export class RegisterProductWithLotAndInventoryItemUseCase {
             null,
             null,
             null,
-            [inventoryItemEntity],
+            [inventoryEntity],
             dto.lotUnitPurchases?.map(item => {
                 return LotUnitPurchaseEntity.create(
                     item.lotId ?? BigInt(0),
@@ -159,8 +171,9 @@ export class RegisterProductWithLotAndInventoryItemUseCase {
             null,
             null,
             [lot],
-            null
+            [inventoryEntity]
         );
+        console.log(productEntity.inventories);
         const result = await this.productRepository.saveProductWithLotAdnInventoryItem(productEntity);
         return result;
     }

@@ -1,32 +1,21 @@
-import { ProductMapper } from "src/contexts/product-management/product/application/mappers/product.mapper";
 import { InventoryItemEntity } from "../../domain/entities/inventory-item.entity";
-import { InventoryResponseDto } from "../dtos/inventory-response.dto";
-import { LotMapper } from "src/contexts/purchase-management/lot/application/mappers/lot.mapper";
+import { InventoryItemResponseDto } from "../dtos/inventory-item-response.dto";
+import { InventoryMapper } from "src/contexts/inventory-management/inventory/application/mapper/inventory.mapper";
 
 export class InventoryItemMapper {
-    static toResponseDto(entity: InventoryItemEntity): InventoryResponseDto {
-        return new InventoryResponseDto(
+    static toResponseDto(entity: InventoryItemEntity): InventoryItemResponseDto {
+        return new InventoryItemResponseDto(
             entity.inventoryItemId,
-            entity.productId,
-            entity.lotId,
-            entity.branchOfficeId,
+            entity.inventoryId,
             entity.location,
             entity.quantityOnHand.value,
             entity.lastStockedAt,
-            entity.isSellable,
             entity.purchasePriceAtStock.value,
             entity.createdAt,
             entity.internalBarCode?.value,
-            entity.salePriceOne?.value,
-            entity.salePriceMany?.value,
-            entity.saleQuantityMany?.value,
-            entity.salePriceSpecial?.value,
-            entity.minStockBranch?.value,
-            entity.maxStockBranch?.value,
             entity.updatedAt,
             entity.deletedAt,
-            entity.product? ProductMapper.toResponseDto(entity.product) : null,
-            entity.lot ? LotMapper.toResponseDto(entity.lot) : null
+            entity.inventory? InventoryMapper.toResponseDto(entity.inventory) : null,
         );
     }
 }

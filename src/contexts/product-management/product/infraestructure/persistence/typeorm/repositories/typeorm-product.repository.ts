@@ -1,17 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, EntityManager, QueryFailedError, Repository } from 'typeorm';
+import { DataSource, QueryFailedError, Repository } from 'typeorm';
 import { ProductOrmEntity } from '../entities/product.orm-entity';
 import { ProductTypeOrmMapper } from '../mappers/product.mapper';
 import { ProductRepository } from 'src/contexts/product-management/product/domain/repositories/product.repository';
 import { ProductEntity } from 'src/contexts/product-management/product/domain/entities/product.entity';
 import { LotOrmEntity } from 'src/contexts/purchase-management/lot/infraestructura/persistence/typeorm/entities/lot.orm-entity';
-import { InventoryItemOrmEntity } from 'src/contexts/inventory-management/inventory-item/infraestructure/persistence/typeorm/entities/inventory-item.orm-entity';
-import { LotMapper } from 'src/contexts/purchase-management/lot/infraestructura/persistence/typeorm/mappers/lot.mapper';
+import { InventoryOrmEntity } from 'src/contexts/inventory-management/inventory/infraestructure/persistence/typeorm/entities/inventory.orm-entity';
 import { ProductValidateException } from 'src/contexts/product-management/product/domain/exceptions/product-validate.exception';
 import { LotAlreadyExistsException } from 'src/contexts/purchase-management/lot/domain/exceptions/lot-already-exists.exception';
 import { LotUnitPurchaseOrmEntity } from 'src/contexts/purchase-management/lot/infraestructura/persistence/typeorm/entities/lot-unit-purchase.orm-entity';
 import { ProductNotFoundException } from 'src/contexts/product-management/product/domain/exceptions/product-not-found.exception';
+import { InventoryItemOrmEntity } from 'src/contexts/inventory-management/inventory-item/infraestructure/persistence/typeorm/entities/inventory-item.orm-entity';
 
 @Injectable()
 export class TypeOrmProductRepository implements ProductRepository {
@@ -36,7 +35,9 @@ export class TypeOrmProductRepository implements ProductRepository {
   async saveProductWithLotAdnInventoryItem(product: ProductEntity): Promise<ProductEntity> {
     let productOrm = ProductTypeOrmMapper.toOrm(product);
     let lotOrm = productOrm.lots ? productOrm.lots[0] : undefined;
-    let inventoryItemOrm = lotOrm?.inventoryItems ? lotOrm.inventoryItems[0] : undefined;
+    let inventoryOrm = productOrm.inventories ? productOrm.inventories[0] : null;
+    let inventoryItemOrm = inventoryOrm?.inventoryItems ? inventoryOrm.inventoryItems : undefined;
+    // let inventoryItemOrm = lotOrm?.inventoryItems ? lotOrm.inventoryItems[0] : undefined;
     let lotUnitPurchaseOrm = lotOrm?.lotUnitPurchases;
 
     const queryRunner = this.datasource.createQueryRunner();
@@ -49,9 +50,9 @@ export class TypeOrmProductRepository implements ProductRepository {
       productOrm = {
         ...productOrm,
         lots: undefined,
-        inventoryItems: undefined,
+        inventories: undefined,
       }
-      const savedProduct = await queryRunner.manager.save(ProductOrmEntity, productOrm);
+      let savedProduct = await queryRunner.manager.save(ProductOrmEntity, productOrm);
 
       // Guarda los lots y les asigna el producto guardado
       if (lotOrm) {
@@ -62,10 +63,8 @@ export class TypeOrmProductRepository implements ProductRepository {
           product: undefined,
           lotUnitPurchases: undefined,
         }
-        const savedLot = await queryRunner.manager.save(LotOrmEntity, lotOrm);
-
+        let savedLot = await queryRunner.manager.save(LotOrmEntity, lotOrm);
         if (lotUnitPurchaseOrm && lotUnitPurchaseOrm.length > 0) {
-          console.log(lotUnitPurchaseOrm);
           // verificar que no vengan repetidos los unidades de compra, 
           // lanzar un error si es así y hacer rollback de la transacción
           const uniqueUnits = new Set();
@@ -79,36 +78,67 @@ export class TypeOrmProductRepository implements ProductRepository {
           lotUnitPurchaseOrm.forEach(item => {
             item.lotId = savedLot.lotId;
           });
-          await queryRunner.manager.save(LotUnitPurchaseOrmEntity, lotUnitPurchaseOrm);
+          let savedLotUnitPurchase = await queryRunner.manager.save(LotUnitPurchaseOrmEntity, lotUnitPurchaseOrm);
+          savedLot = {
+            ...savedLot,
+            lotUnitPurchases: savedLotUnitPurchase,
+          }
         }
 
         // Guarda los inventoryItems de cada lot, asignando el lot y el producto guardados
-        if (inventoryItemOrm) {
-          inventoryItemOrm = {
-            ...inventoryItemOrm,
+        if (inventoryOrm) {
+          inventoryOrm = {
+            ...inventoryOrm,
             lotId: savedLot.lotId,
-            productId: savedLot.productId
+            productId: savedLot.productId,
+            lot: undefined,
+            product: undefined,
+            inventoryItems: undefined
           };
-          await queryRunner.manager.save(InventoryItemOrmEntity, inventoryItemOrm);
-
+          let savedInventory = await queryRunner.manager.save(InventoryOrmEntity, inventoryOrm);
+          if (inventoryItemOrm && inventoryItemOrm.length > 0) {
+            // verificar que no vengan repetidas las locations, 
+            // lanzar un error si es así y hacer rollback de la transacción
+            const uniqueLocations = new Set();
+            for (const item of inventoryItemOrm) {
+              if (uniqueLocations.has(item.location)) {
+                throw new ProductValidateException('Las ubicaciones de inventario no pueden estar duplicadas');
+              }
+              uniqueLocations.add(item.location);
+            }
+            // Asignar inventoryId a cada inventoryItem
+            inventoryItemOrm.forEach(item => {
+              item.inventoryId = savedInventory.inventoryId;
+            });
+            const savedInventoryItem = await queryRunner.manager.save(InventoryItemOrmEntity, inventoryItemOrm);
+            savedInventory = {
+              ...savedInventory,
+              lot: savedLot,
+              product: savedProduct,
+              inventoryItems: savedInventoryItem
+            }
+          } else {
+            throw new ProductValidateException(`Producto no registrado, Error en los datos de item del inventario.`);
+          }
         } else {
-          throw new ProductValidateException(`Producto no registrado, Error en los datos de inventario.`); 
+          throw new ProductValidateException(`Producto no registrado, Error en los datos de inventario.`);
         }
       } else {
-        throw new ProductValidateException(`Producto no registrado, Error en los datos del lote.`); 
+        throw new ProductValidateException(`Producto no registrado, Error en los datos del lote.`);
       }
       await queryRunner.commitTransaction();
       await queryRunner.release();
 
       return ProductTypeOrmMapper.toDomain(savedProduct);
     } catch (error) {
+      console.log(error);
       await queryRunner.rollbackTransaction();
       await queryRunner.release();
       if (error instanceof QueryFailedError) {
 
         // ...removed console.log...
         throw new ProductValidateException(`Producto no registrado, verifica los datos ingresados.`);
-      }      
+      }
       throw error;
     }
   }

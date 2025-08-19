@@ -5,7 +5,7 @@ import { CategoryOrmEntity } from 'src/contexts/product-management/category/infr
 import { BrandOrmEntity } from 'src/contexts/product-management/brand/infraestruture/persistence/typeorm/entities/brand-orm-entity';
 import { SeasonOrmEntity } from 'src/contexts/product-management/season/infraestructure/persistence/typeorm/entities/season.orm-entity';
 import { LotOrmEntity } from 'src/contexts/purchase-management/lot/infraestructura/persistence/typeorm/entities/lot.orm-entity';
-import { InventoryItemOrmEntity } from 'src/contexts/inventory-management/inventory-item/infraestructure/persistence/typeorm/entities/inventory-item.orm-entity';
+import { InventoryOrmEntity } from 'src/contexts/inventory-management/inventory/infraestructure/persistence/typeorm/entities/inventory.orm-entity';
 
 @Entity('product')
 @Index(['establishmentId', 'name'])
@@ -67,8 +67,8 @@ export class ProductOrmEntity {
     @OneToMany(() => LotOrmEntity, (lot) => lot.product, { nullable: true , cascade: true})
     lots?: LotOrmEntity[] | null;
 
-    @OneToMany(()=> InventoryItemOrmEntity, (item)=> item.product, {cascade: true})
-    inventoryItems?: InventoryItemOrmEntity[] | [];
+    @OneToMany(()=> InventoryOrmEntity, (item)=> item.product, {cascade: true})
+    inventories?: InventoryOrmEntity[] | [];
 
     @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_at' })
     createdAt: Date;

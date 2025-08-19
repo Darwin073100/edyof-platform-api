@@ -6,7 +6,7 @@ import { ExpirationDateVO } from '../value-objects/expiration-date.vo';
 import { ManufacturingDateVO } from '../value-objects/manufacturing-date.vo';
 import { ReceivedDateVO } from '../value-objects/received-date.vo';
 import { ProductEntity } from 'src/contexts/product-management/product/domain/entities/product.entity';
-import { InventoryItemEntity } from 'src/contexts/inventory-management/inventory-item/domain/entities/inventory-item.entity';
+import { InventoryEntity } from 'src/contexts/inventory-management/inventory/domain/entities/inventory.entity';
 import { LotUnitPurchaseEntity } from './lot-unit-purchase.entity';
 import { ForSaleEnum } from 'src/shared/domain/enums/for-sale.enum';
 
@@ -26,7 +26,7 @@ export class LotEntity {
   private _domainEvents: DomainEvent<LotEntity>[] = [];
 
   private _product?: ProductEntity | null;
-  private _inventoryItems?: InventoryItemEntity[] | null;
+  private _inventoryItems?: InventoryEntity[] | null;
   private _lotUnitPurchases?: LotUnitPurchaseEntity[] | null;
 
   private constructor(
@@ -43,7 +43,7 @@ export class LotEntity {
     updatedAt?: Date | null,
     deletedAt?: Date | null,
     product?: ProductEntity | null,
-    inventoryItems?: InventoryItemEntity[] | null,
+    inventoryItems?: InventoryEntity[] | null,
     lotUnitPurchases?: LotUnitPurchaseEntity[] | null,
   ) {
     this._lotId = lotId;
@@ -109,7 +109,7 @@ export class LotEntity {
     updatedAt?: Date | null,
     deletedAt?: Date | null,
     product?: ProductEntity | null,
-    inventoryItems?: InventoryItemEntity[] | null,
+    inventoryItems?: InventoryEntity[] | null,
     lotUnitPurchases?: LotUnitPurchaseEntity[] | null,
   ): LotEntity {
     return new LotEntity(
@@ -171,7 +171,7 @@ export class LotEntity {
   get product(): ProductEntity | null | undefined {
     return this._product;
   }
-  get inventoryItems(): InventoryItemEntity[] | null | undefined {
+  get inventoryItems(): InventoryEntity[] | null | undefined {
     return this._inventoryItems;
   }
   get lotUnitPurchases(): LotUnitPurchaseEntity[] | null | undefined {

@@ -9,6 +9,7 @@ import { ViewAllProductsUseCase } from '../../../application/use-cases/view-all-
 import { RegisterProductWithLotAndInventoryItemRequestDto } from '../dtos/register-product-with-lot-and-inventory-item-request.dto';
 import { RegisterProductWithLotAndInventoryItemUseCase } from '../../../application/use-cases/register-product-with-lot-and-inventory-item.use-case';
 import { ViewProductByIdUseCase } from '../../../application/use-cases/view-product-by-id.use-case';
+import { InventoryItemRegisterDto } from 'src/contexts/inventory-management/inventory-item/application/dtos/inventory-item-register.dto';
 
 @Controller('products')
 export class ProductController {
@@ -79,17 +80,23 @@ export class ProductController {
                 expirationDate: body.expirationDate,
                 manufacturingDate: body.manufacturingDate,
                 branchOfficeId: body.branchOfficeId,
-                location: body.location,
-                quantityOnHan: body.quantityOnHand,
-                purchasePriceAtStock: body.purchasePriceAtStock,
-                internalBarCode: body.internalBarCode,
                 salePriceOne: body.salePriceOne,
                 salePriceMany: body.salePriceMany,
                 saleQuantityMany: body.saleQuantityMany,
                 salePriceSpecial: body.salePriceSpecial,
                 minStockBranch: body.minStockBranch,
                 maxStockBranch: body.maxStockBranch,
-                lastStockedAt: body.lastStockedAt ? new Date(body.lastStockedAt) : new Date(),
+                inventoryItems: body.inventoryItems?.map(item => {
+                     const h: InventoryItemRegisterDto = {
+                        inventoryId: BigInt(new Date().getTime()),
+                        lastStockedAt: item.lastStockedAt ?new Date(item.lastStockedAt): new Date(),
+                        location: item.location,
+                        purchasePriceAtStock: item.purchasePriceAtStock,
+                        quantityOnHan: item.quantityOnHand,
+                        internalBarCode: item.internalBarCode
+                    }
+                    return h;
+                }),
                 isSellable: body.isSellable,
                 lotUnitPurchases: body.lotUnitPurchases
             });
@@ -109,7 +116,7 @@ export class ProductController {
                 throw new NotFoundException(error.message);
             }
             // ...removed console.log...
-            
+
             throw error;
         }
     }

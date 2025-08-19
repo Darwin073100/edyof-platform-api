@@ -1,8 +1,8 @@
-import { IsNotEmpty, IsOptional, IsString, IsNumber, IsEnum, IsUrl, IsInt, IsPositive, IsNumberString, IsDateString, IsBoolean, MaxLength, ValidateNested } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsNumber, IsEnum, IsUrl, IsInt, IsPositive, IsNumberString, IsDateString, IsBoolean, MaxLength, ValidateNested, IsArray } from 'class-validator';
 import { ForSaleEnum } from '../../../../../../shared/domain/enums/for-sale.enum';
-import { LocationEnum } from 'src/contexts/inventory-management/inventory-item/domain/enums/location.enum';
 import { Type } from 'class-transformer';
 import { RegisterLotUnitPurchaseRequestDTO } from 'src/contexts/purchase-management/lot/presentation/dtos/register-lot-unit-purchase-request.dto';
+import { InventoryItemWithoutInventoryRequestDTO } from 'src/contexts/inventory-management/inventory-item/presentation/dtos/inventory-item-without-inventory-request.dto';
 
 export class RegisterProductWithLotAndInventoryItemRequestDto {
   @IsNotEmpty({ message: 'El ID del establecimiento es obligatorio.' })
@@ -53,18 +53,6 @@ export class RegisterProductWithLotAndInventoryItemRequestDto {
   @IsNumberString()
   @IsNotEmpty({ message: 'El id de la sucursal no puede estar vacío.' })
   branchOfficeId: bigint;
-  @IsNotEmpty({ message: 'La ubicación no puede estar vacía.' })
-  location: LocationEnum; // Ubicación del inventario
-  @IsOptional()
-  @IsString({ message: 'El código de barras interno debe ser una cadena de texto.' })
-  @MaxLength(100, { message: 'El código de barras interno no puede tener más de 100 caracteres.' })
-  internalBarCode?: string;
-  @IsNotEmpty({ message: 'La cantidad no puede estar vacía.' })
-  @IsNumber({}, { message: 'La cantidad debe ser un número.' })
-  quantityOnHand: number;
-  @IsNotEmpty({ message: 'El precio de compra no puede estar vacío.' })
-  @IsNumber({}, { message: 'El precio de compra debe ser un número.' })
-  purchasePriceAtStock: number;
   @IsOptional()
   @IsPositive({ message: 'El precio de venta por menudeo debe ser positivo.' })
   @IsNumber({}, { message: 'El precio de venta unitario debe ser un número.' })
@@ -87,12 +75,14 @@ export class RegisterProductWithLotAndInventoryItemRequestDto {
   @IsOptional()
   @IsNumber({}, { message: 'El stock máximo debe ser un número.' })
   maxStockBranch?: number;
-  @IsOptional()
-  @IsDateString(undefined, { message: 'La fecha de último abastecimiento debe ser una fecha válida.' })
-  lastStockedAt?: string;
   @IsNotEmpty({ message: 'Debe indicar si es vendible.' })
   @IsBoolean({ message: 'El campo "es vendible" debe ser booleano.' })
   isSellable: boolean;
+  @IsOptional()
+  @IsArray({message: 'Los items de inventario deben ser un arreglo.'})
+  @ValidateNested({each: true})
+  @Type(() => InventoryItemWithoutInventoryRequestDTO)
+  inventoryItems: InventoryItemWithoutInventoryRequestDTO[] | null;
 
   // Lot
   @IsNotEmpty({ message: 'El número de lote es obligatorio.' })

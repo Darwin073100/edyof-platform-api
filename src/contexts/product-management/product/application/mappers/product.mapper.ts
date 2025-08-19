@@ -1,7 +1,7 @@
 import { CategoryMapper } from 'src/contexts/product-management/category/application/mappers/category-mapper';
 import { ProductEntity } from '../../domain/entities/product.entity';
 import { ProductResponseDto } from '../dtos/product-response.dto';
-import { InventoryItemMapper } from 'src/contexts/inventory-management/inventory-item/application/mapper/inventory-item.mapper';
+import { InventoryMapper } from 'src/contexts/inventory-management/inventory/application/mapper/inventory.mapper';
 import { LotMapper } from 'src/contexts/purchase-management/lot/application/mappers/lot.mapper';
 import { SeasonMapper } from 'src/contexts/product-management/season/application/mappers/season-mapper';
 import { BrandMapper } from 'src/contexts/product-management/brand/application/mappers/brand.mapper';
@@ -27,7 +27,7 @@ export class ProductMapper {
       season: product.season? SeasonMapper.toResponseDto(product.season): undefined,
       brand: product.brand? BrandMapper.toResponseDto(product.brand): undefined,
       category: product.category? CategoryMapper.toResponseDto(product.category): undefined,
-      inventoryItems: product.inventories? product.inventories.map(item => InventoryItemMapper.toResponseDto(item)): undefined,
+      inventoryItems: product.inventories? product.inventories.map(item => InventoryMapper.toResponseDto(item)): undefined,
       lots: product.lots? product.lots.map(item=> LotMapper.toResponseDto(item)): undefined,
     };
   }

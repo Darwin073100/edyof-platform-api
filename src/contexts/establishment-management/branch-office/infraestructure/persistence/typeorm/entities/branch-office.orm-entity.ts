@@ -1,6 +1,6 @@
 import { EmployeeOrmEntity } from 'src/contexts/employee-management/employee/infraestruture/persistence/typeorm/entities/employee-orm-entity';
 import { EstablishmentOrmEntity } from 'src/contexts/establishment-management/establishment/infraestruture/persistence/typeorm/entities/establishment-orm-entity';
-import { InventoryItemOrmEntity } from 'src/contexts/inventory-management/inventory-item/infraestructure/persistence/typeorm/entities/inventory-item.orm-entity';
+import { InventoryOrmEntity } from 'src/contexts/inventory-management/inventory/infraestructure/persistence/typeorm/entities/inventory.orm-entity';
 import { AddressOrmEntity } from 'src/shared/infraestructure/typeorm/address.orm-entity';
 import {
   Entity,
@@ -61,8 +61,8 @@ export class BranchOfficeOrmEntity {
   @OneToMany(() => EmployeeOrmEntity, employee => employee.branchOffice)
   employees?: EmployeeOrmEntity[];
 
-  @OneToMany(()=> InventoryItemOrmEntity, (item)=> item.branchOffice)
-  inventoryItems?: InventoryItemOrmEntity[] | [];
+  @OneToMany(()=> InventoryOrmEntity, (item)=> item.branchOffice)
+  inventoryItems?: InventoryOrmEntity[] | [];
 
   @CreateDateColumn({
     type: 'timestamp with time zone',

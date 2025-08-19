@@ -1,6 +1,6 @@
 import { BadRequestException, Body, Controller, Get, HttpCode, HttpStatus, NotFoundException, Post } from "@nestjs/common";
 import { RegisterInventoryItemUseCase } from "../../application/use-case/register-inventory-item.use-case";
-import { InventoryItemDTO } from "../dtos/inventory-item-request.dto";
+import { InventoryItemRequestDTO } from "../dtos/inventory-item-request.dto";
 import { InventoryItemNotFoundException } from "../../domain/exceptions/inventory-item-not-found.exception";
 import { InvalidInventoryItemException } from "../../domain/exceptions/invalid-inventory-item.exception";
 import { InventoryItemMapper } from "../../application/mapper/inventory-item.mapper";
@@ -16,24 +16,15 @@ export class InventoryItemController{
     // Endpoint para registrar un nuevo item de inventario
     @Post()
     @HttpCode(HttpStatus.CREATED)
-    async register(@Body() inventoryItemDto: InventoryItemDTO) {
+    async register(@Body() inventoryItemDto: InventoryItemRequestDTO) {
         try {
             const result = await this.registerInventoryItemUseCase.execute({
-            productId: inventoryItemDto.productId,
-            lotId: inventoryItemDto.lotId,
-            branchOfficeId: inventoryItemDto.branchOfficeId,
+            inventoryId: inventoryItemDto.inventoryId,
             location: inventoryItemDto.location,
             quantityOnHan: inventoryItemDto.quantityOnHand,
             purchasePriceAtStock: inventoryItemDto.purchasePriceAtStock,
             internalBarCode: inventoryItemDto.internalBarCode,
-            salePriceOne: inventoryItemDto.salePriceOne,
-            salePriceMany: inventoryItemDto.salePriceMany,
-            saleQuantityMany: inventoryItemDto.saleQuantityMany,
-            salePriceSpecial: inventoryItemDto.salePriceSpecial,
-            minStockBranch: inventoryItemDto.minStockBranch,
-            maxStockBranch: inventoryItemDto.maxStockBranch,
             lastStockedAt: inventoryItemDto.lastStockedAt ? new Date(inventoryItemDto.lastStockedAt) : new Date(),
-            isSellable: inventoryItemDto.isSellable,
         });
         return InventoryItemMapper.toResponseDto(result);
         } catch (error) {

@@ -1,22 +1,18 @@
 import { ForSaleEnum } from "src/shared/domain/enums/for-sale.enum";
-import { LocationEnum } from "../../../../inventory-management/inventory-item/domain/enums/location.enum";
 import { RegisterLotUnitPurchaseDTO } from "src/contexts/purchase-management/lot/application/dtos/register-lot-unit-purchase.dto";
+import { InventoryItemRegisterDto } from "src/contexts/inventory-management/inventory-item/application/dtos/inventory-item-register.dto";
 
 export class RegisterProductWhitLotAndInventoryDto {
     // InventoryItem
     branchOfficeId: bigint;
-    location: LocationEnum;
-    quantityOnHan: number;
-    lastStockedAt: Date;
     isSellable: boolean;
-    purchasePriceAtStock: number;
-    internalBarCode?: string | null = null;
     salePriceOne?: number | null;
     salePriceMany?: number | null;
     saleQuantityMany?: number | null;
     salePriceSpecial?: number | null;
     minStockBranch?: number | null;
     maxStockBranch?: number | null;
+    inventoryItems?: InventoryItemRegisterDto[]|null;
     // Lot
     lotNumber: string;
     purchasePrice: number;

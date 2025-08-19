@@ -16,7 +16,7 @@ import { SuplierModule } from './contexts/purchase-management/suplier/suplier.mo
 import { LotModule } from './contexts/purchase-management/lot/lot.module';
 import { EmployeeRoleModule } from './contexts/employee-management/employee-role/employee-role.module';
 import { EmployeeModule } from './contexts/employee-management/employee/employee.module';
-import { InventoryItemModule } from './contexts/inventory-management/inventory-item/inventory-item.module';
+import { InventoryModule } from './contexts/inventory-management/inventory/inventory.module';
 import { CustomerModule } from './contexts/sale-management/customer/customer.module';
 
 @Module({
@@ -38,7 +38,7 @@ import { CustomerModule } from './contexts/sale-management/customer/customer.mod
     LotModule,
     EmployeeRoleModule,
     EmployeeModule,
-    InventoryItemModule,
+    InventoryModule,
     CustomerModule
   ],
 })

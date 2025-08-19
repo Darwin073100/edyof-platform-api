@@ -1,4 +1,4 @@
-import { InventoryResponseDto } from "src/contexts/inventory-management/inventory-item/application/dtos/inventory-response.dto";
+import { InventoryResponseDto } from "src/contexts/inventory-management/inventory/application/dtos/inventory-response.dto";
 import { BrandResponseDto } from "src/contexts/product-management/brand/application/dtos/brand-response.dto";
 import { CategoryResponseDto } from "src/contexts/product-management/category/application/dtos/category-response.dto";
 import { SeasonResponseDto } from "src/contexts/product-management/season/application/dtos/season-response.dto";
