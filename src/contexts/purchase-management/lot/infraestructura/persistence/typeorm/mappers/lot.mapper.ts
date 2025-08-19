@@ -28,7 +28,7 @@ export class LotMapper {
       entity.updatedAt ?? null,
       entity.deletedAt ?? null,
       product,
-      entity.inventoryItems? entity.inventoryItems.map(item => InventoryMapper.toDomain(item)): null,
+      entity.inventories? entity.inventories.map(item => InventoryMapper.toDomain(item)): null,
       entity.lotUnitPurchases ? entity.lotUnitPurchases.map(lotUnitPurchase => LotUnitPurchaseMapper.toDomain(lotUnitPurchase)) : null
     );
   }
@@ -48,7 +48,7 @@ export class LotMapper {
     orm.updatedAt = domain.updatedAt ?? null;
     orm.deletedAt = domain.deletedAt ?? null;
     orm.product = domain.product ? ProductTypeOrmMapper.toOrm(domain.product) : null;
-    orm.inventoryItems = domain.inventoryItems ? domain.inventoryItems.map(item => InventoryMapper.toOrmEntity(item)): undefined;
+    orm.inventories = domain.inventories ? domain.inventories.map(item => InventoryMapper.toOrmEntity(item)): undefined;
     orm.lotUnitPurchases = domain.createdAt ? domain.lotUnitPurchases?.map(lotUnitPurchase => LotUnitPurchaseMapper.toOrmEntity(lotUnitPurchase)) : null;
     return orm;
   }

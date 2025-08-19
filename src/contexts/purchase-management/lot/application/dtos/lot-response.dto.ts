@@ -13,7 +13,7 @@ export class LotResponseDto {
   expirationDate?: Date | null;
   manufacturingDate?: Date | null;
   product?: ProductResponseDto | null;
-  inventoryItems?: InventoryResponseDto[] | null;
+  inventories?: InventoryResponseDto[] | null;
   lotUnitPurchases?: LotUnitPurchaseResponseDTO[] | null;
   receivedDate: Date;
   createdAt: Date;

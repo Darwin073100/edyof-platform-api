@@ -59,7 +59,7 @@ export class TypeOrmProductRepository implements ProductRepository {
         lotOrm = {
           ...lotOrm,
           productId: savedProduct.productId,
-          inventoryItems: undefined,
+          inventories: undefined,
           product: undefined,
           lotUnitPurchases: undefined,
         }
@@ -159,7 +159,7 @@ export class TypeOrmProductRepository implements ProductRepository {
 
   async findAll(): Promise<[] | ProductEntity[]> {
     const result = await this.productRepository.find({
-      relations: ['establishment', 'category', 'brand', 'season', 'lots', 'lots.inventoryItems'],
+      relations: ['establishment', 'category', 'brand', 'season', 'lots', 'lots.inventories', 'lots.inventories.inventoryItems'],
     });
 
     if (result.length > 0) {

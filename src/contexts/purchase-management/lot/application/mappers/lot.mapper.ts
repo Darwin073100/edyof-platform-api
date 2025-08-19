@@ -17,7 +17,7 @@ export class LotMapper {
       manufacturingDate: lot.manufacturingDate?.value ?? null,
       receivedDate: lot.receivedDate.value,
       product: lot.product? ProductMapper.toResponseDto(lot.product): undefined,
-      inventoryItems: lot.inventoryItems? lot.inventoryItems.map(item=> InventoryMapper.toResponseDto(item)): undefined,
+      inventories: lot.inventories? lot.inventories.map(item=> InventoryMapper.toResponseDto(item)): undefined,
       lotUnitPurchases: lot.lotUnitPurchases ? lot.lotUnitPurchases.map(item => LotUnitPurchaseMapper.toResponseDTO(item)) : undefined,
       createdAt: lot.createdAt,
       updatedAt: lot.updatedAt ?? null,

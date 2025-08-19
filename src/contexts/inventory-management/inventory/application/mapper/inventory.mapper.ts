@@ -2,6 +2,7 @@ import { ProductMapper } from "src/contexts/product-management/product/applicati
 import { InventoryEntity } from "../../domain/entities/inventory.entity";
 import { InventoryResponseDto } from "../dtos/inventory-response.dto";
 import { LotMapper } from "src/contexts/purchase-management/lot/application/mappers/lot.mapper";
+import { InventoryItemMapper } from "src/contexts/inventory-management/inventory-item/application/mapper/inventory-item.mapper";
 
 export class InventoryMapper {
     static toResponseDto(entity: InventoryEntity): InventoryResponseDto {
@@ -21,7 +22,8 @@ export class InventoryMapper {
             entity.updatedAt,
             entity.deletedAt,
             entity.product? ProductMapper.toResponseDto(entity.product) : null,
-            entity.lot ? LotMapper.toResponseDto(entity.lot) : null
+            entity.lot ? LotMapper.toResponseDto(entity.lot) : null,
+            entity.inventoryItems ? entity.inventoryItems?.map(item => InventoryItemMapper.toResponseDto(item)): null,
         );
     }
 }

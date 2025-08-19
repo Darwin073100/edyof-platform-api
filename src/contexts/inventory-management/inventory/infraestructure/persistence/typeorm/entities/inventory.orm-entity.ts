@@ -31,7 +31,7 @@ export class InventoryOrmEntity{
     @ManyToOne(()=> ProductOrmEntity, (item)=> item.inventories)
     @JoinColumn({name: 'product_id'})
     product?             : ProductOrmEntity | null;
-    @ManyToOne(()=> LotOrmEntity, (item)=> item.inventoryItems)
+    @ManyToOne(()=> LotOrmEntity, (item)=> item.inventories)
     @JoinColumn({name: 'lot_id'})
     lot?                 : LotOrmEntity | null;
     @ManyToOne(()=> BranchOfficeOrmEntity, (item)=> item.inventoryItems)

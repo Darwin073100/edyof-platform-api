@@ -50,7 +50,7 @@ export class LotOrmEntity {
   receivedDate: Date;
 
   @OneToMany(()=> InventoryOrmEntity, (item)=> item.lot, {cascade: true})
-  inventoryItems?: InventoryOrmEntity[];
+  inventories?: InventoryOrmEntity[];
 
   @OneToMany(()=> LotUnitPurchaseOrmEntity, (lotUnitPurchase)=> lotUnitPurchase.lot, {cascade: true})
   lotUnitPurchases?: LotUnitPurchaseOrmEntity[]|null

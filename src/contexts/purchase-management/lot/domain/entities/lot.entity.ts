@@ -171,7 +171,7 @@ export class LotEntity {
   get product(): ProductEntity | null | undefined {
     return this._product;
   }
-  get inventoryItems(): InventoryEntity[] | null | undefined {
+  get inventories(): InventoryEntity[] | null | undefined {
     return this._inventoryItems;
   }
   get lotUnitPurchases(): LotUnitPurchaseEntity[] | null | undefined {

@@ -1,3 +1,4 @@
+import { InventoryItemResponseDto } from "src/contexts/inventory-management/inventory-item/application/dtos/inventory-item-response.dto";
 import { ProductResponseDto } from "src/contexts/product-management/product/application/dtos/product-response.dto";
 import { LotResponseDto } from "src/contexts/purchase-management/lot/application/dtos/lot-response.dto";
 
@@ -18,6 +19,7 @@ export class InventoryResponseDto {
     readonly deletedAt?           : Date|null;
     readonly product?             : ProductResponseDto|null;
     readonly lot?                 : LotResponseDto | null;
+    readonly inventoryItems?      : InventoryItemResponseDto[] | null;
 
     constructor(
         inventoryId      : bigint,
@@ -35,7 +37,8 @@ export class InventoryResponseDto {
         updatedAt?           : Date|null,
         deletedAt?           : Date|null,
         product?             : ProductResponseDto|null,
-        lot?                 : LotResponseDto | null
+        lot?                 : LotResponseDto | null,
+        inventoryItems?      : InventoryItemResponseDto[] | null
     ) {
         this.inventoryId          = inventoryId;
         this.createdAt            = createdAt;
@@ -53,6 +56,7 @@ export class InventoryResponseDto {
         this.deletedAt            = deletedAt ?? null;
         this.product              = product ?? null;
         this.lot                  = lot ?? null;
+        this.inventoryItems       = inventoryItems;
     }
 
 }

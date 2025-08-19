@@ -27,7 +27,7 @@ export class ProductMapper {
       season: product.season? SeasonMapper.toResponseDto(product.season): undefined,
       brand: product.brand? BrandMapper.toResponseDto(product.brand): undefined,
       category: product.category? CategoryMapper.toResponseDto(product.category): undefined,
-      inventoryItems: product.inventories? product.inventories.map(item => InventoryMapper.toResponseDto(item)): undefined,
+      inventories: product.inventories? product.inventories.map(item => InventoryMapper.toResponseDto(item)): undefined,
       lots: product.lots? product.lots.map(item=> LotMapper.toResponseDto(item)): undefined,
     };
   }

@@ -21,7 +21,7 @@ export class ProductResponseDto {
   brand?: BrandResponseDto | null;
   category?: CategoryResponseDto | null;
   lots?: LotResponseDto[] | null;
-  inventoryItems?: InventoryResponseDto[]|null;
+  inventories?: InventoryResponseDto[]|null;
   createdAt: Date;
   updatedAt: Date | null;
   deletedAt: Date | null;
