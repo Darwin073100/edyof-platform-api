@@ -173,7 +173,7 @@ export class TypeOrmProductRepository implements ProductRepository {
     try {
       const result = await this.productRepository.findOne({
         where: { productId: entityId },
-        relations: ['establishment', 'category', 'brand', 'season', 'lots', 'lots.inventoryItems'],
+        relations: ['establishment', 'category', 'brand', 'season', 'lots','lots.lotUnitPurchases', 'lots.inventories', 'lots.inventories.inventoryItems'],
       });
 
       if (!result) {

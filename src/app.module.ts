@@ -18,6 +18,7 @@ import { EmployeeRoleModule } from './contexts/employee-management/employee-role
 import { EmployeeModule } from './contexts/employee-management/employee/employee.module';
 import { InventoryModule } from './contexts/inventory-management/inventory/inventory.module';
 import { CustomerModule } from './contexts/sale-management/customer/customer.module';
+import { InventoryItemModule } from './contexts/inventory-management/inventory-item/inventory-item.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { CustomerModule } from './contexts/sale-management/customer/customer.mod
     EmployeeRoleModule,
     EmployeeModule,
     InventoryModule,
+    InventoryItemModule,
     CustomerModule
   ],
 })

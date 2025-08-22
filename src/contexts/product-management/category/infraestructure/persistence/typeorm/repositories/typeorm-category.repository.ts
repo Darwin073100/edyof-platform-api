@@ -1,22 +1,26 @@
 import { CategoryEntity } from "src/contexts/product-management/category/domain/entities/category-entity";
 import { CategoryRepository } from "src/contexts/product-management/category/domain/repositories/category.repository";
-import { QueryFailedError, Repository } from "typeorm";
+import { DataSource, QueryFailedError, Repository } from "typeorm";
 import { CategoryOrmEntity } from "../entities/category.orm-entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { CategoryMapper } from "../mappers/category.mapper";
 import { CategoryAlreadyExistsException } from "src/contexts/product-management/category/domain/exceptions/category-already-exists.exception";
+import { Injectable } from "@nestjs/common";
+import { CategoryNotFoundException } from "src/contexts/product-management/category/domain/exceptions/category-not-found.exception";
 
+@Injectable()
 export class TypeormCategoryRepository implements CategoryRepository{
     private readonly typeormRepository: Repository<CategoryOrmEntity>;
     constructor(
-        @InjectRepository(CategoryOrmEntity)
-        typeormRepository: Repository<CategoryOrmEntity>,
+        readonly datasource: DataSource,
     ){
-        this.typeormRepository = typeormRepository;
+        this.typeormRepository = this.datasource.getRepository(CategoryOrmEntity);
     }
     async findById(categoryId: bigint): Promise<CategoryEntity | null> {
         const ormEntity = await this.typeormRepository.findOne({
-            where: {categoryId: categoryId},
+            where: {
+                categoryId: categoryId
+            },
         });
         if (!ormEntity) {
             return Promise.resolve(null);
@@ -25,11 +29,19 @@ export class TypeormCategoryRepository implements CategoryRepository{
     }
 
     async findAll(): Promise<CategoryEntity[]> {
-        const result = await this.typeormRepository.find({});
+        const result = await this.typeormRepository.find({
+            where:{
+                deletedAt: undefined
+            },
+            order: {
+                name: 'ASC'
+            }
+        });
         const categoryList = result.map(item => CategoryMapper.toDomainEntity(item));
         return categoryList;
     }
 
+    // Metodo para guardar una categoría y para actualizarla
     async save(entity: CategoryEntity): Promise<CategoryEntity> {
         try {
             let ormEntity = await this.typeormRepository.findOne({
@@ -56,6 +68,36 @@ export class TypeormCategoryRepository implements CategoryRepository{
                 }
             }
             throw error;
+        }
+    }
+
+    async delete(entityId: bigint): Promise<CategoryEntity | null> {
+        const queryRunner = this.datasource.createQueryRunner();
+        await queryRunner.connect();
+        await queryRunner.startTransaction();
+
+        try {
+            const ormEntity = await queryRunner.manager.findOne(CategoryOrmEntity, {
+                where: { categoryId: entityId },
+            });
+
+            if (!ormEntity) {
+                throw new CategoryNotFoundException('Categoría no encontrada');
+            }
+
+            // Creacion y ejecución del script
+            await queryRunner.manager.query(
+                `update category set deleted_at = now() 
+                where category_id=${entityId};`
+            );
+            await queryRunner.commitTransaction();
+
+            return CategoryMapper.toDomainEntity(ormEntity);
+        } catch (error) {
+            await queryRunner.rollbackTransaction();
+            throw error;
+        } finally {
+            await queryRunner.release();
         }
     }
 }

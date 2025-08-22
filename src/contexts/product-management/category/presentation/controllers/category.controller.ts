@@ -1,4 +1,4 @@
-import { BadRequestException, Body, ConflictException, Controller, Get, HttpCode, HttpStatus, Post } from "@nestjs/common";
+import { BadRequestException, Body, ConflictException, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, ParseIntPipe, Patch, Post } from "@nestjs/common";
 import { RegisterCategoryUseCase } from "../../application/use-cases/register-category.use-case";
 import { RegisterCategoryDto } from "../../application/dtos/register-category.dto";
 import { RegisterCategoryRequestDto } from "../dtos/register-category-request.dto";
@@ -6,12 +6,18 @@ import { CategoryMapper } from "../../application/mappers/category-mapper";
 import { InvalidCategoryException } from "../../domain/exceptions/invalid-category.exception";
 import { CategoryAlreadyExistsException } from "../../domain/exceptions/category-already-exists.exception";
 import { ViewAllCategoriesUseCase } from "../../application/use-cases/view-all-categories.use-case";
+import { UpdatedCategoryUseCase } from "../../application/use-cases/updated-category.use-case";
+import { UpdateCategoryRequestDto } from "../dtos/update-category-request.dto";
+import { CategoryNotFoundException } from "../../domain/exceptions/category-not-found.exception";
+import { DeleteCategoryUseCase } from "../../application/use-cases/delete-category.use-case";
 
 @Controller('categories')
 export class CategoryController{
     constructor(
         private readonly registerCategoryUseCase: RegisterCategoryUseCase,
         private readonly viewAllCategoriesUseCase: ViewAllCategoriesUseCase,
+        private readonly updateCategoryUseCase: UpdatedCategoryUseCase,
+        private readonly deleteCategoryUseCase: DeleteCategoryUseCase
     ){}
 
     @Post()
@@ -51,6 +57,37 @@ export class CategoryController{
                 categories: result.map(item => CategoryMapper.toResponseDto(item))
             }
         } catch (error) {
+            throw error;
+        }
+    }
+
+    @Patch()
+    async updateCategory(
+        @Body() updateCategoryRequestDto: UpdateCategoryRequestDto
+    ) {
+        try {
+            const updatedCategory = await this.updateCategoryUseCase.execute(updateCategoryRequestDto);
+            return CategoryMapper.toResponseDto(updatedCategory);
+        } catch (error) {
+            if( error instanceof CategoryNotFoundException){
+                throw new NotFoundException(error.message);
+            }
+            // Manejo de errores
+            throw error;
+        }
+    }
+
+    @Delete(':id')
+    @HttpCode(HttpStatus.NO_CONTENT)
+    async deleteCategory(
+        @Param('id', ParseIntPipe) id: bigint
+    ) {
+        try {
+            await this.deleteCategoryUseCase.execute(id);
+        } catch (error) {
+            if (error instanceof CategoryNotFoundException) {
+                throw new NotFoundException(error.message);
+            }
             throw error;
         }
     }

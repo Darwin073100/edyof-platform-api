@@ -29,7 +29,15 @@ export class TypeormInventoryItemRepository implements InventoryItemRepository{
 
     async findAll(): Promise<[] | InventoryItemEntity[]> {
         const result = await this.inventoryItemRepository.find({
-            relations: ['product','product.category','lot']
+            relations: [
+                'inventory','inventory.product','inventory.lot', 'inventory.product.category', 
+                'inventory.product.brand', 'inventory.product.season'
+            ],
+            order:{
+                inventory:{
+                    productId: 'DESC',
+                }
+            }
         });
         
         if(result.length === 0) return [];

@@ -14,7 +14,7 @@ export class InventoryItemOrmEntity{
     internalBarCode?     : string | null;
     @Column({type: 'decimal', precision: 18, scale: 3, nullable: false, name: 'quantity_on_hand', default: 0})
     quantityOnHand        : number;
-    @Column({type: 'decimal', precision: 12, scale: 4, nullable: false, name: 'purchase_price_at_stock'})
+    @Column({type: 'decimal', precision: 12, scale: 4, nullable: true, name: 'purchase_price_at_stock'})
     purchasePriceAtStock : number;
     @Column({ type: 'timestamp with time zone', name: 'last_stocked_at', default: () => 'CURRENT_TIMESTAMP' })
     lastStockedAt        : Date;

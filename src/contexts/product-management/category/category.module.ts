@@ -8,6 +8,8 @@ import { TypeormCategoryRepository } from './infraestructure/persistence/typeorm
 import { CATEGORY_CHECKER_PORT } from './domain/ports/out/category-checker.port';
 import { TypeormCategoryCheckerAdapter } from './infraestructure/persistence/typeorm/external-services/typeorm-category-checker.adapter';
 import { ViewAllCategoriesUseCase } from './application/use-cases/view-all-categories.use-case';
+import { UpdatedCategoryUseCase } from './application/use-cases/updated-category.use-case';
+import { DeleteCategoryUseCase } from './application/use-cases/delete-category.use-case';
 
 @Module({
   imports: [TypeOrmModule.forFeature([CategoryOrmEntity])],
@@ -35,6 +37,20 @@ import { ViewAllCategoriesUseCase } from './application/use-cases/view-all-categ
       provide: ViewAllCategoriesUseCase,
       useFactory: (repository: CategoryRepository)=>{
         return new ViewAllCategoriesUseCase(repository);
+      },
+      inject: [CATEGORY_REPOSITORY]
+    },
+    {
+      provide: UpdatedCategoryUseCase,
+      useFactory: (repository: CategoryRepository) => {
+        return new UpdatedCategoryUseCase(repository);
+      },
+      inject: [CATEGORY_REPOSITORY]
+    },
+    {
+      provide: DeleteCategoryUseCase,
+      useFactory: (repository: CategoryRepository) => {
+        return new DeleteCategoryUseCase(repository);
       },
       inject: [CATEGORY_REPOSITORY]
     }
