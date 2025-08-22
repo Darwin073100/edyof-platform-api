@@ -12,31 +12,24 @@ import { BrandController } from './presentation/http/controllers/brand.controlle
 import { BRAND_CHECKER_PORT } from './domain/ports/out/brand-checker.port';
 import { TypeormBrandCheckerAdapter } from './infraestruture/persistence/typeorm/external-services/typeorm-brand-checker.adapter';
 import { ViewAllBrandsUseCase } from './application/use-cases/view-all-brands.use-case';
+import { DeleteBrandUseCase } from './application/use-cases/delete-brand.use-case';
+import { UpdateBrandUseCase } from './application/use-cases/update-brand.use-case';
 
 /**
- * EstablishmentModule es el módulo de NestJS que agrupa todos los componentes
- * relacionados con la gestión de centros educativos.
+ * BrandModule es el módulo de NestJS que agrupa todos los componentes
+ * relacionados con la gestión de marcas de productos.
  *
  * Se encarga de la configuración de la inyección de dependencias para este contexto,
  * enlazando las interfaces de dominio con sus implementaciones de infraestructura.
  */
 @Module({
   imports: [
-    // Importa las entidades de TypeORM que este módulo utilizará.
-    // Esto es crucial para que TypeORM sepa qué tablas debe gestionar.
     TypeOrmModule.forFeature([BrandOrmEntity]),
   ],
   controllers: [
-    // Los controladores que manejan las solicitudes HTTP para este módulo.
     BrandController,
   ],
   providers: [
-    // Define los proveedores de servicios y cómo se inyectan las dependencias.
-
-    // --- Implementación del Repositorio de Infraestructura ---
-    // Proporciona la implementación concreta de EstablishmentRepository.
-    // Aquí es donde enlazamos la interfaz de dominio (EstablishmentRepository)
-    // con su implementación de infraestructura (TypeOrmEstablishmentRepository).
     {
       provide: BRAND_REPOSITORY, // El "token" o la "interfaz" que se pide
       useClass: TypeOrmBrandRepository, // La clase concreta que se provee
@@ -56,6 +49,14 @@ import { ViewAllBrandsUseCase } from './application/use-cases/view-all-brands.us
     {
       provide: ViewAllBrandsUseCase, useFactory: (repository: BrandRepository)=> { return new ViewAllBrandsUseCase(repository); },
       inject: [BRAND_REPOSITORY] 
+    },
+    {
+      provide: DeleteBrandUseCase, useFactory: (repo: BrandRepository) => { return new DeleteBrandUseCase(repo); },
+      inject: [BRAND_REPOSITORY],
+    },
+    {
+      provide: UpdateBrandUseCase, useFactory: (repo: BrandRepository) => { return new UpdateBrandUseCase(repo); },
+      inject: [BRAND_REPOSITORY],
     }
 
     // --- Casos de Uso (Servicios de Aplicación) ---

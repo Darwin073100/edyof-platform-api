@@ -10,6 +10,8 @@ import {
   BadRequestException,
   NotFoundException,
   ConflictException,
+  Patch,
+  Delete,
 } from '@nestjs/common';
 // import { ApiTags, ApiResponse, ApiOperation } from '@nestjs/swagger'; // Para documentación de Swagger (opcional, pero buena práctica)
 import { RegisterBrandUseCase } from '../../../application/use-cases/register-brand.use-case';
@@ -24,6 +26,11 @@ import { ParamIdDto } from 'src/shared/presentation/http/dtos/param-id.dto';
 import { InvalidBrandException } from '../../../domain/exceptions/invalid-brand.exception';
 import { BrandAlreadyExistsException } from '../../../domain/exceptions/brand-already-exists.exception';
 import { ViewAllBrandsUseCase } from '../../../application/use-cases/view-all-brands.use-case';
+import { UpdateBrandRequestDto } from '../dtos/update-brand-request.dto';
+import { UpdateBrandDto } from '../../../application/dtos/update-brand.dto';
+import { UpdateBrandUseCase } from '../../../application/use-cases/update-brand.use-case';
+import { DeleteBrandUseCase } from '../../../application/use-cases/delete-brand.use-case';
+import { BrandNotFoundException } from '../../../domain/exceptions/brand-not-found.exception';
 
 /**
  * EducationalCenterController es el controlador de NestJS que maneja las solicitudes HTTP
@@ -40,6 +47,8 @@ export class BrandController {
     private readonly registerBrandUseCase: RegisterBrandUseCase,
     private readonly findBrandByIdUseCase: FindBrandByIdUseCase,
     private readonly viewAllBrandsUseCase: ViewAllBrandsUseCase,
+    private readonly updateBrandUseCase: UpdateBrandUseCase,
+    private readonly deleteBrandUseCase: DeleteBrandUseCase,
   ) {}
 
   /**
@@ -133,6 +142,41 @@ export class BrandController {
       return {
         brands: brandlistResponse
       }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Actualizar una marca
+  @Patch()
+  @HttpCode(HttpStatus.OK)
+  async updateBrand(
+    @Body() updateRequestDto: UpdateBrandRequestDto,
+  ): Promise<BrandResponseDto> {
+    try {
+      const brandId = BigInt(updateRequestDto.brandId);
+      const updateAppDto = new UpdateBrandDto(brandId, updateRequestDto.name);
+
+      const brand = await this.updateBrandUseCase.execute(updateAppDto);
+      return BrandMapper.toResponseDto(brand);
+    } catch (error) {
+      if(error instanceof BrandNotFoundException) {
+        throw new NotFoundException(error.message);
+
+      }
+      throw error;
+    }
+  }
+
+  // Eliminar una marca
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async deleteBrand(
+    @Param() params: ParamIdDto,
+  ): Promise<void> {
+    try {
+      const brandId = BigInt(params.id);
+      await this.deleteBrandUseCase.execute(brandId);
     } catch (error) {
       throw error;
     }
