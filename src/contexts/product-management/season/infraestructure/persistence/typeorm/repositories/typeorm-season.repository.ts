@@ -1,18 +1,20 @@
-import { Repository, QueryFailedError } from "typeorm";
+import { Repository, QueryFailedError, DataSource } from "typeorm";
 import { SeasonOrmEntity } from "../entities/season.orm-entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { SeasonMapper } from "../mappers/season.mapper";
 import { SeasonEntity } from "src/contexts/product-management/season/domain/entities/season.entity";
 import { SeasonRepository } from "src/contexts/product-management/season/domain/repositories/season.repository";
 import { SeasonAlreadyExistsException } from "src/contexts/product-management/season/domain/exceptions/season-already-exists.exception";
+import { Injectable } from "@nestjs/common";
+import { SeasonNotFoundException } from "src/contexts/product-management/season/domain/exceptions/season-not-found.exception";
 
+@Injectable()
 export class TypeormSeasonRepository implements SeasonRepository {
   private readonly typeormRepository: Repository<SeasonOrmEntity>;
   constructor(
-    @InjectRepository(SeasonOrmEntity)
-    typeormRepository: Repository<SeasonOrmEntity>,
+    readonly datasource: DataSource,
   ) {
-    this.typeormRepository = typeormRepository;
+    this.typeormRepository = this.datasource.getRepository(SeasonOrmEntity);
   }
 
   async findById(seasonId: bigint): Promise<SeasonEntity | null> {
@@ -26,7 +28,14 @@ export class TypeormSeasonRepository implements SeasonRepository {
   }
 
   async findAll(): Promise<SeasonEntity[]> {
-    const result = await this.typeormRepository.find({});
+    const result = await this.typeormRepository.find({
+      where: {
+        deletedAt: undefined
+      },
+      order:{
+        name: 'ASC'
+      }
+    });
     const seasonList = result.map(item => SeasonMapper.toDomainEntity(item)); 
     return seasonList;
   }
@@ -59,7 +68,28 @@ export class TypeormSeasonRepository implements SeasonRepository {
     }
   }
 
-  delete(entityId: bigint): Promise<SeasonEntity | null> {
-    throw new Error('Este metodo no está impementado');
+  // Eliminar una temporada con softdelete y querryRunner
+  async delete(entityId: bigint): Promise<SeasonEntity | null> {
+    const queryRunner = this.datasource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      const ormEntity = await queryRunner.manager.findOne(SeasonOrmEntity, {
+        where: { seasonId: entityId },
+      });
+      if (!ormEntity) {
+        throw new SeasonNotFoundException('La temporada especificada no existe.')
+      }
+      await queryRunner.manager.query(
+        `UPDATE season SET deleted_at = NOW() WHERE season_id = ${entityId}`
+      );
+      await queryRunner.commitTransaction();
+      return SeasonMapper.toDomainEntity(ormEntity);
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
   }
 }

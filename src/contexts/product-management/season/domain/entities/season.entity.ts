@@ -91,4 +91,32 @@ export class SeasonEntity {
   get products(): ProductEntity[] | undefined {
     return this._products;
   }
+
+  updateName(name: SeasonNameVO): void {
+    if (this._name !== name) {
+      this._name = name;
+      this._updatedAt = new Date();
+    }
+  }
+
+  updateDescription(description: SeasonDescriptionVO | null): void {
+    if (this._description !== description) {
+      this._description = description;
+      this._updatedAt = new Date();
+    }
+  }
+
+  updateDateInit(dateInit: Date | null): void {
+    if (this._dateInit !== dateInit) {
+      this._dateInit = dateInit;
+      this._updatedAt = new Date();
+    }
+  }
+
+  updateDateFinish(dateFinish: Date | null): void {
+    if (this._dateFinish !== dateFinish) {
+      this._dateFinish = dateFinish;
+      this._updatedAt = new Date();
+    }
+  }
 }

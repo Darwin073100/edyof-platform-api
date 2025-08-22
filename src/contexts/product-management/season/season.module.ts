@@ -8,6 +8,8 @@ import { TypeormSeasonRepository } from './infraestructure/persistence/typeorm/r
 import { SEASON_CHECKER_PORT } from './domain/ports/out/season-checker.port';
 import { ViewAllSeasonsUseCase } from './application/use-cases/view-all-seasons.use-case';
 import { TypeormSeasonCheckerAdapter } from './infraestructure/persistence/typeorm/external-services/typeorm-season-checker.adapter';
+import { UpdateSeasonUseCase } from './application/use-cases/update-season.use-case';
+import { DeleteSeasonUseCase } from './application/use-cases/delete-season.use-case';
 
 @Module({
   imports: [TypeOrmModule.forFeature([SeasonOrmEntity])],
@@ -28,7 +30,15 @@ import { TypeormSeasonCheckerAdapter } from './infraestructure/persistence/typeo
     {
       provide: ViewAllSeasonsUseCase, useFactory: (repository: SeasonRepository)=> { return new ViewAllSeasonsUseCase(repository)},
       inject: [SEASON_REPOSITORY]
-    }
+    },
+    {
+      provide: UpdateSeasonUseCase, useFactory: (repository: SeasonRepository)=> { return new UpdateSeasonUseCase(repository)},
+      inject: [SEASON_REPOSITORY]
+    },
+    {
+      provide: DeleteSeasonUseCase, useFactory: (repository: SeasonRepository)=> { return new DeleteSeasonUseCase(repository)},
+      inject: [SEASON_REPOSITORY]
+    },
   ],
   exports: [
     SEASON_CHECKER_PORT
