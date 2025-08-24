@@ -18,6 +18,7 @@ import { ProductCheckerAdapter } from './infraestructure/persistence/typeorm/ext
 import { ViewAllProductsUseCase } from './application/use-cases/view-all-products.use-case';
 import { RegisterProductWithLotAndInventoryItemUseCase } from './application/use-cases/register-product-with-lot-and-inventory-item.use-case';
 import { ViewProductByIdUseCase } from './application/use-cases/view-product-by-id.use-case';
+import { UpdateProductUseCase } from './application/use-cases/update-product.use-case';
 
 @Module({
     imports: [
@@ -61,6 +62,25 @@ import { ViewProductByIdUseCase } from './application/use-cases/view-product-by-
                 checkerEst: EstablishmentCheckerPort,
             ) => {
                 return new RegisterProductUseCase(repo, checkerCat, checkerBrand, checkerSeas, checkerEst);
+            },
+            inject: [
+                PRODUCT_REPOSITORY, 
+                CATEGORY_CHECKER_PORT,
+                BRAND_CHECKER_PORT,
+                SEASON_CHECKER_PORT,
+                ESTABLISHMENT_CHECKER_PORT
+            ],
+        },
+        {
+            provide: UpdateProductUseCase,
+            useFactory: (
+                repo: ProductRepository, 
+                checkerCat: CategoryCheckerPort, 
+                checkerBrand: BrandChekerPort, 
+                checkerSeas: SeasonCheckerPort, 
+                checkerEst: EstablishmentCheckerPort,
+            ) => {
+                return new UpdateProductUseCase(repo, checkerCat, checkerBrand, checkerSeas, checkerEst);
             },
             inject: [
                 PRODUCT_REPOSITORY, 

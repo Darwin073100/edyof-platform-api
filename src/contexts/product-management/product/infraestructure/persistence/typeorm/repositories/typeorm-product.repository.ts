@@ -143,18 +143,58 @@ export class TypeOrmProductRepository implements ProductRepository {
     }
   }
 
+  // Metodo para guardar un producto y actualizarlo
   async save(product: ProductEntity): Promise<ProductEntity> {
     try {
-      const orm = ProductTypeOrmMapper.toOrm(product);
-      const saved = await this.productRepository.save(orm);
-      return ProductTypeOrmMapper.toDomain(saved);
+      const productExisting = await this.productRepository.findOne({
+        where: { productId: product.productId },
+      });
+      if (productExisting) {
+        productExisting.name = product.name.value;
+        productExisting.brandId = product.brandId;
+        productExisting.categoryId = product.categoryId;
+        productExisting.seasonId = product.seasonId;
+        productExisting.description = product.description?.value;
+        productExisting.sku = product.sku.value;
+        productExisting.universalBarCode = product.universalBarCode?.value;
+        productExisting.unitOfMeasure = product.unitOfMeasure;
+        productExisting.minStockGlobal = product.minStockGlobal.toString();
+
+        const result = await this.productRepository.save(productExisting);
+        return ProductTypeOrmMapper.toDomain(result);
+      }
+      const ormEntity = ProductTypeOrmMapper.toOrm(product);
+      const result = await this.productRepository.save(ormEntity);
+      return ProductTypeOrmMapper.toDomain(result);
+
     } catch (error) {
       throw error;
     }
   }
 
-  delete(entityId: bigint): Promise<ProductEntity | null> {
-    throw new Error('Este metodo no esta implementado');
+  async delete(entityId: bigint): Promise<ProductEntity | null> {
+    const queryRunner = await this.datasource.createQueryRunner();
+    try {
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
+
+      const product = await queryRunner.manager.findOne(ProductOrmEntity, {
+        where: { productId: entityId },
+      });
+
+      if (!product) {
+        throw new ProductNotFoundException('El producto que buscas no existe');
+      }
+
+      await queryRunner.manager.query(`UPDATE product SET deleted_at = NOW() WHERE product_id = ${entityId}`);
+      await queryRunner.commitTransaction();
+      return ProductTypeOrmMapper.toDomain(product);
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   async findAll(): Promise<[] | ProductEntity[]> {
